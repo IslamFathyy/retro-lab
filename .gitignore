@@ -1,0 +1,8 @@
+node_modules/
+.env
+*.log
+.DS_Store
+
+# Application repos are separate git repositories — see repos.json
+retro-api/
+retro-web/

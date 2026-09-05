@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "google-drive-example": {
+      "comment": "Replace with your Google Drive MCP server configuration. Do not commit secrets.",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-example"]
+    }
+  }
+}

@@ -1,0 +1,12 @@
+---
+description: Parent orchestration rules for multi-repo Agentic SDLC work
+alwaysApply: true
+---
+
+# Orchestration Rules
+
+- Open and work from the **root repo** when changes may span `retro-api` and `retro-web`.
+- Route backend work to `retro-api/`, frontend work to `retro-web/`.
+- Read child `AGENTS.md` before editing a child repository.
+- Follow phase scope in `PLAN.md`; do not expand v1 scope without approval.
+- Coordinate API contract before UI when adding new fields or endpoints.

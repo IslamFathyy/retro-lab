@@ -1,0 +1,26 @@
+{
+  "repositories": [
+    {
+      "name": "retro-lab-root",
+      "path": ".",
+      "role": "orchestration",
+      "description": "Parent repo — AGENTS.md, commands, skills, sub-agents, hooks, docs"
+    },
+    {
+      "name": "retro-api",
+      "path": "retro-api",
+      "role": "backend",
+      "description": "Node.js Express API, local JSON/Markdown storage",
+      "start": "npm start",
+      "port": 3001
+    },
+    {
+      "name": "retro-web",
+      "path": "retro-web",
+      "role": "frontend",
+      "description": "HTML/CSS/Vanilla JS UI",
+      "start": "npm start",
+      "port": 8080
+    }
+  ]
+}
