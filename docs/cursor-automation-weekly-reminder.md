@@ -59,6 +59,16 @@ Confirm delivery to `islam.fathy@integrant.com`.
 | Tools | MCP: **Gmail** (dashboard plugin) |
 | Instructions | Follow `weekly-action-reminder` skill: read `docs/reminders/latest-reminder.json` and `docs/reminders/recipients.json`, email open approved actions, do not modify data |
 
+**Prefill file:** [`docs/automations/weekly-retro-action-reminder.prefill.json`](automations/weekly-retro-action-reminder.prefill.json) — use in Agents Window → Automations → create new → import or paste workflow fields.
+
+**Create in UI:**
+1. Open **Agents** window → **Automations** → **New automation**
+2. Trigger: **On a schedule** → custom cron `0 9 * * 0`
+3. Repository: `IslamFathyy/retro-lab`, branch `main`
+4. Tools: enable **MCP** → select **Gmail**
+5. Paste instructions from the prefill file `workflow.prompts[0].text`
+6. Save → **Run now** once before enabling schedule
+
 ### Agent prompt essentials
 
 1. Open `docs/reminders/latest-reminder.json` — if missing, stop with clear error.
