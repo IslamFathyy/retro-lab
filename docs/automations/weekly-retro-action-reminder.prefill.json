@@ -1,0 +1,36 @@
+{
+  "name": "Weekly Retro Action Reminder",
+  "description": "Every Sunday 9am, email open approved actions from the latest archived retro snapshot via Gmail.",
+  "workflow": {
+    "triggers": [
+      {
+        "cron": {
+          "cron": "0 9 * * 0"
+        }
+      }
+    ],
+    "actions": [
+      {
+        "mcp": {
+          "server": {
+            "name": "Gmail"
+          }
+        }
+      }
+    ],
+    "prompts": [
+      {
+        "text": "Follow the weekly-action-reminder skill in this repository.\n\n1. Read docs/reminders/latest-reminder.json. If missing, stop with a clear error: run archive + npm run export:reminder first.\n2. Read docs/reminders/recipients.json for to addresses and subjectPrefix.\n3. Compose a concise HTML email: sprint title, period, team, archived date, and a bullet list of open approved actions (id, title, owner, target date, short description).\n4. Include a one-line themes summary from reportExcerpt.themesSummary when present.\n5. Send via Gmail send_message. Subject: {subjectPrefix} Open actions — {title} ({period}).\n6. Do not modify repository files, merge PRs, or change action status.\n7. Use team/process language only; never deanonymize feedback."
+      }
+    ],
+    "model": "",
+    "agentOptions": {
+      "skipInstall": false
+    },
+    "memoryEnabled": true,
+    "gitConfig": {
+      "repo": "IslamFathyy/retro-lab",
+      "branch": "main"
+    }
+  }
+}

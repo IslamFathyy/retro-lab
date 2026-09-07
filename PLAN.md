@@ -1624,19 +1624,22 @@ Automation prompt should:
 7. comment with findings
 8. never merge automatically
 
-## Automation B: Optional Retrospective Action Reminder
+## Automation B: Retrospective Action Reminder (weekly email)
 
-Only if later useful and supported by the chosen workflow.
+Schedule: **Sunday 9:00** — cron `0 9 * * 0`
 
-Schedule:
-- for example weekly
+Data bridge: at archive time, `npm run export:reminder` writes `docs/reminders/latest-reminder.json` to the orchestration repo (committed to git). Cloud Agent cannot read gitignored `retro-api/data/`.
 
 Behavior:
-- inspect local/cloud-accessible action source only if the Cloud Agent environment has legitimate access
-- report overdue/open action information
-- do not alter action status automatically
 
-For the first teaching implementation, **Automation A is enough**.
+- Read committed snapshot from `IslamFathyy/retro-lab` on `main`
+- Email **open approved actions** from the most recently archived retro (`archivedAt` max)
+- Send via **Cursor Gmail plugin** (`send_message`) to addresses in `docs/reminders/recipients.json`
+- Do not alter action status automatically
+
+Setup: see `docs/cursor-automation-weekly-reminder.md` and skill `weekly-action-reminder`.
+
+For the first teaching implementation, **Automation A is enough**; Automation B is optional after archive + Gmail cloud auth are verified.
 
 ---
 

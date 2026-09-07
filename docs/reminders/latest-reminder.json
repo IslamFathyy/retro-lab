@@ -1,0 +1,30 @@
+{
+  "retroId": "RETRO-2026-004",
+  "title": "Sprint 4 Retro",
+  "period": "Sprint 4",
+  "team": "Chartswap",
+  "archivedAt": "2026-09-06T21:16:16.149Z",
+  "exportedAt": "2026-09-07T19:18:47.774Z",
+  "openActions": [
+    {
+      "id": "ACT-0001",
+      "title": "Set a 4-hour first-review SLA for urgent/hotfix PRs",
+      "description": "Slow review turnaround on urgent fixes (FB-0003) is blocking delivery. Agree that PRs labeled urgent or hotfix receive a first review within 4 business hours. Track weekly median time-to-first-review; target at least 90% within SLA for Sprint 5.",
+      "owner": "Team",
+      "status": "open",
+      "targetDate": "2026-09-06"
+    },
+    {
+      "id": "ACT-0002",
+      "title": "Enforce two-reviewer policy on main-branch PRs",
+      "description": "The team identified an opportunity to strengthen review quality and throughput via consistent dual review (FB-0005). Require two approvals before merge for all PRs targeting main, with a documented exception for single-reviewer hotfixes.",
+      "owner": "Team",
+      "status": "open",
+      "targetDate": "2026-09-06"
+    }
+  ],
+  "reportExcerpt": {
+    "themesSummary": "Delivery reliability and incident response: The team reports stable production releases with no rollbacks, and a quick collective response when a customer escalation occurred. Code review throughput: Review turnaround is cited as too slow for urgent fixes, with a recurring suggestion to enforce a two-reviewer policy from prior retrospectives. Sprint planning efficiency: Planning sessions routinely exceed ninety minutes; the team suggests time-boxing and replacing in-meeting status updates with async notes.",
+    "approvedActionsSection": "- **Set a 4-hour first-review SLA for urgent/hotfix PRs** (ACT-0001) — Owner: Team, Status: open\n- **Enforce two-reviewer policy on main-branch PRs** (ACT-0002) — Owner: Team, Status: open"
+  }
+}
