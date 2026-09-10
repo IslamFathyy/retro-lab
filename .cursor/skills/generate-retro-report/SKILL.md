@@ -7,7 +7,13 @@ description: Generate markdown retrospective report from stored local files. Use
 
 Use template structure from PLAN.md section 15.
 
-Include: Overview, Participation counts, Themes, Concerns, Approved Actions, Previous Actions, Limitations.
+Include: Overview, Participation counts, **Insights at a Glance**, Themes, Concerns, Approved Actions, Previous Actions, Limitations.
+
+## Insights at a Glance (required)
+
+1. **Task → insights-visualizer** with current + prior retro context.
+2. Import JSON per [report-insights-contract.md](references/report-insights-contract.md).
+3. Call `POST .../report/generate` — API renders tables and Mermaid from stored insights.
 
 Never name anonymous feedback authors.
 

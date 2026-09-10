@@ -33,12 +33,22 @@ This root repo is **not** the running application. It coordinates agent work:
 
 Child repos have their own `AGENTS.md` and repo-specific rules.
 
-## Typical workflow
+## Open in Cursor (all 3 repos visible)
 
-1. Open this **root folder** in Cursor (not a child repo alone).
-2. Parent agent reads `AGENTS.md` and routes work to `retro-api` or `retro-web`.
-3. Use commands like `/analyze-retro` for agent workflows.
-4. Application data stays in `retro-api/data/` (local JSON files).
+**Recommended:** open the workspace file (shows `retro-lab`, `retro-api`, and `retro-web` in Source Control):
+
+1. **File → Open Workspace from File…**
+2. Select `retro-lab.code-workspace` in this folder
+3. In **Source Control**, use the repository dropdown to switch between the three repos
+
+## Typical workflow (Cursor-driven testing)
+
+1. Open **`retro-lab.code-workspace`** in Cursor.
+2. Start `retro-api` and `retro-web` (for validation only).
+3. Follow **`docs/cursor-test-workflow.md`** — run commands in order (`/verify-project` → `/seed-demo-retro` → `/analyze-retro` → …).
+4. Use the **web UI** to validate `analysis.json`, actions, and report — not to drive the test.
+
+Master command: **`/run-retro-workflow`**
 
 ## Teaching goal
 

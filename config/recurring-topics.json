@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "topics": [
+    {
+      "id": "code-review-delays",
+      "label": "Code review delays",
+      "keywords": ["review", "pr", "pull request", "reviewer", "reviewers"]
+    },
+    {
+      "id": "qa-testing-gaps",
+      "label": "QA / testing gaps",
+      "keywords": ["qa", "test", "testing", "bug", "bugs", "regression", "integration test"]
+    },
+    {
+      "id": "meeting-length",
+      "label": "Long meetings / planning",
+      "keywords": ["meeting", "meetings", "planning", "sync", "ninety", "standup", "stand-up"]
+    },
+    {
+      "id": "sprint-readiness",
+      "label": "Sprint readiness",
+      "keywords": ["acceptance criteria", "readiness", "refinement", "sprint entry", "checklist"]
+    },
+    {
+      "id": "deployment-reliability",
+      "label": "Deployment reliability",
+      "keywords": ["deploy", "deployment", "pipeline", "rollback", "rollbacks", "release", "releases", "production"]
+    }
+  ]
+}

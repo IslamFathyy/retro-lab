@@ -7,7 +7,7 @@ Sunday 9:00 AM email of open approved actions from the most recently archived re
 Local archive exports a committed snapshot; Cloud Automation reads it from GitHub and sends via Gmail.
 
 ```text
-/archive-retro → npm run export:reminder → commit docs/reminders/latest-reminder.json
+/archive-retro → export:reminder → /commit-latest-report (step 9) → on GitHub main
 Sunday cron → Cloud Agent → read snapshot + recipients → Gmail send_message
 ```
 
@@ -28,17 +28,23 @@ Sunday cron → Cloud Agent → read snapshot + recipients → Gmail send_messag
 
 Corporate Outlook may filter external Gmail — test Inbox vs Junk before enabling cron.
 
-## Export snapshot (local)
+## Export and publish snapshot
 
-```bash
-cd retro-api
-npm run export:reminder
-git add docs/reminders/latest-reminder.json
-git commit -m "chore: update reminder snapshot"
-git push
+Step 8 exports locally; step 9 pushes to GitHub:
+
+```text
+/archive-retro {retroId}
+/commit-latest-report
 ```
 
-Run after each `/archive-retro`.
+Manual equivalent:
+
+```bash
+cd retro-api && npm run export:reminder
+git add docs/reminders/latest-reminder.json
+git commit -m "chore: update reminder snapshot for weekly automation"
+git push origin main
+```
 
 ## Manual test in chat
 

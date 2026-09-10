@@ -16,3 +16,11 @@ Analyze feedback files only. Do not access identity beyond what is stored.
 ## Avoid
 - Personal conclusions about individuals
 - Hiding contradictory feedback
+
+## Final response (required)
+
+End every task with exactly one line:
+
+```text
+SUBAGENT_SUMMARY: <themes found, evidence IDs used, key limitations>
+```

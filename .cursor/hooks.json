@@ -6,6 +6,16 @@
     ],
     "afterFileEdit": [
       { "command": "node .cursor/hooks/validate-json.js" }
+    ],
+    "postToolUse": [
+      {
+        "command": "node .cursor/hooks/log-task-subagent.js"
+      }
+    ],
+    "subagentStop": [
+      {
+        "command": "node .cursor/hooks/log-subagent-stop.js"
+      }
     ]
   }
 }

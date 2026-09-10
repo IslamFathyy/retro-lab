@@ -906,6 +906,11 @@ Generate Markdown with this structure:
 - Did not go well:
 - Improvement ideas:
 
+## Insights at a Glance
+- Topic share (this retrospective) — table + Mermaid chart; counts are feedback items, not individuals
+- Recurring across retrospectives — table + Mermaid chart; AI-clustered semantic themes
+- Imported via Cursor `insights-visualizer` → `report-insights.json`
+
 ## What Went Well
 
 ## Main Themes

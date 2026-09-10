@@ -1,9 +1,17 @@
 {
   "mcpServers": {
-    "google-drive-example": {
-      "comment": "Replace with your Google Drive MCP server configuration. Do not commit secrets.",
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-example"]
+    "google-drive": {
+      "comment": "Copy to ~/.cursor/mcp.json. One-time: place OAuth Desktop app JSON at ~/.config/google-drive-mcp/gcp-oauth.keys.json then run: npx -y @piotr-agier/google-drive-mcp auth",
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@piotr-agier/google-drive-mcp"]
+    },
+    "outlook": {
+      "type": "http",
+      "url": "https://api.cursor.com/rest-mcp/outlook/mcp"
+    },
+    "github": {
+      "comment": "Official GitHub remote MCP (OAuth). Copy url block to ~/.cursor/mcp.json, restart Cursor, then approve OAuth on first tool use. Alternative: enable GitHub plugin under Customize → Plugins.",
+      "url": "https://api.github.com/mcp/"
     }
   }
 }

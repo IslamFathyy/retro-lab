@@ -51,7 +51,7 @@ Retrospective Management/
 cd retro-api && npm run export:reminder
 ```
 
-This writes `docs/reminders/latest-reminder.json` in the orchestration repo. Remind the user to **commit** that file so Cloud Automations can read it from GitHub.
+This writes `docs/reminders/latest-reminder.json` in the orchestration repo. **Next:** run `/commit-latest-report` (workflow step 9) to push it to GitHub `main` for the Sunday mail automation.
 
 ## Files to upload
 

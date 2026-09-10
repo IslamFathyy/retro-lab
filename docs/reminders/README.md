@@ -17,7 +17,7 @@ cd retro-api
 npm run export:reminder
 ```
 
-Commit `latest-reminder.json` after each archive so Sunday automation can read it from GitHub.
+After each archive, run **`/commit-latest-report`** (workflow step 9) to push `latest-reminder.json` to GitHub `main` for the Sunday mail automation.
 
 ## Recipients
 

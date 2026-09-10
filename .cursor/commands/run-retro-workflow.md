@@ -26,7 +26,7 @@ Or: `GET http://localhost:3001/api/retrospectives` — if any retro has `feedbac
 
 Report: `SKIP seed — using {retroId}` or `SEED — created {ids}`.
 
-To **force a fresh reset**, run `/seed-demo-retro` explicitly before the workflow (that wipes and recreates Sprints 1–4).
+To **force a fresh reset** for team demos: `/reset-demo-retro` (local + Drive) → `/seed-demo-retro` → workflow.
 
 ## Ordered steps
 
@@ -41,6 +41,7 @@ To **force a fresh reset**, run `/seed-demo-retro` explicitly before the workflo
 | 6 | `/generate-report {retroId}` | Generate `report.md` |
 | 7 | `/validate-retro-ui {retroId}` | Checklist — open web UI to confirm |
 | 8 | `/archive-retro {retroId}` | **Required** — Google Drive backup (MCP) + local `archived` status + `export:reminder` snapshot |
+| 9 | `/commit-latest-report` | **Required** — commit + push `latest-reminder.json` to GitHub `main` for mail automation |
 
 Default `{retroId}` when seed was skipped: **`RETRO-2026-001`** (Sprint 1), or the first `open` retro from `npm run retro:status`.
 
@@ -57,8 +58,9 @@ Run the retrospective test workflow:
 6. /generate-report {retroId}
 7. /validate-retro-ui {retroId}
 8. /archive-retro {retroId}
+9. /commit-latest-report
 
-Stop after each step and report results.
+**Human gate (only):** Stop at step 4 `/approve-suggestions` until the user types `approve SUG-###` for each action. After approval, continue steps 5–9 without stopping.
 Use Cursor sub-agents for /analyze-retro.
 Use Google Drive MCP for /archive-retro (see archive-retrospective skill).
 Web UI is for validation only.
@@ -66,7 +68,7 @@ Web UI is for validation only.
 
 ## Multi-sprint demo data
 
-After `npm run seed:demo`, four retros exist (`RETRO-2026-001` … `004`). One workflow run processes **one** retro through all **nine** steps (0–8). Repeat for each sprint to build cross-retro recurring themes in reports.
+After `npm run seed:demo`, four retros exist (`RETRO-2026-001` … `004`). One workflow run processes **one** retro through steps **0–9**. Repeat for each sprint to build cross-retro recurring themes in reports.
 
 ## Architecture reminder
 

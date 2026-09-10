@@ -1,0 +1,21 @@
+{
+  "folders": [
+    {
+      "name": "retro-lab (orchestration)",
+      "path": "."
+    },
+    {
+      "name": "retro-api",
+      "path": "retro-api"
+    },
+    {
+      "name": "retro-web",
+      "path": "retro-web"
+    }
+  ],
+  "settings": {
+    "git.autoRepositoryDetection": true,
+    "git.repositoryScanMaxDepth": 2,
+    "git.detectSubmodules": true
+  }
+}
