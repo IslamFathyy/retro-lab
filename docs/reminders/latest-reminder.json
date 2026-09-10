@@ -4,7 +4,7 @@
   "period": "Sprint 4",
   "team": "Chartswap",
   "archivedAt": "2026-09-10T19:29:50.278Z",
-  "exportedAt": "2026-09-10T19:56:33.131Z",
+  "exportedAt": "2026-09-10T20:58:50.100Z",
   "openActions": [
     {
       "id": "ACT-0001",
@@ -32,6 +32,70 @@
   ],
   "reportExcerpt": {
     "themesSummary": "Release reliability: Stable production releases with no rollbacks. Incident and escalation response: Team mobilized quickly on customer escalation. Code review turnaround: Slow review for urgent fixes; two-reviewer policy not consistently followed. Sprint planning efficiency: Planning runs long; async status updates suggested.",
-    "approvedActionsSection": "- **Enforce two-reviewer policy with 24-hour urgent-fix SLA** (ACT-0001) — Owner: Dev Team, Status: open\n- **Time-box sprint planning to 90 minutes with async pre-read** (ACT-0002) — Owner: Product Team, Dev Team, Status: open"
+    "approvedActionsSection": "- **Enforce two-reviewer policy with 24-hour urgent-fix SLA** (ACT-0001) — Teams: Dev Team, Status: open\n- **Time-box sprint planning to 90 minutes with async pre-read** (ACT-0002) — Teams: Product Team, Dev Team, Status: open"
+  },
+  "reportInsights": {
+    "participationMix": {
+      "wentWell": 2,
+      "didNotGoWell": 2,
+      "improvement": 2
+    },
+    "topicBreakdown": [
+      {
+        "label": "Deployment reliability",
+        "feedbackItems": 1,
+        "percent": 17,
+        "priority": "low",
+        "summary": "The team reported reliable production releases with no rollback this sprint."
+      },
+      {
+        "label": "Incident and escalation response",
+        "feedbackItems": 1,
+        "percent": 17,
+        "priority": "low",
+        "summary": "The team rallied quickly when a customer escalation landed."
+      },
+      {
+        "label": "Code review delays",
+        "feedbackItems": 2,
+        "percent": 33,
+        "priority": "high",
+        "summary": "Review turnaround remains too slow for urgent fixes, and the team wants the two-reviewer policy enforced."
+      },
+      {
+        "label": "Long meetings / planning",
+        "feedbackItems": 2,
+        "percent": 33,
+        "priority": "high",
+        "summary": "Sprint planning routinely exceeds ninety minutes; the team suggests time-boxing and replacing status updates with async notes."
+      }
+    ],
+    "recurringTopics": [
+      {
+        "label": "Code review delays",
+        "retrosSeen": 4,
+        "retrosTotal": 4,
+        "priority": "high",
+        "summary": "Semantically similar concerns about slow PR reviews and two-reviewer enforcement appear across all four sprints."
+      },
+      {
+        "label": "Long meetings / planning",
+        "retrosSeen": 3,
+        "retrosTotal": 4,
+        "priority": "high",
+        "summary": "Planning sessions running long and status updates crowding meeting time recur from Sprint 2 through Sprint 4."
+      },
+      {
+        "label": "Deployment reliability",
+        "retrosSeen": 3,
+        "retrosTotal": 4,
+        "priority": "low",
+        "summary": "The team consistently notes stable deployments and reliable production releases across recent sprints."
+      }
+    ],
+    "limitations": [
+      "Counts reflect feedback items, not individuals.",
+      "Cross-retro matching is interpretive, not proof of causality."
+    ]
   }
 }
