@@ -4,14 +4,16 @@
   "period": "Sprint 4",
   "team": "Chartswap",
   "archivedAt": "2026-09-10T19:29:50.278Z",
-  "exportedAt": "2026-09-10T19:29:51.607Z",
+  "exportedAt": "2026-09-10T19:56:33.131Z",
   "openActions": [
     {
       "id": "ACT-0001",
       "title": "Enforce two-reviewer policy with 24-hour urgent-fix SLA",
       "description": "Slow urgent reviews; two-reviewer policy inconsistent.",
-      "ownerTeams": [],
-      "teams": "Team",
+      "ownerTeams": [
+        "dev-team"
+      ],
+      "teams": "Dev Team",
       "status": "open",
       "targetDate": "2026-09-10"
     },
@@ -19,14 +21,17 @@
       "id": "ACT-0002",
       "title": "Time-box sprint planning to 90 minutes with async pre-read",
       "description": "Planning sessions exceed ninety minutes.",
-      "ownerTeams": [],
-      "teams": "Team",
+      "ownerTeams": [
+        "product-team",
+        "dev-team"
+      ],
+      "teams": "Product Team, Dev Team",
       "status": "open",
       "targetDate": "2026-09-10"
     }
   ],
   "reportExcerpt": {
     "themesSummary": "Release reliability: Stable production releases with no rollbacks. Incident and escalation response: Team mobilized quickly on customer escalation. Code review turnaround: Slow review for urgent fixes; two-reviewer policy not consistently followed. Sprint planning efficiency: Planning runs long; async status updates suggested.",
-    "approvedActionsSection": "- **Enforce two-reviewer policy with 24-hour urgent-fix SLA** (ACT-0001) — Teams: Team, Status: open\n- **Time-box sprint planning to 90 minutes with async pre-read** (ACT-0002) — Teams: Team, Status: open"
+    "approvedActionsSection": "- **Enforce two-reviewer policy with 24-hour urgent-fix SLA** (ACT-0001) — Owner: Dev Team, Status: open\n- **Time-box sprint planning to 90 minutes with async pre-read** (ACT-0002) — Owner: Product Team, Dev Team, Status: open"
   }
 }
