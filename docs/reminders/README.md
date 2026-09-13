@@ -7,6 +7,7 @@ Cloud Cursor Automations cannot read gitignored `retro-api/data/`. At archive ti
 | File | Purpose |
 |------|---------|
 | `latest-reminder.json` | Open approved actions from the most recently archived retro |
+| `latest-email-payload.json` | Pre-built Gmail `send_message` fields for Cloud Automation (copy verbatim) |
 | `recipients.example.json` | Template for recipient list |
 | `recipients.json` | Live recipient list (optional gitignore) |
 

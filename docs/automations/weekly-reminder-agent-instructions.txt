@@ -1,0 +1,15 @@
+Send the weekly retrospective action reminder email. Do not modify any repository files.
+
+1. Read docs/reminders/latest-email-payload.json from this repository (branch main).
+
+2. Call Gmail send_message using the JSON fields EXACTLY as written in that file:
+   - to: copy the "to" array verbatim (must be real email addresses like user@domain.com)
+   - subject: copy "subject" verbatim
+   - body: copy "body" verbatim
+   - htmlBody: copy "htmlBody" verbatim
+
+3. Do NOT compose recipients from openActions.teams or ownerTeams — those are team labels (Dev Team, QA Team), not email addresses.
+
+4. Do NOT change, guess, or substitute the "to" addresses. If latest-email-payload.json is missing, stop with error: run cd retro-api && npm run export:reminder then /commit-latest-report.
+
+5. Report the Gmail message id on success.
