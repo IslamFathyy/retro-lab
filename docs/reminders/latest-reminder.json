@@ -4,7 +4,7 @@
   "period": "Sprint 4",
   "team": "Chartswap",
   "archivedAt": "2026-09-10T19:29:50.278Z",
-  "exportedAt": "2026-09-10T20:58:50.100Z",
+  "exportedAt": "2026-09-13T13:21:03.542Z",
   "openActions": [
     {
       "id": "ACT-0001",
@@ -97,5 +97,11 @@
       "Counts reflect feedback items, not individuals.",
       "Cross-retro matching is interpretive, not proof of causality."
     ]
+  },
+  "recipients": {
+    "to": [
+      "islam.fathy@integrant.com"
+    ],
+    "subjectPrefix": "[Retro Lab]"
   }
 }

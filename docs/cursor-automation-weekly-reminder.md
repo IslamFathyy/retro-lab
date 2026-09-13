@@ -79,8 +79,8 @@ Confirm delivery to `islam.fathy@integrant.com`.
 
 1. Open `docs/reminders/latest-reminder.json` — if missing, stop with clear error.
 2. Build concise HTML: sprint name, period, bullet list of open approved actions with IDs.
-3. Read recipients from `docs/reminders/recipients.json`.
-4. Send via Gmail `send_message`.
+3. Use `latest-reminder.json` → `recipients.to` for Gmail `to` (embedded at export). Fallback: `docs/reminders/recipients.json`. **Never** email action team labels (Dev Team, etc.) — those are not addresses.
+4. Send via Gmail `send_message` with the `to` array from step 3.
 5. Do not merge PRs, change retro files, or close actions.
 
 ## Cloud Gmail caveat

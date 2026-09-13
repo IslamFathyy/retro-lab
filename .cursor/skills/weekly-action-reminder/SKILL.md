@@ -9,8 +9,8 @@ Send a reminder email for **open approved actions** from the committed reminder 
 
 ## Data sources (orchestration repo)
 
-1. `docs/reminders/latest-reminder.json` — snapshot exported at archive time
-2. `docs/reminders/recipients.json` — `to[]` and `subjectPrefix` (fallback: `recipients.example.json`)
+1. `docs/reminders/latest-reminder.json` — snapshot exported at archive time (includes embedded `recipients.to` and `subjectPrefix`)
+2. `docs/reminders/recipients.json` — fallback if snapshot has no `recipients` block
 
 If `latest-reminder.json` is missing or stale, stop with: run archive + `npm run export:reminder` first.
 
@@ -39,7 +39,7 @@ If `openActions` is empty, send a short note that there are no open approved act
 Use the **Cursor Gmail plugin** (`user-gmail`):
 
 - Tool: `send_message`
-- `to`: from `recipients.json`
+- `to`: from `snapshot.recipients.to` (preferred) or `recipients.json` — **never** use action `teams` labels as email addresses
 - `subject` and `htmlBody` (plus plain `body` fallback)
 
 Do **not** use Lokka, Microsoft Graph, or Slack for this workflow.
