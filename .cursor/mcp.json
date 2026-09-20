@@ -2,7 +2,7 @@
   "mcpServers": {
     "readme-doctor": {
       "command": "node",
-      "args": ["${CURSOR_PLUGIN_ROOT}/dist/mcp-server.js"]
+      "args": ["${workspaceFolder}/plugins/readme-doctor/dist/mcp-server.js"]
     }
   }
 }
