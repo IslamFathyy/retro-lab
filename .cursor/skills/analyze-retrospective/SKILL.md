@@ -64,8 +64,15 @@ Hook `subagentStop` appends to `.cursor/logs/subagent-activity.log` with agent n
 
 ## Rules
 
-- Preserve exact feedback text in source files; only summarize in analysis fields.
-- Never infer anonymous authors.
+Follow [`.cursor/rules/privacy.mdc`](../../rules/privacy.mdc) and [`.cursor/rules/development.mdc`](../../rules/development.mdc).
+
+Skill-specific:
+
+- Summarize only in analysis fields — never edit feedback source `text`.
 - Include at least one limitation mentioning human review.
-- Suggested actions are **not** approved — facilitator approves via `/approve-suggestions`.
-- Never skip Task launches for the three analyze-retro sub-agents.
+- Suggested actions are **not** approved — facilitator uses `/approve-suggestions`.
+- Never skip Task launches for the three sub-agents above.
+
+## How to verify
+
+Colleagues can prove this skill works without custom prompts: follow **`docs/skills/verify-analyze-retrospective.md`** (prerequisites, copy-paste commands, pass/fail checklist). Check `.cursor/logs/subagent-activity.log` for sub-agent `SUBAGENT_SUMMARY` lines after a run.

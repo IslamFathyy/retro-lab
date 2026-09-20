@@ -1,0 +1,25 @@
+{
+  "name": "dev-guardrails",
+  "version": "1.0.0",
+  "description": "Teaching plugin: deterministic hooks block dangerous git commands, invalid JSON, and secret files; rules and a verifier sub-agent for safe AI-assisted development.",
+  "author": {
+    "name": "Integrant — Retrospective Lab",
+    "email": "islam.fathy@integrant.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "guardrails",
+    "hooks",
+    "security",
+    "testing",
+    "teaching",
+    "development"
+  ],
+  "repository": "https://github.com/IslamFathyy/retro-lab",
+  "homepage": "https://github.com/IslamFathyy/retro-lab/tree/main/plugins/dev-guardrails",
+  "rules": "rules",
+  "agents": "agents",
+  "skills": "skills",
+  "commands": "commands",
+  "hooks": "hooks/hooks.json"
+}

@@ -16,10 +16,7 @@ If `latest-reminder.json` is missing or stale, stop with: run archive + `npm run
 
 ## Privacy
 
-- Never deanonymize anonymous feedback.
-- Use team/process language only.
-- Do not modify action status or retro data files.
-- Email contains action titles and descriptions only — no feedback author names.
+Follow [`.cursor/rules/privacy.mdc`](../../rules/privacy.mdc). Skill-specific: email contains action titles and descriptions only — do not modify action status or retro data files.
 
 ## Compose email
 

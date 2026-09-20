@@ -5,7 +5,9 @@
       { "command": "node .cursor/hooks/block-dangerous-command.js" }
     ],
     "afterFileEdit": [
-      { "command": "node .cursor/hooks/validate-json.js" }
+      { "command": "node .cursor/hooks/validate-json.js" },
+      { "command": "node .cursor/hooks/protect-feedback-text.js" },
+      { "command": "node .cursor/hooks/block-secrets-path.js" }
     ],
     "postToolUse": [
       {

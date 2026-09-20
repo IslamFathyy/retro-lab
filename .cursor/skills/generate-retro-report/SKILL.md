@@ -15,6 +15,4 @@ Include: Overview, Participation counts, **Insights at a Glance**, Themes, Conce
 2. Import JSON per [report-insights-contract.md](references/report-insights-contract.md).
 3. Call `POST .../report/generate` — API renders tables and Mermaid from stored insights.
 
-Never name anonymous feedback authors.
-
-Reference feedback IDs for traceability where helpful.
+Follow [`.cursor/rules/privacy.mdc`](../../rules/privacy.mdc). Reference feedback IDs for traceability where helpful.

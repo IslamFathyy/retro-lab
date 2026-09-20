@@ -1,0 +1,12 @@
+---
+description: Test expectations when changing code
+globs: "src/**,tests/**,**/*.test.js,**/*.spec.js"
+alwaysApply: false
+---
+
+# Testing Rules
+
+- Run the project's test command before marking work complete (`npm test`, `pytest`, etc.).
+- Bug fix → add or extend a regression test.
+- Do not skip or delete failing tests to pass CI.
+- Report test output in your summary when verification is requested.

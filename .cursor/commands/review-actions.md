@@ -13,7 +13,7 @@ Review proposed and approved actions for quality (recommendations only).
    - Specific and measurable where possible
    - Linked to feedback evidence
    - Not vague or duplicate
-3. Use **improvement-advisor** or **action-reviewer** perspective (if sub-agent available).
+3. Apply **improvement-advisor** quality lens (specific, measurable, evidence-linked) — parent checklist only; no separate sub-agent in v1.
 4. Report recommendations only — **do not** change action status automatically.
 5. **Next step**: `/generate-report {retroId}`.
 

@@ -1,0 +1,13 @@
+---
+description: Core development constraints for AI-assisted coding
+alwaysApply: true
+---
+
+# Development Rules
+
+- No hardcoded secrets; do not commit `.env` or credential files.
+- No `git push --force` to `main` or `master`.
+- Bug fixes require a regression test when the project already has tests.
+- New behavior requires tests where the repo uses a test runner.
+- Do not delete or skip tests to make CI pass.
+- Prefer minimal diffs — do not refactor unrelated code in the same change.

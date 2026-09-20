@@ -2,6 +2,8 @@
 
 Sunday 9:00 AM email of open approved actions from the most recently archived retrospective.
 
+**Tier context:** [`automation-tiers.md`](automation-tiers.md) · **Evidence checklist:** [`automation-golden-path.md`](automation-golden-path.md)
+
 ## Architecture
 
 Local archive exports a committed snapshot; Cloud Automation reads it from GitHub and sends via Gmail.

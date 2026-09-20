@@ -1,0 +1,29 @@
+{
+  "name": "integrant-retro-lab-plugins",
+  "owner": {
+    "name": "Integrant — Islam Fathy",
+    "email": "islam.fathy@integrant.com"
+  },
+  "metadata": {
+    "description": "Cursor plugins from the Retrospective Lab agentic SDLC teaching project.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "readme-doctor",
+      "source": "plugins/readme-doctor",
+      "description": "MCP tools to analyze and safely improve README.md (analyze_readme, improve_readme).",
+      "version": "1.0.0",
+      "category": "Development",
+      "tags": ["readme", "documentation", "mcp", "teaching"]
+    },
+    {
+      "name": "dev-guardrails",
+      "source": "plugins/dev-guardrails",
+      "description": "Hooks + rules + verifier for safe AI-assisted coding (force push, secrets, JSON, tests).",
+      "version": "1.0.0",
+      "category": "Development",
+      "tags": ["hooks", "security", "testing", "teaching"]
+    }
+  ]
+}

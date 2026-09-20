@@ -5,6 +5,8 @@ description: Archive retrospective files to Google Drive via MCP when configured
 
 # Archive Retrospective Skill
 
+MCP setup and security: [`docs/mcp-setup.md`](../../docs/mcp-setup.md). Golden-path checklist: [`docs/mcp-golden-path.md`](../../docs/mcp-golden-path.md).
+
 1. Validate retrospective is ready (report exists, human confirmed).
 2. If Google Drive MCP is configured, upload using **one parent folder** and **one subfolder per retrospective**.
 3. **Never** upload files in parallel with path-based `parentFolderId` — that creates duplicate parent folders.
@@ -64,4 +66,4 @@ This writes `docs/reminders/latest-reminder.json` in the orchestration repo. **N
 ## On failure
 
 - If MCP unavailable, fail safely and report clearly.
-- Do not delete local files.
+- Do not delete local files (see root [`development.mdc`](../../rules/development.mdc) / archive copy-only policy).

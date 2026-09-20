@@ -61,6 +61,5 @@ Summarize:
 
 ## Privacy
 
-- This is a teaching/demo reset only.
-- Never export or log feedback text before deletion.
+Follow [`.cursor/rules/privacy.mdc`](../../rules/privacy.mdc). This is a teaching/demo reset only — never export or log feedback text before deletion.
 - Trashing Drive copies does not affect anonymous feedback rules on remaining local data (there should be none after step 1).

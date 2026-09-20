@@ -1,0 +1,13 @@
+---
+description: Security baseline for application code
+globs: "**/*.{js,ts,py,go,java,rb}"
+alwaysApply: false
+---
+
+# Security Rules
+
+- Validate and sanitize external input before use.
+- Never use `eval` or dynamic `Function` on untrusted data.
+- Do not construct shell commands from user-controlled strings.
+- Block path traversal in file paths built from user input.
+- No API keys or tokens in source control — use local env or a secret manager.

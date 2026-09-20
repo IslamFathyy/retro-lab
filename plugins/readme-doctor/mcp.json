@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "readme-doctor": {
+      "command": "node",
+      "args": ["${CURSOR_PLUGIN_ROOT}/dist/index.js"]
+    }
+  }
+}

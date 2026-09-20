@@ -1,0 +1,21 @@
+{
+  "name": "readme-doctor",
+  "version": "1.0.0",
+  "description": "Analyze and safely improve project README.md via MCP tools (analyze_readme, improve_readme).",
+  "author": {
+    "name": "Integrant — Retrospective Lab",
+    "email": "islam.fathy@integrant.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "readme",
+    "documentation",
+    "mcp",
+    "developer-tools",
+    "teaching"
+  ],
+  "repository": "https://github.com/IslamFathyy/retro-lab",
+  "homepage": "https://github.com/IslamFathyy/retro-lab/tree/main/plugins/readme-doctor",
+  "skills": "skills",
+  "commands": "commands"
+}

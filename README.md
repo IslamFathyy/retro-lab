@@ -29,9 +29,10 @@ This root repo is **not** the running application. It coordinates agent work:
 - **`AGENTS.md`** — parent agent instructions for multi-repo changes
 - **`PLAN.md`** — full implementation plan
 - **`.cursor/`** — shared commands, skills, sub-agents, rules, hooks
-- **`docs/`** — workflow, guardrails, teaching guide
+- **`plugins/dev-guardrails/`** — installable Cursor plugin (dev hooks + verifier) — [`docs/plugins/dev-guardrails.md`](docs/plugins/dev-guardrails.md)
+- **`docs/`** — workflow, guardrails, [MCP setup](docs/mcp-setup.md), [automation tiers](docs/automation-tiers.md), teaching guide
 
-Child repos have their own `AGENTS.md` and repo-specific rules.
+Child repos have their own `AGENTS.md` and `.cursor/rules/` — [`retro-api/`](retro-api/AGENTS.md), [`retro-web/`](retro-web/AGENTS.md). Inventory: [`docs/rules-audit.md`](docs/rules-audit.md).
 
 ## Open in Cursor (all 3 repos visible)
 
@@ -52,4 +53,4 @@ Master command: **`/run-retro-workflow`**
 
 ## Teaching goal
 
-Learn Agentic AI across the SDLC with a small real app — multi-repo coordination, rules, skills, sub-agents, hooks, MCP, and human-in-the-loop approval.
+Learn Agentic AI across the SDLC with a small real app — multi-repo coordination, rules, skills, [sub-agents](docs/sub-agents.md), hooks, MCP, and human-in-the-loop approval.
