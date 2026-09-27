@@ -16,7 +16,6 @@
 | Option | Verdict |
 |--------|---------|
 | Full retrospective workflow plugin | Too domain-specific |
-| dev-guardrails only | Hooks/rules — no MCP teaching surface |
 | **readme-doctor** | **Selected** — MCP tools, clear I/O, any repo |
 
 **One problem:** READMEs are incomplete and agents invent fake commands.  
@@ -76,12 +75,3 @@ Status: **pending** manual Cursor install sign-off.
 | MCP never reads `.env` | ☑ |
 | Only README + backup written | ☑ |
 | Path traversal blocked in tests | ☑ |
-
----
-
-## Coexistence with dev-guardrails
-
-Both plugins are listed in the same marketplace manifest. Install either or both:
-
-- **dev-guardrails** — chat-time hooks + verifier
-- **readme-doctor** — MCP documentation tools

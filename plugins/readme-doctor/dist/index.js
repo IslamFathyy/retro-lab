@@ -62,7 +62,7 @@ async function main() {
             return { content: [{ type: 'text', text: `Error: ${message}` }], isError: true };
         }
     });
-    server.tool('improve_readme', 'Safely update README.md only. Creates README.md.backup before edits. Uses detected scripts and .env.example names only — never invents APIs or reads .env secrets.', projectPathSchema.shape, async (args) => {
+    server.tool('improve_readme', 'Scan project structure and write a comprehensive README.md (API, project map, Cursor assets, env, scripts — all inline). Creates README.md.backup before edits. Only modifies README.md. API endpoints detected from route files — never invents routes or reads .env secrets.', projectPathSchema.shape, async (args) => {
         try {
             const root = resolveProjectPath(args.project_path ?? process.cwd());
             const result = improveReadme(root);
@@ -70,7 +70,7 @@ async function main() {
                 content: [
                     {
                         type: 'text',
-                        text: `${result.message}\n\nREADME: ${result.readmePath}\nBackup: ${result.backupPath ?? '(none — new file)'}`,
+                        text: `${result.message}\n\nREADME: ${result.readmePath}\nBackup: ${result.backupPath ?? '(none — new file)'}\nAPIs: ${result.scanSummary?.apiCount ?? 0} | Cursor assets: ${result.scanSummary?.cursorAssets ?? 0}`,
                     },
                     { type: 'text', text: JSON.stringify(result, null, 2) },
                 ],

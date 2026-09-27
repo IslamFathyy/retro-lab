@@ -3258,8 +3258,8 @@ var require_utils = __commonJS({
       }
       return ind;
     }
-    function removeDotSegments(path5) {
-      let input = path5;
+    function removeDotSegments(path10) {
+      let input = path10;
       const output = [];
       let nextSlash = -1;
       let len = 0;
@@ -3668,8 +3668,8 @@ var require_schemes = __commonJS({
       }
       if (wsComponent.resourceName) {
         const queryIndex = wsComponent.resourceName.indexOf("?");
-        const path5 = queryIndex === -1 ? wsComponent.resourceName : wsComponent.resourceName.slice(0, queryIndex);
-        wsComponent.path = path5 && path5 !== "/" ? path5 : void 0;
+        const path10 = queryIndex === -1 ? wsComponent.resourceName : wsComponent.resourceName.slice(0, queryIndex);
+        wsComponent.path = path10 && path10 !== "/" ? path10 : void 0;
         wsComponent.query = queryIndex === -1 ? void 0 : wsComponent.resourceName.slice(queryIndex + 1);
         wsComponent.resourceName = void 0;
       }
@@ -7182,12 +7182,12 @@ var require_dist = __commonJS({
         throw new Error(`Unknown format "${name}"`);
       return f;
     };
-    function addFormats(ajv, list, fs5, exportName) {
+    function addFormats(ajv, list, fs10, exportName) {
       var _a;
       var _b;
       (_a = (_b = ajv.opts.code).formats) !== null && _a !== void 0 ? _a : _b.formats = (0, codegen_1._)`require("ajv-formats/dist/formats").${exportName}`;
       for (const f of list)
-        ajv.addFormat(f, fs5[f]);
+        ajv.addFormat(f, fs10[f]);
     }
     module.exports = exports = formatsPlugin;
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -7673,8 +7673,8 @@ function getErrorMap() {
 
 // node_modules/zod/v3/helpers/parseUtil.js
 var makeIssue = (params) => {
-  const { data, path: path5, errorMaps, issueData } = params;
-  const fullPath = [...path5, ...issueData.path || []];
+  const { data, path: path10, errorMaps, issueData } = params;
+  const fullPath = [...path10, ...issueData.path || []];
   const fullIssue = {
     ...issueData,
     path: fullPath
@@ -7790,11 +7790,11 @@ var errorUtil;
 
 // node_modules/zod/v3/types.js
 var ParseInputLazyPath = class {
-  constructor(parent, value, path5, key) {
+  constructor(parent, value, path10, key) {
     this._cachedPath = [];
     this.parent = parent;
     this.data = value;
-    this._path = path5;
+    this._path = path10;
     this._key = key;
   }
   get path() {
@@ -11432,10 +11432,10 @@ function assignProp(target, prop, value) {
     configurable: true
   });
 }
-function getElementAtPath(obj, path5) {
-  if (!path5)
+function getElementAtPath(obj, path10) {
+  if (!path10)
     return obj;
-  return path5.reduce((acc, key) => acc?.[key], obj);
+  return path10.reduce((acc, key) => acc?.[key], obj);
 }
 function promiseAllObject(promisesObj) {
   const keys = Object.keys(promisesObj);
@@ -11755,11 +11755,11 @@ function aborted(x, startIndex = 0) {
   }
   return false;
 }
-function prefixIssues(path5, issues) {
+function prefixIssues(path10, issues) {
   return issues.map((iss) => {
     var _a;
     (_a = iss).path ?? (_a.path = []);
-    iss.path.unshift(path5);
+    iss.path.unshift(path10);
     return iss;
   });
 }
@@ -15172,11 +15172,11 @@ function normalizeObjectSchema(schema) {
   }
   return void 0;
 }
-function getDotPath(path5) {
-  if (path5.length === 0) {
+function getDotPath(path10) {
+  if (path10.length === 0) {
     return "object root";
   }
-  return path5.reduce((acc, seg, index) => {
+  return path10.reduce((acc, seg, index) => {
     if (index === 0) {
       return String(seg);
     }
@@ -21634,110 +21634,623 @@ function analyzeReadme(projectRoot) {
 }
 
 // src/readme.ts
+import fs9 from "node:fs";
+import path9 from "node:path";
+
+// src/scan/tree.ts
 import fs4 from "node:fs";
 import path4 from "node:path";
-function appendSection(content, heading, body) {
-  const trimmed = content.replace(/\s+$/, "");
-  const block = `
-
-## ${heading}
-
-${body}
-`;
-  return trimmed ? trimmed + block : `## ${heading}
-
-${body}
-`;
+var SKIP_DIRS = /* @__PURE__ */ new Set([
+  "node_modules",
+  ".git",
+  "dist",
+  "build",
+  "coverage",
+  ".next",
+  "__pycache__",
+  ".venv",
+  "vendor"
+]);
+var FOLDER_NOTES = {
+  src: "Application source code",
+  tests: "Automated tests",
+  test: "Automated tests",
+  data: "Local data / file storage",
+  scripts: "Maintenance and utility scripts",
+  config: "Runtime configuration (JSON/YAML)",
+  docs: "Project documentation",
+  ".cursor": "Cursor IDE rules, agents, and workflow assets",
+  ".github": "GitHub Actions and repository automation",
+  public: "Static assets served to clients",
+  routes: "HTTP route definitions",
+  controllers: "Request/response handlers",
+  services: "Business logic layer",
+  validators: "Input validation",
+  utils: "Shared utilities"
+};
+var MAX_DEPTH = 3;
+var MAX_CHILDREN = 40;
+function scanTree(projectRoot) {
+  return walkDir(projectRoot, projectRoot, 0);
 }
-function buildInstallationBlock(project) {
-  if (project.type === "Node.js") {
-    return "```bash\nnpm install\n```";
+function topLevelNotes(projectRoot) {
+  const notes = {};
+  if (!fs4.existsSync(projectRoot)) return notes;
+  for (const name of fs4.readdirSync(projectRoot)) {
+    if (SKIP_DIRS.has(name)) continue;
+    const full = path4.join(projectRoot, name);
+    if (!fs4.statSync(full).isDirectory()) continue;
+    notes[name] = FOLDER_NOTES[name] ?? "Project directory";
   }
-  if (project.type === "Python") {
-    return "```bash\npip install -r requirements.txt\n```\n\n<!-- Adjust if you use pyproject.toml or poetry -->";
-  }
-  return "<!-- Add installation steps for your stack -->";
+  return notes;
 }
-function buildUsageBlock(project) {
+function walkDir(projectRoot, dir, depth) {
+  if (depth > MAX_DEPTH) return [];
+  let names;
+  try {
+    names = fs4.readdirSync(dir);
+  } catch {
+    return [];
+  }
+  names.sort((a, b) => a.localeCompare(b));
+  const entries = [];
+  for (const name of names.slice(0, MAX_CHILDREN)) {
+    if (SKIP_DIRS.has(name)) continue;
+    if (name.startsWith(".") && name !== ".cursor" && name !== ".github") continue;
+    const full = path4.join(dir, name);
+    let stat;
+    try {
+      stat = fs4.statSync(full);
+    } catch {
+      continue;
+    }
+    const rel = path4.relative(projectRoot, full).replace(/\\/g, "/");
+    if (stat.isDirectory()) {
+      const note = depth === 0 ? FOLDER_NOTES[name] : FOLDER_NOTES[name.split("/").pop() ?? ""];
+      entries.push({
+        path: rel,
+        type: "directory",
+        note,
+        children: walkDir(projectRoot, full, depth + 1)
+      });
+    } else if (depth < MAX_DEPTH) {
+      entries.push({ path: rel, type: "file" });
+    }
+  }
+  return entries;
+}
+function renderTree(entries, indent = "") {
   const lines = [];
-  if (project.commands.start) {
-    lines.push("```bash", "npm start", "```");
-  } else if (project.commands.dev) {
-    lines.push("```bash", "npm run dev", "```");
-  } else {
-    lines.push("<!-- Describe how to run the project -->");
+  for (const entry of entries) {
+    const suffix = entry.type === "directory" ? "/" : "";
+    const note = entry.note ? ` \u2014 ${entry.note}` : "";
+    lines.push(`${indent}- \`${entry.path}${suffix}\`${note}`);
+    if (entry.children?.length) {
+      lines.push(renderTree(entry.children, indent + "  "));
+    }
   }
   return lines.join("\n");
 }
-function buildDevelopmentBlock(project) {
-  const parts = ["<!-- Local development workflow -->"];
-  if (project.commands.dev) {
-    parts.push("", "```bash", "npm run dev", "```");
-  }
-  if (project.commands.build) {
-    parts.push("", "```bash", "npm run build", "```");
-  }
-  if (project.commands.lint) {
-    parts.push("", "```bash", "npm run lint", "```");
-  }
-  return parts.join("\n");
-}
-function buildEnvironmentBlock(envVarNames) {
-  if (envVarNames.length === 0) {
-    return "Copy `.env.example` to `.env` and fill in values locally.\n\n<!-- List variables if needed -->";
-  }
-  const rows = envVarNames.map((name) => `| \`${name}\` | <!-- description --> |`);
-  return [
-    "Copy `.env.example` to `.env` and set:",
-    "",
-    "| Variable | Description |",
-    "| --- | --- |",
-    ...rows
-  ].join("\n");
-}
-function buildTestingBlock(project) {
-  if (project.commands.test) {
-    return "```bash\nnpm test\n```";
-  }
-  return "<!-- Add test commands when available -->";
-}
-function improveReadme(projectRoot) {
-  const readmePath = path4.join(projectRoot, "README.md");
-  const created = !fs4.existsSync(readmePath);
-  const project = detectProject(projectRoot);
-  const analysis = analyzeReadme(projectRoot);
-  let content = created ? "" : fs4.readFileSync(readmePath, "utf8");
-  if (created || !/^#\s/m.test(content)) {
-    const title = `# ${project.name}
 
-${project.type} project.
-`;
-    content = content ? `${title}
-${content}` : title;
+// src/docs-generator.ts
+function buildComprehensiveReadme(scan) {
+  const lines = [
+    `# ${scan.name}`,
+    "",
+    scan.description || `${scan.type} project.`,
+    "",
+    "> Onboarding README generated by **README Doctor**. Review auto-detected sections before commit.",
+    "",
+    "## Quick start",
+    "",
+    "```bash",
+    "npm install",
+    "cp .env.example .env   # if present",
+    "npm start",
+    "```",
+    ""
+  ];
+  if (scan.apis.some((e) => e.path.includes("/health"))) {
+    const port = scan.envVars.find((v) => v.name === "PORT")?.example?.replace(/['"]/g, "") || "3001";
+    const health = scan.apis.find((e) => e.path.includes("/health"));
+    lines.push(`Health: \`http://localhost:${port}${health?.path ?? "/api/health"}\``, "");
   }
-  if (analysis.sections.installation === "missing") {
-    content = appendSection(content, "Installation", buildInstallationBlock(project));
+  if (scan.git.isRepo) {
+    lines.push("## Source control", "");
+    if (scan.git.remoteUrl) lines.push(`- **Remote:** ${scan.git.remoteUrl}`);
+    if (scan.git.branch) lines.push(`- **Branch:** \`${scan.git.branch}\``);
+    if (scan.hasCi) lines.push("- **CI:** GitHub Actions (`.github/workflows/`)");
+    lines.push("");
   }
-  if (analysis.sections.usage === "missing") {
-    content = appendSection(content, "Usage", buildUsageBlock(project));
+  lines.push("## Project structure", "");
+  if (Object.keys(scan.topLevelNotes).length > 0) {
+    lines.push("| Path | Purpose |", "| --- | --- |");
+    for (const [dir, note] of Object.entries(scan.topLevelNotes).sort()) {
+      lines.push(`| \`${dir}/\` | ${note} |`);
+    }
+    lines.push("");
   }
-  if (analysis.sections.development === "missing") {
-    content = appendSection(content, "Development", buildDevelopmentBlock(project));
+  lines.push("### Directory tree", "", renderTree(scan.tree), "");
+  if (scan.hasDataDir) {
+    lines.push(
+      "### Data layout",
+      "",
+      "Local files under `data/` (no database in v1). Example retrospective folder:",
+      "",
+      "```text",
+      "data/retrospectives/{retroId}/",
+      "\u251C\u2500\u2500 retro.json",
+      "\u251C\u2500\u2500 feedback/",
+      "\u251C\u2500\u2500 analysis.json",
+      "\u251C\u2500\u2500 actions.json",
+      "\u251C\u2500\u2500 report.md",
+      "\u2514\u2500\u2500 audit.jsonl",
+      "```",
+      ""
+    );
   }
-  if (analysis.sections.environment === "missing" && project.envVarNames.length > 0) {
-    content = appendSection(content, "Environment", buildEnvironmentBlock(project.envVarNames));
+  if (scan.hasConfigDir) {
+    lines.push("### Configuration", "", "- `config/` \u2014 runtime JSON (e.g. guardrails, teams)", "");
   }
-  if (analysis.sections.testing === "missing" && project.commands.test) {
-    content = appendSection(content, "Testing", buildTestingBlock(project));
+  if (scan.apis.length > 0) {
+    const port = scan.envVars.find((v) => v.name === "PORT")?.example?.replace(/['"]/g, "") || "3001";
+    const healthPath = scan.apis.find((e) => e.path.includes("/health"))?.path ?? `${scan.apiMountPrefix}/health`;
+    lines.push(
+      "## API",
+      "",
+      `${scan.apis.length} HTTP endpoints (base path \`${scan.apiMountPrefix}\`). Detected from route files.`,
+      "",
+      "| Method | Path | Source |",
+      "| --- | --- | --- |"
+    );
+    for (const ep of scan.apis) {
+      lines.push(`| ${ep.method} | \`${ep.path}\` | \`${ep.sourceFile}\` |`);
+    }
+    lines.push(
+      "",
+      "### Health check",
+      "",
+      "```bash",
+      `curl http://localhost:${port}${healthPath}`,
+      "```",
+      ""
+    );
   }
+  if (scan.apis.some((e) => e.path.includes("/analysis/import"))) {
+    lines.push(
+      "## Analysis model",
+      "",
+      "| Source | How |",
+      "| --- | --- |",
+      "| **Cursor agent** (primary) | `/analyze-retro` \u2192 `POST .../analysis/import` |",
+      "| **Baseline** (tests only) | `POST .../analysis/generate/baseline` |",
+      "",
+      "No external LLM API keys in this service. AI analysis is performed by the Cursor agent in the parent orchestration repo.",
+      ""
+    );
+  }
+  if (scan.hasDataDir && scan.name.includes("retro")) {
+    lines.push(
+      "## Data storage",
+      "",
+      "JSON and Markdown under `data/retrospectives/{retroId}/`. Status lifecycle: `draft` \u2192 `open` \u2192 `closed` \u2192 `archived`.",
+      ""
+    );
+  }
+  if (scan.cursor.length > 0) {
+    lines.push(
+      "## Cursor / agentic AI",
+      "",
+      "Cursor rules and workflow assets detected in this repo:",
+      ""
+    );
+    const groups = {
+      rule: [],
+      agent: [],
+      skill: [],
+      command: [],
+      hook: []
+    };
+    for (const asset of scan.cursor) {
+      groups[asset.kind].push(asset);
+    }
+    const titles = {
+      rule: "Rules",
+      agent: "Sub-agents",
+      skill: "Skills",
+      command: "Commands",
+      hook: "Hooks"
+    };
+    for (const [kind, title] of Object.entries(titles)) {
+      const items = groups[kind];
+      if (!items.length) continue;
+      lines.push(`### ${title}`, "");
+      for (const item of items) {
+        const desc = item.description ? ` \u2014 ${item.description}` : "";
+        lines.push(`- **${item.name}** (\`${item.path}\`)${desc}`);
+      }
+      lines.push("");
+    }
+    lines.push(
+      "If this repo is part of a monorepo, the root `.cursor/` folder may hold workflow commands (`/analyze-retro`, `/generate-report`, etc.), skills, and sub-agents. Check the parent `AGENTS.md` and `docs/cursor-test-workflow.md`.",
+      ""
+    );
+  }
+  if (scan.agentsMdPath) {
+    lines.push(`Agent boundaries: [\`${scan.agentsMdPath}\`](${scan.agentsMdPath}).`, "");
+  }
+  if (scan.envVars.length > 0) {
+    lines.push(
+      "## Environment",
+      "",
+      "Copy `.env.example` to `.env` and set:",
+      "",
+      "| Variable | Example | Description |",
+      "| --- | --- | --- |"
+    );
+    for (const v of scan.envVars) {
+      lines.push(`| \`${v.name}\` | ${v.example ? `\`${v.example}\`` : "\u2014"} | ${v.description} |`);
+    }
+    lines.push("");
+  }
+  if (Object.keys(scan.allScripts).length > 0) {
+    lines.push("## NPM scripts", "", "| Script | Command |", "| --- | --- |");
+    for (const [name, cmd] of Object.entries(scan.allScripts)) {
+      lines.push(`| \`${name}\` | \`${cmd}\` |`);
+    }
+    lines.push("");
+  }
+  if (scan.hasTests) {
+    lines.push(
+      "## Testing",
+      "",
+      "```bash",
+      "npm test",
+      "```",
+      "",
+      scan.hasCi ? "CI runs tests on push/PR via GitHub Actions." : "",
+      ""
+    );
+  }
+  return lines.filter((l) => l !== void 0).join("\n").replace(/\n{3,}/g, "\n\n");
+}
+
+// src/scan/index.ts
+import fs8 from "node:fs";
+import path8 from "node:path";
+
+// src/scan/api.ts
+import fs5 from "node:fs";
+import path5 from "node:path";
+var ROUTE_RE = /router\.(get|post|put|patch|delete)\s*\(\s*['"`]([^'"`]+)['"`]/gi;
+var APP_MOUNT_RE = /app\.use\s*\(\s*['"`]([^'"`]+)['"`]\s*,\s*(\w+)/g;
+function scanApis(projectRoot) {
+  const endpoints = [];
+  let mountPrefix = "/api";
+  const routeFiles = findRouteFiles(projectRoot);
+  for (const rel of routeFiles) {
+    const content = safeReadFile(projectRoot, rel);
+    if (!content) continue;
+    let match;
+    ROUTE_RE.lastIndex = 0;
+    while ((match = ROUTE_RE.exec(content)) !== null) {
+      endpoints.push({
+        method: match[1].toUpperCase(),
+        path: match[2],
+        sourceFile: rel
+      });
+    }
+  }
+  const appFiles = findFiles(projectRoot, (p) => /app\.(js|ts|mjs|cjs)$/.test(p));
+  for (const rel of appFiles) {
+    const content = safeReadFile(projectRoot, rel);
+    if (!content) continue;
+    let match;
+    APP_MOUNT_RE.lastIndex = 0;
+    while ((match = APP_MOUNT_RE.exec(content)) !== null) {
+      if (match[1].startsWith("/")) {
+        mountPrefix = match[1].replace(/\/$/, "") || "/api";
+      }
+    }
+  }
+  const normalized = endpoints.map((e) => ({
+    ...e,
+    path: `${mountPrefix}${e.path.startsWith("/") ? e.path : `/${e.path}`}`
+  }));
+  normalized.sort((a, b) => a.path.localeCompare(b.path) || a.method.localeCompare(b.method));
+  return { endpoints: normalized, mountPrefix };
+}
+function findRouteFiles(projectRoot) {
+  const found = [];
+  const routesDir = path5.join(projectRoot, "src", "routes");
+  if (fs5.existsSync(routesDir)) {
+    for (const name of fs5.readdirSync(routesDir)) {
+      if (/\.(js|ts|mjs|cjs)$/.test(name)) {
+        found.push(path5.join("src", "routes", name).replace(/\\/g, "/"));
+      }
+    }
+  }
+  findFiles(projectRoot, (p) => /\.routes\.(js|ts|mjs|cjs)$/.test(p) || p.includes("/routes/")).forEach(
+    (f) => {
+      if (!found.includes(f)) found.push(f);
+    }
+  );
+  return found;
+}
+function findFiles(projectRoot, predicate) {
+  const results = [];
+  walk(projectRoot, projectRoot, results, predicate, 0);
+  return results;
+}
+function walk(projectRoot, dir, results, predicate, depth) {
+  if (depth > 6 || results.length > 50) return;
+  let names;
+  try {
+    names = fs5.readdirSync(dir);
+  } catch {
+    return;
+  }
+  for (const name of names) {
+    if (name === "node_modules" || name === ".git" || name === "dist") continue;
+    const full = path5.join(dir, name);
+    let stat;
+    try {
+      stat = fs5.statSync(full);
+    } catch {
+      continue;
+    }
+    const rel = path5.relative(projectRoot, full).replace(/\\/g, "/");
+    if (stat.isDirectory()) {
+      walk(projectRoot, full, results, predicate, depth + 1);
+    } else if (predicate(rel)) {
+      results.push(rel);
+    }
+  }
+}
+
+// src/scan/cursor.ts
+import fs6 from "node:fs";
+import path6 from "node:path";
+var FRONTMATTER_DESC = /description:\s*(.+)/i;
+function scanCursor(projectRoot) {
+  const cursorRoot = path6.join(projectRoot, ".cursor");
+  if (!fs6.existsSync(cursorRoot)) return [];
+  const assets = [];
+  scanRules(projectRoot, cursorRoot, assets);
+  scanAgents(projectRoot, cursorRoot, assets);
+  scanSkills(projectRoot, cursorRoot, assets);
+  scanCommands(projectRoot, cursorRoot, assets);
+  scanHooks(projectRoot, cursorRoot, assets);
+  return assets;
+}
+function scanRules(projectRoot, cursorRoot, assets) {
+  const rulesDir = path6.join(cursorRoot, "rules");
+  if (!fs6.existsSync(rulesDir)) return;
+  for (const name of fs6.readdirSync(rulesDir)) {
+    if (!/\.(mdc|md)$/.test(name)) continue;
+    const rel = path6.relative(projectRoot, path6.join(rulesDir, name)).replace(/\\/g, "/");
+    const content = safeReadFile(projectRoot, rel) ?? "";
+    assets.push({
+      kind: "rule",
+      name: name.replace(/\.(mdc|md)$/, ""),
+      path: rel,
+      description: extractDescription(content)
+    });
+  }
+}
+function scanAgents(projectRoot, cursorRoot, assets) {
+  const agentsDir = path6.join(cursorRoot, "agents");
+  if (!fs6.existsSync(agentsDir)) return;
+  for (const name of fs6.readdirSync(agentsDir)) {
+    if (!/\.(md|mdc)$/.test(name)) continue;
+    const rel = path6.relative(projectRoot, path6.join(agentsDir, name)).replace(/\\/g, "/");
+    const content = safeReadFile(projectRoot, rel) ?? "";
+    assets.push({
+      kind: "agent",
+      name: name.replace(/\.(md|mdc)$/, ""),
+      path: rel,
+      description: extractDescription(content)
+    });
+  }
+}
+function scanSkills(projectRoot, cursorRoot, assets) {
+  const skillsDir = path6.join(cursorRoot, "skills");
+  if (!fs6.existsSync(skillsDir)) return;
+  for (const name of fs6.readdirSync(skillsDir)) {
+    const skillFile = path6.join(skillsDir, name, "SKILL.md");
+    if (!fs6.existsSync(skillFile)) continue;
+    const rel = path6.relative(projectRoot, skillFile).replace(/\\/g, "/");
+    const content = safeReadFile(projectRoot, rel) ?? "";
+    assets.push({
+      kind: "skill",
+      name,
+      path: rel,
+      description: extractDescription(content)
+    });
+  }
+}
+function scanCommands(projectRoot, cursorRoot, assets) {
+  const commandsDir = path6.join(cursorRoot, "commands");
+  if (!fs6.existsSync(commandsDir)) return;
+  for (const name of fs6.readdirSync(commandsDir)) {
+    if (!/\.(md|mdc|txt)$/.test(name)) continue;
+    const rel = path6.relative(projectRoot, path6.join(commandsDir, name)).replace(/\\/g, "/");
+    const content = safeReadFile(projectRoot, rel) ?? "";
+    assets.push({
+      kind: "command",
+      name: name.replace(/\.(md|mdc|txt)$/, ""),
+      path: rel,
+      description: extractDescription(content)
+    });
+  }
+}
+function scanHooks(projectRoot, cursorRoot, assets) {
+  const hooksJson = path6.join(cursorRoot, "hooks.json");
+  const hooksDir = path6.join(cursorRoot, "hooks", "hooks.json");
+  const rel = fs6.existsSync(hooksJson) ? ".cursor/hooks.json" : fs6.existsSync(hooksDir) ? ".cursor/hooks/hooks.json" : null;
+  if (!rel) return;
+  assets.push({
+    kind: "hook",
+    name: "hooks",
+    path: rel,
+    description: "Chat-time policy hooks (see hooks.json)"
+  });
+}
+function extractDescription(content) {
+  const fm = content.match(/^---\s*\n([\s\S]*?)\n---/);
+  if (fm) {
+    const m = FRONTMATTER_DESC.exec(fm[1]);
+    if (m) return m[1].trim();
+  }
+  const firstLine = content.split("\n").find((l) => l.trim() && !l.startsWith("#") && !l.startsWith("---"));
+  return firstLine?.trim().slice(0, 120);
+}
+
+// src/scan/env.ts
+var INFERRED = {
+  PORT: "HTTP server listen port (e.g. 3001)",
+  DATA_ROOT: "Root directory for local JSON/file storage",
+  NODE_ENV: "Runtime mode: development, test, or production",
+  DATABASE_URL: "Database connection string (set locally; never commit real values)",
+  API_KEY: "API key for external service (set locally; never commit real values)",
+  SECRET_KEY: "Signing/encryption secret (set locally; never commit real values)",
+  GUARDRAILS_CONFIG: "Optional path override for guardrails.json",
+  ACTION_TEAMS_CONFIG: "Optional path override for action-teams.json"
+};
+function scanEnvVars(projectRoot) {
+  const example = safeReadFile(projectRoot, ".env.example");
+  if (!example) return [];
+  const docs = [];
+  const lines = example.split("\n");
+  let pendingComment = null;
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed) {
+      pendingComment = null;
+      continue;
+    }
+    if (trimmed.startsWith("#")) {
+      pendingComment = trimmed.replace(/^#\s*/, "");
+      continue;
+    }
+    const eq = trimmed.indexOf("=");
+    const key = (eq >= 0 ? trimmed.slice(0, eq) : trimmed).trim();
+    if (!/^[A-Z][A-Z0-9_]*$/i.test(key)) continue;
+    const exampleVal = eq >= 0 ? trimmed.slice(eq + 1).trim() : void 0;
+    const description = pendingComment || INFERRED[key] || `Configuration value for ${key} (see source code or .env.example)`;
+    docs.push({
+      name: key,
+      example: exampleVal || void 0,
+      description,
+      source: pendingComment ? ".env.example" : INFERRED[key] ? "inferred" : ".env.example"
+    });
+    pendingComment = null;
+  }
+  return docs;
+}
+
+// src/scan/git.ts
+import { execFileSync } from "node:child_process";
+import fs7 from "node:fs";
+import path7 from "node:path";
+function scanGit(projectRoot) {
+  const gitDir = path7.join(projectRoot, ".git");
+  if (!fs7.existsSync(gitDir)) {
+    return { isRepo: false, remoteUrl: null, branch: null };
+  }
+  let remoteUrl = null;
+  let branch = null;
+  try {
+    remoteUrl = execFileSync("git", ["-C", projectRoot, "remote", "get-url", "origin"], {
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"]
+    }).trim();
+  } catch {
+    remoteUrl = null;
+  }
+  try {
+    branch = execFileSync("git", ["-C", projectRoot, "branch", "--show-current"], {
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"]
+    }).trim();
+  } catch {
+    branch = null;
+  }
+  return { isRepo: true, remoteUrl, branch };
+}
+
+// src/scan/index.ts
+var TYPE_MAP2 = [
+  { file: "package.json", type: "Node.js" },
+  { file: "tsconfig.json", type: "TypeScript" },
+  { file: "requirements.txt", type: "Python" },
+  { file: "pyproject.toml", type: "Python" },
+  { file: "Cargo.toml", type: "Rust" },
+  { file: "go.mod", type: "Go" }
+];
+function scanProject(projectRoot) {
+  let type = "Unknown";
+  for (const entry of TYPE_MAP2) {
+    if (fs8.existsSync(path8.join(projectRoot, entry.file))) {
+      type = entry.type;
+      break;
+    }
+  }
+  let name = path8.basename(projectRoot);
+  let description = "";
+  const allScripts = {};
+  const pkgRaw = safeReadFile(projectRoot, "package.json");
+  if (pkgRaw) {
+    try {
+      const pkg = JSON.parse(pkgRaw);
+      if (pkg.name) name = pkg.name;
+      if (pkg.description) description = pkg.description;
+      if (pkg.scripts) Object.assign(allScripts, pkg.scripts);
+    } catch {
+    }
+  }
+  const { endpoints, mountPrefix } = scanApis(projectRoot);
+  return {
+    root: projectRoot,
+    name,
+    type,
+    description,
+    tree: scanTree(projectRoot),
+    topLevelNotes: topLevelNotes(projectRoot),
+    apis: endpoints,
+    apiMountPrefix: mountPrefix,
+    git: scanGit(projectRoot),
+    cursor: scanCursor(projectRoot),
+    envVars: scanEnvVars(projectRoot),
+    allScripts,
+    hasTests: fs8.existsSync(path8.join(projectRoot, "tests")) || fs8.existsSync(path8.join(projectRoot, "test")),
+    hasCi: fs8.existsSync(path8.join(projectRoot, ".github", "workflows")),
+    hasDataDir: fs8.existsSync(path8.join(projectRoot, "data")),
+    hasConfigDir: fs8.existsSync(path8.join(projectRoot, "config")),
+    agentsMdPath: fs8.existsSync(path8.join(projectRoot, "AGENTS.md")) ? "AGENTS.md" : null
+  };
+}
+
+// src/readme.ts
+function improveReadme(projectRoot) {
+  const readmePath = path9.join(projectRoot, "README.md");
+  const created = !fs9.existsSync(readmePath);
+  const scan = scanProject(projectRoot);
+  const content = buildComprehensiveReadme(scan);
   const backupPath = safeBackupReadme(projectRoot);
   safeWriteReadme(projectRoot, content);
   return {
     success: true,
-    message: created ? "Created README.md with scaffolded sections from detected project metadata." : "Updated README.md with missing sections. Original saved to README.md.backup.",
+    message: created ? "Created README.md with full project scan (single file, all sections inline)." : "Updated README.md from project scan. Original saved to README.md.backup.",
     readmePath,
     backupPath,
-    created
+    created,
+    generatedDocs: [],
+    scanSummary: {
+      apiCount: scan.apis.length,
+      cursorAssets: scan.cursor.length,
+      topLevelDirs: Object.keys(scan.topLevelNotes).length
+    }
   };
 }
 
@@ -21802,7 +22315,7 @@ async function main() {
   );
   server.tool(
     "improve_readme",
-    "Safely update README.md only. Creates README.md.backup before edits. Uses detected scripts and .env.example names only \u2014 never invents APIs or reads .env secrets.",
+    "Scan project structure and write a comprehensive README.md (API, project map, Cursor assets, env, scripts \u2014 all inline). Creates README.md.backup before edits. Only modifies README.md. API endpoints detected from route files \u2014 never invents routes or reads .env secrets.",
     projectPathSchema.shape,
     async (args) => {
       try {
@@ -21815,7 +22328,8 @@ async function main() {
               text: `${result.message}
 
 README: ${result.readmePath}
-Backup: ${result.backupPath ?? "(none \u2014 new file)"}`
+Backup: ${result.backupPath ?? "(none \u2014 new file)"}
+APIs: ${result.scanSummary?.apiCount ?? 0} | Cursor assets: ${result.scanSummary?.cursorAssets ?? 0}`
             },
             { type: "text", text: JSON.stringify(result, null, 2) }
           ]

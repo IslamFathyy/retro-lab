@@ -1,55 +1,71 @@
 ---
 name: commit-latest-report
-description: Commit and push docs/reminders/latest-reminder.json so Cloud Automations can read the weekly email snapshot from GitHub main.
+description: >-
+  Commit and push docs/reminders/latest-reminder.json to GitHub main so Cloud
+  Automations read the weekly email snapshot. Use for /commit-latest-report after
+  /archive-retro. Do not bundle unrelated files or push secrets.
 ---
 
 # Commit Latest Reminder Snapshot
 
-Publishes the local reminder snapshot to GitHub for the **Sunday mail automation** (Cloud Agent reads `main`).
+## Purpose
 
-## Prerequisites
+Publish `docs/reminders/latest-reminder.json` to `IslamFathyy/retro-lab` `main` for Sunday mail automation.
 
-- Step 8 `/archive-retro` completed (`npm run export:reminder` already ran)
-- File exists: `docs/reminders/latest-reminder.json`
-- Git remote configured for orchestration repo (`retro-lab`)
-- Work from **orchestration root** (not `retro-api/`)
+## When to use
 
-## Steps
+- Command `/commit-latest-report`
+- After `/archive-retro` export step (workflow step 9)
 
-1. **Verify** `docs/reminders/latest-reminder.json` exists and is valid JSON.
-2. `git status` — confirm the file is new or modified.
-3. If unchanged vs last commit, report **SKIP** (already on GitHub).
-4. Stage only the snapshot (do not bundle unrelated changes):
+**Do not use** before snapshot exists or to commit `retro-api/data/`.
 
-```bash
-git add docs/reminders/latest-reminder.json
-```
+## Inputs
 
-5. Commit:
+| Input | Source |
+| --- | --- |
+| File | `docs/reminders/latest-reminder.json` (orchestration repo root) |
+| Prerequisite | `/archive-retro` completed (`npm run export:reminder`) |
+| Remote | `origin` → `main` for automation |
 
-```bash
-git commit -m "chore: update reminder snapshot for weekly automation"
-```
+## Workflow
 
-6. Push so Cloud Automations can read it:
+1. Work from **orchestration root** (not `retro-api/`).
+2. Confirm `docs/reminders/latest-reminder.json` exists.
+3. Run `git status` — file new or modified.
+4. If unchanged vs `HEAD`, report **SKIP** (already on GitHub).
+5. `git add docs/reminders/latest-reminder.json` only.
+6. `git commit -m "chore: update reminder snapshot for weekly automation"`.
+7. `git push origin main` (if not on `main`, stop unless user confirms branch strategy).
+8. Report commit hash; confirm file on remote `main`.
 
-```bash
-git push origin main
-```
+## Decision rules
 
-If current branch is not `main`, either checkout `main` and cherry-pick, or push to `main` only after user confirms — **weekly automation reads `IslamFathyy/retro-lab` / `main`**.
+| Situation | Action |
+| --- | --- |
+| Missing snapshot | **Stop** — run `/archive-retro {id}` first. |
+| Unrelated staged files | **Do not** include in commit. |
+| Commit `recipients.json` | Only if user explicitly asked. |
+| Force push | **Forbidden**. |
+| Push skipped | **Insufficient** — Cloud Agent needs remote `main`. |
 
-7. Report commit hash and confirm file is on remote `main`.
+## Validation
 
-## Do not
+- `git show HEAD:docs/reminders/latest-reminder.json` parses as JSON after push.
+- Hook `validate-json.js` if file edited in IDE before commit.
 
-- Commit `recipients.json` unless user explicitly asked
-- Commit secrets or `retro-api/data/`
-- Force push
-- Skip push (local commit alone is insufficient for Cloud Agent)
+## Failure handling
 
-## On failure
+| Failure | Action |
+| --- | --- |
+| Nothing to commit | Report SKIP. |
+| Push rejected | Report error; user resolves sync/conflicts. |
+| Invalid JSON | Fix file; re-run validation. |
 
-- Missing file → run `/archive-retro {retroId}` first
-- Nothing to commit → snapshot already matches git
-- Push rejected → report error; user resolves sync/conflicts manually
+## Completion criteria
+
+**Done when:** push succeeded (or SKIP reported) and user knows automation can read `main`.
+
+## References
+
+- Automation: [docs/automation-tiers.md](../../../docs/automation-tiers.md)
+- Command: [`.cursor/commands/commit-latest-report.md`](../../commands/commit-latest-report.md)

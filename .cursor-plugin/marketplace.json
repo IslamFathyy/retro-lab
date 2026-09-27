@@ -16,14 +16,6 @@
       "version": "1.0.0",
       "category": "Development",
       "tags": ["readme", "documentation", "mcp", "teaching"]
-    },
-    {
-      "name": "dev-guardrails",
-      "source": "plugins/dev-guardrails",
-      "description": "Hooks + rules + verifier for safe AI-assisted coding (force push, secrets, JSON, tests).",
-      "version": "1.0.0",
-      "category": "Development",
-      "tags": ["hooks", "security", "testing", "teaching"]
     }
   ]
 }

@@ -29,7 +29,7 @@ This root repo is **not** the running application. It coordinates agent work:
 - **`AGENTS.md`** — parent agent instructions for multi-repo changes
 - **`PLAN.md`** — full implementation plan
 - **`.cursor/`** — shared commands, skills, sub-agents, rules, hooks
-- **`plugins/dev-guardrails/`** — installable Cursor plugin (dev hooks + verifier) — [`docs/plugins/dev-guardrails.md`](docs/plugins/dev-guardrails.md)
+- **`plugins/readme-doctor/`** — installable Cursor plugin (README MCP tools) — [`docs/plugins/readme-doctor.md`](docs/plugins/readme-doctor.md)
 - **`docs/`** — workflow, guardrails, [MCP setup](docs/mcp-setup.md), [automation tiers](docs/automation-tiers.md), teaching guide
 
 Child repos have their own `AGENTS.md` and `.cursor/rules/` — [`retro-api/`](retro-api/AGENTS.md), [`retro-web/`](retro-web/AGENTS.md). Inventory: [`docs/rules-audit.md`](docs/rules-audit.md).

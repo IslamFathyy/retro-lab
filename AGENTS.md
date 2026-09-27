@@ -73,7 +73,6 @@ Setup, auth, and security: [`docs/mcp-setup.md`](docs/mcp-setup.md). Golden-path
 | Plugin | Purpose | Doc |
 |--------|---------|-----|
 | **readme-doctor** | MCP: analyze/improve `README.md` safely — **any codebase** | [`docs/plugins/readme-doctor.md`](docs/plugins/readme-doctor.md) |
-| **dev-guardrails** | Hooks (force push, JSON, secrets) + rules + verifier — **any codebase** | [`docs/plugins/dev-guardrails.md`](docs/plugins/dev-guardrails.md) |
 
 Marketplace manifest: [`.cursor-plugin/marketplace.json`](.cursor-plugin/marketplace.json). Retro workflow stays in this repo's `.cursor/` — not bundled in the plugin.
 

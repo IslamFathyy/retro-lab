@@ -41,4 +41,10 @@ export interface ImproveResult {
   readmePath: string;
   backupPath: string | null;
   created: boolean;
+  generatedDocs: string[];
+  scanSummary?: {
+    apiCount: number;
+    cursorAssets: number;
+    topLevelDirs: number;
+  };
 }

@@ -73,7 +73,7 @@ async function main(): Promise<void> {
 
   server.tool(
     'improve_readme',
-    'Safely update README.md only. Creates README.md.backup before edits. Uses detected scripts and .env.example names only — never invents APIs or reads .env secrets.',
+    'Scan project structure and write a comprehensive README.md (API, project map, Cursor assets, env, scripts — all inline). Creates README.md.backup before edits. Only modifies README.md. API endpoints detected from route files — never invents routes or reads .env secrets.',
     projectPathSchema.shape,
     async (args) => {
       try {
@@ -83,7 +83,7 @@ async function main(): Promise<void> {
           content: [
             {
               type: 'text',
-              text: `${result.message}\n\nREADME: ${result.readmePath}\nBackup: ${result.backupPath ?? '(none — new file)'}`,
+              text: `${result.message}\n\nREADME: ${result.readmePath}\nBackup: ${result.backupPath ?? '(none — new file)'}\nAPIs: ${result.scanSummary?.apiCount ?? 0} | Cursor assets: ${result.scanSummary?.cursorAssets ?? 0}`,
             },
             { type: 'text', text: JSON.stringify(result, null, 2) },
           ],

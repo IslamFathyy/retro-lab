@@ -5,7 +5,7 @@ Small Cursor plugin + MCP server that **analyzes** and **safely improves** proje
 ## Features
 
 - **`analyze_readme`** — read-only score, section checklist, suggestions (JSON + human text)
-- **`improve_readme`** — adds missing sections from detected `package.json` scripts and `.env.example` **names only**
+- **`improve_readme`** — scans the project tree, generates `docs/API.md`, `docs/PROJECT-MAP.md`, `docs/CURSOR.md`, and writes an onboarding `README.md` (from detected routes, git remote, `.cursor/` assets, env vars, and scripts)
 - Project type detection (Node.js, Python, Rust, Go, Java, PHP, Ruby)
 - Security: no `.env` values, path traversal blocked, only `README.md` + backup modified
 

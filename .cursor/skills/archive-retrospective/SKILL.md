@@ -1,69 +1,78 @@
 ---
 name: archive-retrospective
-description: Archive retrospective files to Google Drive via MCP when configured. Copy only, never delete local files.
+description: >-
+  Copy retrospective files to Google Drive via MCP, mark retro archived locally,
+  and export weekly reminder snapshot. Use for /archive-retro {id}. Copy-only —
+  never delete local data. Fail if Drive upload cannot complete.
 ---
 
-# Archive Retrospective Skill
+# Archive Retrospective
 
-MCP setup and security: [`docs/mcp-setup.md`](../../docs/mcp-setup.md). Golden-path checklist: [`docs/mcp-golden-path.md`](../../docs/mcp-golden-path.md).
+## Purpose
 
-1. Validate retrospective is ready (report exists, human confirmed).
-2. If Google Drive MCP is configured, upload using **one parent folder** and **one subfolder per retrospective**.
-3. **Never** upload files in parallel with path-based `parentFolderId` — that creates duplicate parent folders.
+Back up one retrospective to Google Drive, set local status `archived`, and export `docs/reminders/latest-reminder.json` for weekly email automation.
 
-## Target Drive structure
+## When to use
 
-```text
-Retrospective Management/
-└── {retroId} - {title}/
-    ├── retro.json
-    ├── analysis.json
-    ├── actions.json
-    ├── report.md
-    └── feedback/
-        └── FB-*.json
-```
+- Command `/archive-retro {retroId}`
+- After report generated and user confirmed archive
 
-## Upload workflow (required order)
+**Do not use** without Drive MCP when policy requires upload success before `archived` status.
 
-1. **Find or create** exactly one root folder: `Retrospective Management`
-   - Search Drive root for existing folder by name.
-   - If multiple exist, keep one and trash duplicates after consolidating.
-   - If none exists: `createFolder` with `name: "Retrospective Management"`.
+## Inputs
 
-2. **Create retrospective subfolder** once, using the **parent folder ID** (not a path):
-   - Name: `{retroId} - {title}` (e.g. `RETRO-2026-001 - Sprint 1 Retro`)
-   - `createFolder` with `parent: <Retrospective Management folder ID>`
+| Input | Source |
+| --- | --- |
+| `retroId` | User or command |
+| Local files | `retro-api/data/retrospectives/{retroId}/` |
+| Drive MCP | `user-google-drive` tools |
+| Setup | [docs/mcp-setup.md](../../../docs/mcp-setup.md), [docs/mcp-golden-path.md](../../../docs/mcp-golden-path.md) |
 
-3. **Create feedback subfolder** inside the retrospective folder:
-   - `createFolder` with `name: "feedback"` and `parent: <retro folder ID>`
+## Workflow
 
-4. **Upload files sequentially** using **folder IDs** only:
-   - To retro folder ID: `retro.json`, `analysis.json`, `actions.json`, `report.md`
-   - To feedback folder ID: each `feedback/FB-*.json`
-   - Use `uploadFile` with `parentFolderId: "<folder ID>"` — do not use path strings.
+1. Validate retro ready (report exists, human confirmed per command).
+2. **Find or create** one root folder: `Retrospective Management` (search Drive root; dedupe empty duplicates if safe).
+3. **Create** retro subfolder `{retroId} - {title}` with `parent` = root folder **ID** (not path).
+4. **Create** `feedback` subfolder under retro folder ID.
+5. **Upload sequentially** with `uploadFile` + `parentFolderId` (folder IDs only):
+   - Retro folder: `retro.json`, `analysis.json`, `actions.json`, `report.md`
+   - Feedback folder: each `feedback/FB-*.json`
+6. **Verify** with `listFolder` on retro folder — expect 4 files + feedback folder.
+7. Mark archived via API; **keep** all local files.
+8. Run `cd retro-api && npm run export:reminder` → writes `docs/reminders/latest-reminder.json`.
+9. Tell user to run `/commit-latest-report` for Sunday automation.
 
-5. **Verify** with `listFolder` on the retrospective folder — expect 4 files + 1 feedback folder.
+**Never** upload in parallel with path-based `parentFolderId` (creates duplicate parents).
 
-6. Mark archived via API; local files remain.
+## Decision rules
 
-7. **Export reminder snapshot** for weekly email automation:
+| Situation | Action |
+| --- | --- |
+| Drive MCP unavailable | **Fail** `/archive-retro` — do not set `archived` without successful upload. |
+| Multiple `Retrospective Management` folders | Keep one with retro children; trash duplicate empty roots only if safe. |
+| Delete local files after upload | **Forbidden** — copy-only. |
 
-```bash
-cd retro-api && npm run export:reminder
-```
+Follow root [`.cursor/rules/development.mdc`](../../rules/development.mdc) archive policy.
 
-This writes `docs/reminders/latest-reminder.json` in the orchestration repo. **Next:** run `/commit-latest-report` (workflow step 9) to push it to GitHub `main` for the Sunday mail automation.
+## Validation
 
-## Files to upload
+- `listFolder` on retro Drive folder matches expected file count.
+- Local `retro.json` status `archived` only after upload success.
+- `docs/reminders/latest-reminder.json` exists after export step.
 
-- `retro.json`
-- `analysis.json`
-- `actions.json`
-- `report.md`
-- `feedback/*.json`
+## Failure handling
 
-## On failure
+| Failure | Action |
+| --- | --- |
+| MCP / upload error | Report clearly; leave local status non-archived if upload incomplete. |
+| Export reminder fails | Report; user re-runs `npm run export:reminder`. |
 
-- If MCP unavailable, fail safely and report clearly.
-- Do not delete local files (see root [`development.mdc`](../../rules/development.mdc) / archive copy-only policy).
+## Completion criteria
+
+**Done when:** Drive backup verified, local archived, reminder snapshot exported, user told to `/commit-latest-report`.
+
+## References
+
+- Drive structure and golden path: [docs/mcp-golden-path.md](../../../docs/mcp-golden-path.md)
+- MCP setup: [docs/mcp-setup.md](../../../docs/mcp-setup.md)
+- Export script: `retro-api` → `npm run export:reminder`

@@ -1,78 +1,82 @@
 ---
 name: analyze-retrospective
-description: Analyze retrospective feedback into themes, strengths, concerns, and suggested actions using the Cursor model. Use when running /analyze-retro or when the user asks for AI-assisted retrospective analysis.
+description: >-
+  Run AI retrospective analysis for a closed retro via sub-agents, merge results,
+  and import to retro-api. Use for /analyze-retro {id}, or when the user asks
+  for themes, strengths, concerns, or suggested actions from feedback. Do not use
+  for report generation, archiving, or approving actions.
 ---
 
-# Analyze Retrospective Skill
+# Analyze Retrospective
 
-## Who performs the analysis
+## Purpose
 
-**Sub-agents perform the analytical work.** The parent agent orchestrates, merges outputs, and imports.
+Produce `analysis.json` (themes, strengths, concerns, limitations, suggested actions) from local feedback files using Cursor sub-agents, then import via `retro-api` — no external LLM APIs.
 
-Do **not** call external LLM APIs. Read local JSON files only.
+## When to use
 
-## Input
+- Command `/analyze-retro {retroId}`
+- User asks for AI-assisted analysis on a **closed** retrospective
 
-- Retrospective ID
-- `retro-api/data/retrospectives/{retroId}/retro.json`
-- All files in `retro-api/data/retrospectives/{retroId}/feedback/`
+**Do not use** when retro is still open, for baseline-only test generation without import intent, or when user only wants `/approve-suggestions` / `/generate-report`.
 
-## Output
+## Inputs
 
-Import analysis via API (preferred):
+| Input | Source |
+| --- | --- |
+| `retroId` | User or command argument |
+| Retro metadata | `retro-api/data/retrospectives/{retroId}/retro.json` |
+| Feedback | All files in `retro-api/data/retrospectives/{retroId}/feedback/` |
+| Team ids for actions | `retro-api/config/action-teams.json` (or parent `config/`) |
 
-```http
-POST http://localhost:3001/api/retrospectives/{retroId}/analysis/import
-Content-Type: application/json
-```
+## Workflow
 
-Body: see `.cursor/skills/analyze-retrospective/references/analysis-contract.md`
+1. Confirm retro status is `closed`, `analyzed`, `actioned`, or `archived`.
+2. Read all feedback files — **do not** change original `text` fields.
+3. **Task → `feedback-analyst`** — pass feedback JSON + `retroId`; receive themes, strengths, concerns, opportunities, limitations draft.
+4. **Task → `improvement-advisor`** — pass step 3 output; receive `suggestedActions` only.
+5. **Parent merges** payloads; validate every feedback ID reference and every `suggestedActions[].ownerTeams` against `action-teams.json`.
+6. `POST http://localhost:3001/api/retrospectives/{retroId}/analysis/import` with body per `references/analysis-contract.md`; set `generatedBy` to `"cursor-agent"`.
+7. **Task → `verifier`** — validate imported `analysis.json`, privacy rules, run `npm test` in `retro-api/`.
+8. Tell the user to validate in the web UI or run `/validate-retro-ui`.
 
-Set `generatedBy` to `"cursor-agent"`.
+Sub-agents must end with: `SUBAGENT_SUMMARY: <what was completed>` (logged by `subagentStop` hook).
 
-## Workflow (required)
+## Decision rules
 
-1. Confirm retrospective status is `closed`, `analyzed`, `actioned`, or `archived`.
-2. Read all feedback files — preserve original `text` fields untouched.
-
-3. **Task → feedback-analyst** (required)
-   - Pass feedback JSON content and retroId.
-   - Receive: themes, strengths, concerns, opportunities, limitations draft.
-
-4. **Task → improvement-advisor** (required)
-   - Pass structured output from step 3.
-   - Receive: `suggestedActions` array only.
-
-5. **Parent merges** sub-agent outputs into one payload; validate every feedback ID reference and every `suggestedActions[].ownerTeams` entry (team ids from `config/action-teams.json` only).
-
-6. POST to `/analysis/import`.
-
-7. **Task → verifier** (required)
-   - Validate imported `analysis.json`, privacy rules, and run `npm test` in `retro-api/`.
-
-8. **Stop** — tell the user to validate in the web UI or run `/validate-retro-ui`.
-
-## Sub-agent logging
-
-Each sub-agent must end with:
-
-```text
-SUBAGENT_SUMMARY: <what was completed>
-```
-
-Hook `subagentStop` appends to `.cursor/logs/subagent-activity.log` with agent name, timestamp, status, and summary.
-
-## Rules
+| Situation | Action |
+| --- | --- |
+| Status not closed (or allowed post-close states) | **Stop** — close retro first (`/close-retro`). |
+| Uncertain whether to edit feedback `text` | **Never edit** — summarize only in analysis fields. |
+| Suggested actions | Output as **suggestions only** — facilitator uses `/approve-suggestions`. |
+| Skip sub-agents | **Forbidden** — always launch `feedback-analyst`, `improvement-advisor`, and `verifier` via Task. |
+| External LLM from `retro-api` | **Forbidden** — Cursor agent only. |
 
 Follow [`.cursor/rules/privacy.mdc`](../../rules/privacy.mdc) and [`.cursor/rules/development.mdc`](../../rules/development.mdc).
 
-Skill-specific:
+## Validation
 
-- Summarize only in analysis fields — never edit feedback source `text`.
-- Include at least one limitation mentioning human review.
-- Suggested actions are **not** approved — facilitator uses `/approve-suggestions`.
-- Never skip Task launches for the three sub-agents above.
+- **Contract:** Payload matches [`.cursor/skills/analyze-retrospective/references/analysis-contract.md`](references/analysis-contract.md).
+- **Tests:** `cd retro-api && npm test` (verifier sub-agent).
+- **Deterministic checklist:** [`docs/skills/verify-analyze-retrospective.md`](../../../docs/skills/verify-analyze-retrospective.md).
+- **Sub-agent evidence:** `.cursor/logs/subagent-activity.log` contains `SUBAGENT_SUMMARY` lines for the three sub-agents.
 
-## How to verify
+## Failure handling
 
-Colleagues can prove this skill works without custom prompts: follow **`docs/skills/verify-analyze-retrospective.md`** (prerequisites, copy-paste commands, pass/fail checklist). Check `.cursor/logs/subagent-activity.log` for sub-agent `SUBAGENT_SUMMARY` lines after a run.
+| Failure | Action |
+| --- | --- |
+| Import API error | Report status/body; do not patch feedback files to “fix” analysis. |
+| Verifier FAIL | Report evidence; do not mark workflow complete. |
+| Missing feedback folder | Stop and report missing data path. |
+
+## Completion criteria
+
+**Done when:** analysis imported successfully, verifier passed (or user informed of FAIL), user directed to UI validation or `/validate-retro-ui`.
+
+**Not done:** approving suggestions, generating report, or archiving.
+
+## References
+
+- Import contract: [references/analysis-contract.md](references/analysis-contract.md)
+- Verify skill: [docs/skills/verify-analyze-retrospective.md](../../../docs/skills/verify-analyze-retrospective.md)
+- Sub-agents: [docs/sub-agents.md](../../../docs/sub-agents.md)
