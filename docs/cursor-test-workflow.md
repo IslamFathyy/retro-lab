@@ -40,23 +40,21 @@ npm start
 
 ### Step 1 — Seed data (skip if already present)
 
-```text
-/run-retro-workflow
-```
-
-Or check manually:
+Check first:
 
 ```bash
 cd retro-api && npm run retro:status
 ```
 
-If `hasData` is true, skip seeding and use `suggestedWorkflowTarget` (e.g. `RETRO-2026-001`). To force a reset: `/seed-demo-retro` then workflow.
+If `hasData` is true, **skip** seeding and use `suggestedWorkflowTarget` (e.g. `RETRO-2026-001`). To force a reset: `/reset-demo-retro` then `/seed-demo-retro`.
 
-Standalone seed (wipes and recreates Sprints 1–4):
+Only when no demo data exists:
 
 ```text
 /seed-demo-retro
 ```
+
+Full orchestration (steps 0–9, including conditional seed): `/run-retro-workflow` — see [`.cursor/commands/run-retro-workflow.md`](../.cursor/commands/run-retro-workflow.md).
 
 ### Step 2 — Close retro
 

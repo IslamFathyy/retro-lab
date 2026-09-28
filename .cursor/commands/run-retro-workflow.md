@@ -7,33 +7,14 @@ Master orchestration command for **prompt-driven testing** of the full app via C
 - API running: `cd retro-api && npm start` (port 3001)
 - Web UI running: `cd retro-web && npm start` (port 8080) — for validation only
 
-## Step 1 — Seed (conditional)
-
-**Do not re-seed if demo data already exists.**
-
-Check before seeding:
-
-```bash
-cd retro-api && npm run retro:status
-```
-
-Or: `GET http://localhost:3001/api/retrospectives` — if any retro has `feedbackCount > 0`, **skip** `/seed-demo-retro`.
-
-| Condition | Action |
-|-----------|--------|
-| `hasData: true` / retros with feedback exist | **Skip seed.** Use `suggestedWorkflowTarget` from `retro:status` (first `open` retro, else first without analysis). |
-| No retros or all have zero feedback | Run `/seed-demo-retro` (`npm run seed:demo`) |
-
-Report: `SKIP seed — using {retroId}` or `SEED — created {ids}`.
-
-To **force a fresh reset** for team demos: `/reset-demo-retro` (local + Drive) → `/seed-demo-retro` → workflow.
-
 ## Ordered steps
+
+Run **0 → 9** in order. Step 1 is conditional — see [Step 1 — demo data](#step-1--demo-data-conditional) below; do not run `/seed-demo-retro` when demo data already exists.
 
 | Step | Prompt | Purpose |
 |------|--------|---------|
 | 0 | `/verify-project` | Tests pass, servers healthy |
-| 1 | `/seed-demo-retro` | **Only if no demo data** — else skip |
+| 1 | `/seed-demo-retro` | Create Sprints 1–4 demo data **only when needed** (see below) |
 | 2 | `/close-retro {retroId}` | Close retrospective for analysis |
 | 3 | `/analyze-retro {retroId}` | **Cursor AI** + sub-agents → `analysis.json` |
 | 4 | `/approve-suggestions {retroId}` | Approve 2 suggestions as actions |
@@ -44,6 +25,27 @@ To **force a fresh reset** for team demos: `/reset-demo-retro` (local + Drive) �
 | 9 | `/commit-latest-report` | **Required** — commit + push `latest-reminder.json` to GitHub `main` for mail automation |
 
 Default `{retroId}` when seed was skipped: **`RETRO-2026-001`** (Sprint 1), or the first `open` retro from `npm run retro:status`.
+
+### Step 1 — demo data (conditional)
+
+**Do not re-seed if demo data already exists.**
+
+Check:
+
+```bash
+cd retro-api && npm run retro:status
+```
+
+Or: `GET http://localhost:3001/api/retrospectives` — if any retro has `feedbackCount > 0`, **skip** step 1.
+
+| Condition | Action |
+|-----------|--------|
+| `hasData: true` / retros with feedback exist | **Skip** `/seed-demo-retro`. Use `suggestedWorkflowTarget` from `retro:status` (first `open` retro, else first without analysis). |
+| No retros or all have zero feedback | Run `/seed-demo-retro` (`npm run seed:demo`) |
+
+Report: `SKIP seed — using {retroId}` or `SEED — created {ids}`.
+
+To **force a fresh reset** for team demos: `/reset-demo-retro` (local + Drive) → `/seed-demo-retro` → continue from step 2.
 
 ## Full-run prompt (single message)
 
