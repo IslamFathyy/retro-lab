@@ -1,38 +1,75 @@
 {
-  "retroId": "RETRO-2026-004",
-  "title": "Sprint 4 Retro",
-  "period": "Sprint 4",
+  "retroId": "RETRO-2026-001",
+  "title": "Sprint 1 Retro",
+  "period": "Sprint 1",
   "team": "Chartswap",
-  "archivedAt": "2026-09-10T19:29:50.278Z",
-  "exportedAt": "2026-09-19T10:50:55.296Z",
+  "archivedAt": "2026-09-28T07:44:26.678Z",
+  "exportedAt": "2026-09-28T07:44:28.321Z",
   "openActions": [
     {
       "id": "ACT-0001",
-      "title": "Enforce two-reviewer policy with 24-hour urgent-fix SLA",
-      "description": "Slow urgent reviews; two-reviewer policy inconsistent.",
+      "title": "Hold a QA test-scope alignment at sprint start",
+      "description": "Align scope up front; addresses late QA bugs (FB-0003, FB-0005).",
       "ownerTeams": [
+        "product-team",
+        "qa-team",
         "dev-team"
       ],
-      "teams": "Dev Team",
+      "teams": "Product Team, QA Team, Dev Team",
       "status": "open",
-      "targetDate": "2026-09-10"
+      "targetDate": "2026-09-28"
     },
     {
       "id": "ACT-0002",
-      "title": "Time-box sprint planning to 90 minutes with async pre-read",
-      "description": "Planning sessions exceed ninety minutes.",
+      "title": "Introduce a pre-handoff dev checklist before QA intake",
+      "description": "Quality gates before QA handoff (FB-0003).",
       "ownerTeams": [
-        "product-team",
+        "dev-team",
+        "qa-team"
+      ],
+      "teams": "Dev Team, QA Team",
+      "status": "open",
+      "targetDate": "2026-09-28"
+    },
+    {
+      "id": "ACT-0003",
+      "title": "Time-box daily sync to 25 minutes with a parking lot",
+      "description": "Protect focus time (FB-0004).",
+      "ownerTeams": [
+        "management-team"
+      ],
+      "teams": "Management Team",
+      "status": "open",
+      "targetDate": "2026-09-28"
+    },
+    {
+      "id": "ACT-0004",
+      "title": "Require two approving reviewers on pull requests",
+      "description": "Two-reviewer merge bar (FB-0006).",
+      "ownerTeams": [
+        "dev-team",
+        "ops-team"
+      ],
+      "teams": "Dev Team, Ops Team",
+      "status": "open",
+      "targetDate": "2026-09-28"
+    },
+    {
+      "id": "ACT-0005",
+      "title": "Document release-week collaboration practices for reuse",
+      "description": "Capture delivery wins (FB-0001, FB-0002).",
+      "ownerTeams": [
+        "management-team",
         "dev-team"
       ],
-      "teams": "Product Team, Dev Team",
+      "teams": "Management Team, Dev Team",
       "status": "open",
-      "targetDate": "2026-09-10"
+      "targetDate": "2026-09-28"
     }
   ],
   "reportExcerpt": {
-    "themesSummary": "Release reliability: Stable production releases with no rollbacks. Incident and escalation response: Team mobilized quickly on customer escalation. Code review turnaround: Slow review for urgent fixes; two-reviewer policy not consistently followed. Sprint planning efficiency: Planning runs long; async status updates suggested.",
-    "approvedActionsSection": "- **Enforce two-reviewer policy with 24-hour urgent-fix SLA** (ACT-0001) — Teams: Dev Team, Status: open\n- **Time-box sprint planning to 90 minutes with async pre-read** (ACT-0002) — Teams: Product Team, Dev Team, Status: open"
+    "themesSummary": "Collaboration and on-time delivery: The team highlighted strong collaboration during release week and delivery of the milestone on the planned date. Late-cycle quality and QA exposure: Bugs reaching QA late in the sprint, with suggestion to align test scope with QA before formal testing. Meeting time discipline: Daily sync meetings were reported as often exceeding their scheduled duration. Merge and review standards: Feedback proposed requiring two reviewers on pull requests before merge.",
+    "approvedActionsSection": "- **Hold a QA test-scope alignment at sprint start** (ACT-0001) — Teams: Product Team, QA Team, Dev Team, Status: open\n- **Introduce a pre-handoff dev checklist before QA intake** (ACT-0002) — Teams: Dev Team, QA Team, Status: open\n- **Time-box daily sync to 25 minutes with a parking lot** (ACT-0003) — Teams: Management Team, Status: open\n- **Require two approving reviewers on pull requests** (ACT-0004) — Teams: Dev Team, Ops Team, Status: open\n- **Document release-week collaboration practices for reuse** (ACT-0005) — Teams: Management Team, Dev Team, Status: open"
   },
   "reportInsights": {
     "participationMix": {
@@ -42,32 +79,32 @@
     },
     "topicBreakdown": [
       {
-        "label": "Deployment reliability",
-        "feedbackItems": 1,
-        "percent": 17,
+        "label": "Collaboration and milestone delivery",
+        "feedbackItems": 2,
+        "percent": 33,
         "priority": "low",
-        "summary": "The team reported reliable production releases with no rollback this sprint."
+        "summary": "Strong collaboration and on-time milestone delivery."
       },
       {
-        "label": "Incident and escalation response",
-        "feedbackItems": 1,
-        "percent": 17,
-        "priority": "low",
-        "summary": "The team rallied quickly when a customer escalation landed."
-      },
-      {
-        "label": "Code review delays",
+        "label": "Late-cycle quality and QA exposure",
         "feedbackItems": 2,
         "percent": 33,
         "priority": "high",
-        "summary": "Review turnaround remains too slow for urgent fixes, and the team wants the two-reviewer policy enforced."
+        "summary": "Bugs reaching QA late; align test scope with QA earlier."
       },
       {
-        "label": "Long meetings / planning",
-        "feedbackItems": 2,
-        "percent": 33,
-        "priority": "high",
-        "summary": "Sprint planning routinely exceeds ninety minutes; the team suggests time-boxing and replacing status updates with async notes."
+        "label": "Meeting time discipline",
+        "feedbackItems": 1,
+        "percent": 17,
+        "priority": "medium",
+        "summary": "Daily syncs often exceeded scheduled duration."
+      },
+      {
+        "label": "Merge and review standards",
+        "feedbackItems": 1,
+        "percent": 17,
+        "priority": "medium",
+        "summary": "Two reviewers on pull requests before merge."
       }
     ],
     "recurringTopics": [
@@ -76,26 +113,26 @@
         "retrosSeen": 4,
         "retrosTotal": 4,
         "priority": "high",
-        "summary": "Semantically similar concerns about slow PR reviews and two-reviewer enforcement appear across all four sprints."
+        "summary": "Review turnaround and policy across four sprints."
+      },
+      {
+        "label": "QA / testing gaps",
+        "retrosSeen": 2,
+        "retrosTotal": 4,
+        "priority": "high",
+        "summary": "Late-cycle defects in Sprint 1 and 3."
       },
       {
         "label": "Long meetings / planning",
-        "retrosSeen": 3,
+        "retrosSeen": 2,
         "retrosTotal": 4,
-        "priority": "high",
-        "summary": "Planning sessions running long and status updates crowding meeting time recur from Sprint 2 through Sprint 4."
-      },
-      {
-        "label": "Deployment reliability",
-        "retrosSeen": 3,
-        "retrosTotal": 4,
-        "priority": "low",
-        "summary": "The team consistently notes stable deployments and reliable production releases across recent sprints."
+        "priority": "medium",
+        "summary": "Sync overruns and lengthy planning."
       }
     ],
     "limitations": [
       "Counts reflect feedback items, not individuals.",
-      "Cross-retro matching is interpretive, not proof of causality."
+      "Cross-retro recurrence for 002-004 inferred from feedback text only."
     ]
   },
   "recipients": {
