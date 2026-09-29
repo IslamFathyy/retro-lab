@@ -20,16 +20,24 @@ MCP servers are available to **Cursor agents only**. The running web app (`retro
 
 ## Configuration
 
-### Example file
+### Project config (this repo)
 
-Copy blocks from [`.cursor/mcp.example.json`](../.cursor/mcp.example.json) into your user config:
+Retro Lab MCP servers live in **[`.cursor/mcp.json`](../.cursor/mcp.json)** at the orchestration root:
 
-```text
-Windows:  %USERPROFILE%\.cursor\mcp.json
-macOS:    ~/.cursor/mcp.json
-```
+| Server | Workflow |
+|--------|----------|
+| `readme-doctor` | `/check-readme`, `/fix-readme` |
+| `google-drive` | `/archive-retro`, Drive cleanup on reset |
+| `gmail` | `/weekly-action-reminder` |
+| `github` | `/commit-latest-report`, PR/issue tools |
 
-Never commit real `mcp.json` or OAuth keys to Git.
+Open the **retro-lab** workspace (or `retro-lab.code-workspace`), then **Settings → MCP** — project servers load with the repo. Reload the window after edits.
+
+Template with comments: [`.cursor/mcp.example.json`](../.cursor/mcp.example.json).
+
+**Avoid duplicates:** remove the same server names from user `~/.cursor/mcp.json` if you moved config here (keep personal-only MCPs like Outlook/Lokka in user config).
+
+Never commit OAuth key files or tokens. The committed `mcp.json` contains only commands and public MCP URLs.
 
 ### Google Drive (stdio)
 
@@ -79,7 +87,7 @@ Alternative: enable GitHub under **Customize → Plugins**.
 
 **Do not use MCP for:**
 
-- Reading/writing `retro-api/data/` during normal CRUD (use REST API).
+- Reading/writing `repos/retro-api/data/` during normal CRUD (use REST API).
 - Serving data to the browser (use `retro-api` + `retro-web`).
 - Approving actions (human gate via `/approve-suggestions`).
 
@@ -93,9 +101,9 @@ Alternative: enable GitHub under **Customize → Plugins**.
 | Validate UI | `retro-web` + API | Drive MCP |
 | Long-term backup copy | Google Drive MCP | Deleting local files |
 | Weekly email payload | `docs/reminders/latest-reminder.json` on GitHub `main` | Reading live `data/` from cloud agent |
-| OAuth tokens | User `~/.cursor/mcp.json` + local OAuth cache | Repo files |
+| OAuth tokens | Local OAuth cache (e.g. `~/.config/google-drive-mcp/`) + Cursor session | Repo files |
 
-**Source of truth:** `retro-api/data/retrospectives/` until archived. Drive is a **copy**, not authoritative.
+**Source of truth:** `repos/retro-api/data/retrospectives/` until archived. Drive is a **copy**, not authoritative.
 
 ---
 

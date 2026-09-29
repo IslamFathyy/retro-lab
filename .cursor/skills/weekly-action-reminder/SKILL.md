@@ -46,7 +46,7 @@ Send one HTML email listing **open approved actions** from the committed reminde
 
 | Situation | Action |
 | --- | --- |
-| `latest-reminder.json` missing or stale | **Stop** — run archive + `cd retro-api && npm run export:reminder` first. |
+| `latest-reminder.json` missing or stale | **Stop** — run archive + `cd repos/retro-api && npm run export:reminder` first. |
 | Uncertain recipient | Use snapshot `recipients.to`; else `recipients.json`; never invent addresses. |
 | Modify retro data | **Forbidden** — email is read-only snapshot. |
 

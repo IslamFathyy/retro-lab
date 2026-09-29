@@ -8,7 +8,7 @@ Email open approved actions from the latest archived retrospective snapshot.
 
 ## Prerequisites
 
-- `docs/reminders/latest-reminder.json` exists (run `cd retro-api && npm run export:reminder` after archive)
+- `docs/reminders/latest-reminder.json` exists (run `cd repos/retro-api && npm run export:reminder` after archive)
 - `docs/reminders/recipients.json` configured
 - Cursor **Gmail plugin** connected
 

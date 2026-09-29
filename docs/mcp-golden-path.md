@@ -29,7 +29,7 @@
 | 5 | `listFolder` verification | 4 files + `feedback/` subfolder | ☑ PASS | `actions.json`, `analysis.json`, `report.md`, `retro.json`, `feedback/` |
 | 6 | Local API status → `archived` | `GET /api/retrospectives/RETRO-2026-001` | ☑ PASS | `status: "archived"` |
 | 7 | `npm run export:reminder` | `docs/reminders/latest-reminder.json` updated | ☑ PASS | Exported from latest archived `RETRO-2026-004` |
-| 8 | Local files still on disk | `retro-api/data/...` unchanged | ☑ PASS | 12 local files remain |
+| 8 | Local files still on disk | `repos/retro-api/data/...` unchanged | ☑ PASS | 12 local files remain |
 
 **Overall golden path:** ☑ **PASS** (all steps 1–8)
 

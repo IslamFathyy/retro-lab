@@ -16,7 +16,7 @@ Cursor IDE — commands/skills         Cursor Automation — cron / triggers
                                        GitHub Actions CI — npm test only
 ```
 
-**Do not treat these as interchangeable:** local IDE chat cannot read `main` on schedule; cloud automation cannot reach `localhost:3001` or gitignored `retro-api/data/`.
+**Do not treat these as interchangeable:** local IDE chat cannot read `main` on schedule; cloud automation cannot reach `localhost:3001` or gitignored `repos/retro-api/data/`.
 
 ---
 
@@ -24,10 +24,10 @@ Cursor IDE — commands/skills         Cursor Automation — cron / triggers
 
 | Tier | Adopted | Trigger | Scope | Secrets / MCP policy | Review path | Monitoring | Rollback |
 |------|---------|---------|-------|----------------------|-------------|------------|----------|
-| **Cursor IDE (interactive)** | Yes | Human runs command in chat | Local workspace + `retro-api/data/` via API | User `~/.cursor/mcp.json`; no secrets in repo; hooks enforce policy | Human validates UI; `/approve-suggestions` gate | `.cursor/logs/subagent-activity.log` | Stop chat; revert git changes |
+| **Cursor IDE (interactive)** | Yes | Human runs command in chat | Local workspace + `repos/retro-api/data/` via API | Project `.cursor/mcp.json` (+ OAuth cache on machine); no secrets in repo; hooks enforce policy | Human validates UI; `/approve-suggestions` gate | `.cursor/logs/subagent-activity.log` | Stop chat; revert git changes |
 | **Cursor Automation** | Yes | Cron `0 9 * * 0` (Sun 9:00) | `IslamFathyy/retro-lab` branch `main` | **Gmail plugin only**; read `docs/reminders/latest-email-payload.json`; never use team labels as `to` | Human checks inbox; automation does not merge or edit retro data | Cursor **Agents → Automations** run history | Disable schedule; fallback: `/weekly-action-reminder` in IDE |
 | **Cursor Cloud Agent** | Yes (runtime) | Same as Automation (“Run now” or schedule) | GitHub repo clone in cloud VM | **Separate** cloud OAuth at [cursor.com/agents](https://cursor.com/agents) for Gmail | Human reviews email / PR comments before acting | Automation run log + reported Gmail message id | Disable automation; use IDE tier |
-| **GitHub Actions CI** | Yes | `push` / `pull_request` on `retro-api` | `retro-api/` only — `npm test` | No MCP; no `.env`; no `data/` in CI | Human merges PR after green check | GitHub Actions tab on `retro-api` repo | Revert commit; fix tests locally |
+| **GitHub Actions CI** | Yes | `push` / `pull_request` on `retro-api` | `repos/retro-api/` only — `npm test` | No MCP; no `.env`; no `data/` in CI | Human merges PR after green check | GitHub Actions tab on `retro-api` repo | Revert commit; fix tests locally |
 
 ---
 
@@ -44,7 +44,7 @@ Cursor IDE — commands/skills         Cursor Automation — cron / triggers
 
 ## Data bridge (Automation ↔ local app)
 
-Cloud tiers cannot read `retro-api/data/`. Publish committed snapshots instead:
+Cloud tiers cannot read `repos/retro-api/data/`. Publish committed snapshots instead:
 
 ```text
 /archive-retro → npm run export:reminder → /commit-latest-report → main
@@ -61,7 +61,7 @@ See [`reminders/README.md`](reminders/README.md).
 |------|-----|
 | Cursor Automation (weekly email) | [`cursor-automation-weekly-reminder.md`](cursor-automation-weekly-reminder.md) |
 | IDE weekly fallback | `.cursor/skills/weekly-action-reminder/SKILL.md` |
-| CI workflow | [`retro-api/.github/workflows/test.yml`](../retro-api/.github/workflows/test.yml) |
+| CI workflow | [`repos/retro-api/.github/workflows/test.yml`](../repos/retro-api/.github/workflows/test.yml) |
 | Golden-path evidence | [`automation-golden-path.md`](automation-golden-path.md) |
 
 ---

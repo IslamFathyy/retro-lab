@@ -6,8 +6,8 @@ alwaysApply: true
 # Orchestration Rules
 
 - Open and work from the **root repo** when changes may span `retro-api` and `retro-web`.
-- Route backend work to `retro-api/`, frontend work to `retro-web/`.
-- Read child `AGENTS.md` (`retro-api/`, `retro-web/`) before editing that repository.
+- Route backend work to `repos/retro-api/`, frontend work to `repos/retro-web/`.
+- Read child `AGENTS.md` (`repos/retro-api/`, `repos/retro-web/`) before editing that repository.
 - Rules precedence: see `docs/rules-audit.md`.
 - Follow phase scope in `PLAN.md`; do not expand v1 scope without approval.
 - Coordinate API contract before UI when adding new fields or endpoints.

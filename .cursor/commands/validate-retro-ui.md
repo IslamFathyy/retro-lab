@@ -25,7 +25,7 @@ Report pass/fail for each:
 
 ## File checks
 
-- `retro-api/data/retrospectives/{retroId}/analysis.json` exists
+- `repos/retro-api/data/retrospectives/{retroId}/analysis.json` exists
 - `actions.json` has approved actions
 - `report.md` exists
 - `report-insights.json` exists (from `/generate-report` + insights-visualizer)

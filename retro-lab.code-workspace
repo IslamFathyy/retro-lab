@@ -6,16 +6,16 @@
     },
     {
       "name": "retro-api",
-      "path": "retro-api"
+      "path": "repos/retro-api"
     },
     {
       "name": "retro-web",
-      "path": "retro-web"
+      "path": "repos/retro-web"
     }
   ],
   "settings": {
     "git.autoRepositoryDetection": true,
-    "git.repositoryScanMaxDepth": 2,
+    "git.repositoryScanMaxDepth": 3,
     "git.detectSubmodules": true
   }
 }

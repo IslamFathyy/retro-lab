@@ -268,7 +268,7 @@ Use **two GitHub repositories**.
 Purpose: browser user interface.
 
 ```text
-retro-web/
+repos/retro-web/
 |
 +-- AGENTS.md
 +-- README.md
@@ -317,7 +317,7 @@ retro-web/
 Purpose: REST API, local files, analysis, reports, actions, and agentic workflow assets.
 
 ```text
-retro-api/
+repos/retro-api/
 |
 +-- AGENTS.md
 +-- README.md
@@ -423,8 +423,8 @@ Create a parent folder that is **not required to be a Git repository**:
 ```text
 retro-lab/
 |
-+-- retro-web/
-+-- retro-api/
++-- repos/retro-web/
++-- repos/retro-api/
 ```
 
 Clone both GitHub repositories into `retro-lab`.
@@ -967,7 +967,7 @@ Better:
 
 Each repository must have its own `AGENTS.md`.
 
-## 17.1 `retro-web/AGENTS.md`
+## 17.1 `repos/retro-web/AGENTS.md`
 
 Must explain:
 
@@ -983,7 +983,7 @@ Must explain:
 - do not introduce a framework without approval
 - preserve simple teaching-oriented code
 
-## 17.2 `retro-api/AGENTS.md`
+## 17.2 `repos/retro-api/AGENTS.md`
 
 Must explain:
 
@@ -1509,7 +1509,7 @@ Do not make Google Drive the application's primary storage.
 Primary:
 
 ```text
-retro-api/data/
+repos/retro-api/data/
 ```
 
 Backup/archive:
@@ -1633,7 +1633,7 @@ Automation prompt should:
 
 Schedule: **Sunday 9:00** — cron `0 9 * * 0`
 
-Data bridge: at archive time, `npm run export:reminder` writes `docs/reminders/latest-reminder.json` to the orchestration repo (committed to git). Cloud Agent cannot read gitignored `retro-api/data/`.
+Data bridge: at archive time, `npm run export:reminder` writes `docs/reminders/latest-reminder.json` to the orchestration repo (committed to git). Cloud Agent cannot read gitignored `repos/retro-api/data/`.
 
 Behavior:
 

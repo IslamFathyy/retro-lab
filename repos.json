@@ -8,7 +8,9 @@
     },
     {
       "name": "retro-api",
-      "path": "retro-api",
+      "path": "repos/retro-api",
+      "gitUrl": "https://github.com/IslamFathyy/retro-api.git",
+      "defaultBranch": "main",
       "role": "backend",
       "description": "Node.js Express API, local JSON/Markdown storage",
       "start": "npm start",
@@ -16,11 +18,14 @@
     },
     {
       "name": "retro-web",
-      "path": "retro-web",
+      "path": "repos/retro-web",
+      "gitUrl": "https://github.com/IslamFathyy/retro-web.git",
+      "defaultBranch": "main",
       "role": "frontend",
       "description": "HTML/CSS/Vanilla JS UI",
       "start": "npm start",
       "port": 8080
     }
-  ]
+  ],
+  "cloneScript": "./clone-repos.sh"
 }

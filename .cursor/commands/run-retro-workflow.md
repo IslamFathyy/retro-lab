@@ -4,8 +4,8 @@ Master orchestration command for **prompt-driven testing** of the full app via C
 
 ## Prerequisites
 
-- API running: `cd retro-api && npm start` (port 3001)
-- Web UI running: `cd retro-web && npm start` (port 8080) — for validation only
+- API running: `cd repos/retro-api && npm start` (port 3001)
+- Web UI running: `cd repos/retro-web && npm start` (port 8080) — for validation only
 
 ## Ordered steps
 
@@ -33,7 +33,7 @@ Default `{retroId}` when seed was skipped: **`RETRO-2026-001`** (Sprint 1), or t
 Check:
 
 ```bash
-cd retro-api && npm run retro:status
+cd repos/retro-api && npm run retro:status
 ```
 
 Or: `GET http://localhost:3001/api/retrospectives` — if any retro has `feedbackCount > 0`, **skip** step 1.
@@ -75,7 +75,7 @@ After `npm run seed:demo`, four retros exist (`RETRO-2026-001` … `004`). One w
 ## Architecture reminder
 
 ```text
-Cursor Agent (you) → reads/writes retro-api/data/ + REST API
-Browser (retro-web) → validation view only
+Cursor Agent (you) → reads/writes repos/retro-api/data/ + REST API
+Browser (repos/retro-web) → validation view only
 No external LLM API in the running app
 ```

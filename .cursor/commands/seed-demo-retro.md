@@ -4,12 +4,12 @@ Reset local data and create **four** demo retrospectives (Sprint 1–4) with var
 
 ## Prerequisites
 
-- Run from `retro-api/` (no API server required for the script)
+- Run from `repos/retro-api/` (no API server required for the script)
 
 ## Run
 
 ```bash
-cd retro-api
+cd repos/retro-api
 npm run seed:demo
 ```
 
@@ -38,7 +38,7 @@ Designed so Cursor analysis and reports can surface patterns across sprints:
 - **Sprint readiness / acceptance criteria** — Sprints 2, 3
 - **Deployment reliability** (positive) — Sprints 2, 4
 
-Dataset source: `retro-api/scripts/seed-demo-data.js`
+Dataset source: `repos/retro-api/scripts/seed-demo-data.js`
 
 ## Manual API alternative
 
@@ -57,6 +57,6 @@ Or run the full workflow per sprint starting from Sprint 1.
 ## PowerShell
 
 ```powershell
-cd retro-api
+cd repos/retro-api
 npm run seed:demo
 ```

@@ -42,7 +42,7 @@ Step 8 exports locally; step 9 pushes to GitHub:
 Manual equivalent:
 
 ```bash
-cd retro-api && npm run export:reminder
+cd repos/retro-api && npm run export:reminder
 git add docs/reminders/latest-reminder.json
 git commit -m "chore: update reminder snapshot for weekly automation"
 git push origin main

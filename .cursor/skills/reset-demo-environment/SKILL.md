@@ -25,13 +25,13 @@ Return teaching/demo environment to a clean slate: local retrospective folders r
 | Input | Source |
 | --- | --- |
 | Confirmation | User message: `RESET DEMO` or `yes, reset demo data and Drive archives` |
-| Local wipe | `cd retro-api && npm run reset:demo` |
+| Local wipe | `cd repos/retro-api && npm run reset:demo` |
 | Drive | `user-google-drive` MCP (unless `--local-only`) |
 
 ## Workflow
 
 1. **Stop** unless user gave explicit confirmation (not `/reset-demo-retro` alone).
-2. Run `cd retro-api && npm run reset:demo`; report `deletedRetroIds` and reminder snapshot removal.
+2. Run `cd repos/retro-api && npm run reset:demo`; report `deletedRetroIds` and reminder snapshot removal.
 3. Unless `--local-only`:
    - Search Drive for folder `Retrospective Management`.
    - `listFolder` on parent ID; `deleteItem` each **child** retro folder (trash).
@@ -53,7 +53,7 @@ Follow [`.cursor/rules/privacy.mdc`](../../rules/privacy.mdc) — do not log fee
 
 ## Validation
 
-- `retro-api/data/retrospectives/` has no `RETRO-*` folders after step 2.
+- `repos/retro-api/data/retrospectives/` has no `RETRO-*` folders after step 2.
 - Drive `listFolder` shows no retro subfolders (when Drive step ran).
 
 ## Failure handling

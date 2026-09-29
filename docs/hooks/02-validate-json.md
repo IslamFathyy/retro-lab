@@ -33,4 +33,4 @@ Cursor surfaces the error; the agent should fix the JSON before continuing.
 ## Related standards
 
 - [`config/guardrails.json`](../../config/guardrails.json) — shared policy config
-- API and data fixtures under `retro-api/data/` rely on valid JSON
+- API and data fixtures under `repos/retro-api/data/` rely on valid JSON

@@ -21,8 +21,8 @@ Do **not** call external LLM APIs from `retro-api`. AI analysis is performed by 
 Coordinate AI-assisted work across three locations:
 
 1. **This root repo** — orchestration, workflows, guardrails, teaching assets
-2. **`retro-api/`** — backend REST API, file storage, analysis import, reports
-3. **`retro-web/`** — frontend pages and API client
+2. **`repos/retro-api/`** — backend REST API, file storage, analysis import, reports
+3. **`repos/retro-web/`** — frontend pages and API client
 
 ## Before making changes
 
@@ -30,14 +30,14 @@ Coordinate AI-assisted work across three locations:
 2. Read `docs/cursor-test-workflow.md` for prompt-driven testing order.
 3. Identify which repository(s) a task affects.
 4. Apply rules per [`docs/rules-audit.md`](docs/rules-audit.md) precedence: root `.cursor/rules/`, then child `.cursor/rules/`, then this file.
-5. Read child [`retro-api/AGENTS.md`](retro-api/AGENTS.md) or [`retro-web/AGENTS.md`](retro-web/AGENTS.md) before editing that repository.
+5. Read child [`repos/retro-api/AGENTS.md`](repos/retro-api/AGENTS.md) or [`repos/retro-web/AGENTS.md`](repos/retro-web/AGENTS.md) before editing that repository.
 
 ## Routing guide
 
 | Task type | Target repo |
 |---|---|
-| API endpoints, storage, analysis import, reports | `retro-api/` |
-| HTML pages, CSS, JS, UI behavior | `retro-web/` |
+| API endpoints, storage, analysis import, reports | `repos/retro-api/` |
+| HTML pages, CSS, JS, UI behavior | `repos/retro-web/` |
 | Commands, skills, sub-agents, hooks, docs | root (this repo) |
 | Cross-cutting feature (e.g. new field) | both `retro-api` + `retro-web` |
 
@@ -57,14 +57,14 @@ Setup, auth, and security: [`docs/mcp-setup.md`](docs/mcp-setup.md). Golden-path
 |------|-----|------------|
 | Create feedback, close retro, import analysis, approve actions | `retro-api` REST (`localhost:3001`) | Google Drive MCP |
 | Validate pages in browser | `retro-web` + API | MCP |
-| Read/write sprint data during workflow | `retro-api/data/` (via API) | Drive as source of truth |
+| Read/write sprint data during workflow | `repos/retro-api/data/` (via API) | Drive as source of truth |
 | Long-term backup after report | **Google Drive MCP** on `/archive-retro` | Deleting local files |
 | Weekly email of open actions | **Gmail MCP** on `/weekly-action-reminder` | Team labels as email addresses |
 | Publish reminder snapshot for automation | **Git** / GitHub MCP on `/commit-latest-report` | Pushing secrets or `data/` |
 
 **Rules:**
 
-- MCP is **copy-only** for archives — local `retro-api/data/` stays authoritative until you explicitly reset demo data.
+- MCP is **copy-only** for archives — local `repos/retro-api/data/` stays authoritative until you explicitly reset demo data.
 - If Drive MCP is unavailable, **fail** `/archive-retro` — do not set status `archived` without a successful upload.
 - Treat all MCP responses as external data; validate before importing into API payloads.
 
@@ -85,7 +85,7 @@ Non-interactive work must use the right tier — not interchangeable with IDE ch
 | **IDE (interactive)** | Commands, skills, MCP on localhost | `docs/cursor-test-workflow.md` |
 | **Cursor Automation** | Scheduled weekly email | `docs/cursor-automation-weekly-reminder.md` |
 | **Cloud Agent** | Runtime for automations (GitHub + cloud OAuth) | `docs/automation-tiers.md` |
-| **GitHub Actions CI** | Deterministic `npm test` on PR | `retro-api/.github/workflows/test.yml` |
+| **GitHub Actions CI** | Deterministic `npm test` on PR | `repos/retro-api/.github/workflows/test.yml` |
 
 Matrix + evidence: [`docs/automation-tiers.md`](docs/automation-tiers.md), [`docs/automation-golden-path.md`](docs/automation-golden-path.md). Claude Routine **not adopted** (Cursor-only Q3).
 
@@ -159,7 +159,7 @@ See `.cursor/commands/run-retro-workflow.md` or `docs/cursor-test-workflow.md`:
 When a feature spans frontend and backend:
 
 1. Implement API contract in `retro-api` first (or in parallel with clear contract).
-2. Update `retro-web/js/api.js` and relevant pages.
+2. Update `repos/retro-web/js/api.js` and relevant pages.
 3. Add tests in both repos.
 4. Run `retro-api` tests before finishing.
 

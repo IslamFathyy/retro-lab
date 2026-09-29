@@ -4,5 +4,5 @@ node_modules/
 .DS_Store
 
 # Application repos are separate git repositories — see repos.json
-retro-api/
-retro-web/
+repos/retro-api/
+repos/retro-web/

@@ -12,7 +12,7 @@
 
 After the agent edits a file under:
 
-`retro-api/data/retrospectives/{retroId}/feedback/*.json`
+`repos/retro-api/data/retrospectives/{retroId}/feedback/*.json`
 
 ## What it blocks
 
@@ -33,7 +33,7 @@ API guardrails (C1, P1, P4) do not cover file edits; this hook does.
 ## How to test on a branch
 
 1. Ensure demo data exists (`npm run seed:demo` in `retro-api`).
-2. Ask the agent to change the `text` field in any file under `retro-api/data/retrospectives/RETRO-2026-001/feedback/`.
+2. Ask the agent to change the `text` field in any file under `repos/retro-api/data/retrospectives/RETRO-2026-001/feedback/`.
 3. **Pass:** Hook blocks with privacy message.
 4. Ask the agent to edit `config/guardrails.json` instead.
 5. **Pass:** Hook does not apply (different path).

@@ -19,7 +19,7 @@ Ask the user to reply with **`RESET DEMO`** before executing. Do not proceed on 
 3. Run local reset:
 
 ```bash
-cd retro-api
+cd repos/retro-api
 npm run reset:demo
 ```
 

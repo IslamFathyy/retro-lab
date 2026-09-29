@@ -1,6 +1,6 @@
 # Analysis JSON contract
 
-Cursor agents write analysis via `POST /api/retrospectives/{retroId}/analysis/import` or by writing `retro-api/data/retrospectives/{retroId}/analysis.json` and updating retro status.
+Cursor agents write analysis via `POST /api/retrospectives/{retroId}/analysis/import` or by writing `repos/retro-api/data/retrospectives/{retroId}/analysis.json` and updating retro status.
 
 ## Required top-level fields
 

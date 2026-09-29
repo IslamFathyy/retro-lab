@@ -1,6 +1,6 @@
 # Reminder snapshots for weekly email automation
 
-Cloud Cursor Automations cannot read gitignored `retro-api/data/`. At archive time, export a committed snapshot here.
+Cloud Cursor Automations cannot read gitignored `repos/retro-api/data/`. At archive time, export a committed snapshot here.
 
 ## Files
 
@@ -14,7 +14,7 @@ Cloud Cursor Automations cannot read gitignored `retro-api/data/`. At archive ti
 ## Export
 
 ```bash
-cd retro-api
+cd repos/retro-api
 npm run export:reminder
 ```
 

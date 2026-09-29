@@ -24,7 +24,7 @@ Back up one retrospective to Google Drive, set local status `archived`, and expo
 | Input | Source |
 | --- | --- |
 | `retroId` | User or command |
-| Local files | `retro-api/data/retrospectives/{retroId}/` |
+| Local files | `repos/retro-api/data/retrospectives/{retroId}/` |
 | Drive MCP | `user-google-drive` tools |
 | Setup | [docs/mcp-setup.md](../../../docs/mcp-setup.md), [docs/mcp-golden-path.md](../../../docs/mcp-golden-path.md) |
 
@@ -39,7 +39,7 @@ Back up one retrospective to Google Drive, set local status `archived`, and expo
    - Feedback folder: each `feedback/FB-*.json`
 6. **Verify** with `listFolder` on retro folder — expect 4 files + feedback folder.
 7. Mark archived via API; **keep** all local files.
-8. Run `cd retro-api && npm run export:reminder` → writes `docs/reminders/latest-reminder.json`.
+8. Run `cd repos/retro-api && npm run export:reminder` → writes `docs/reminders/latest-reminder.json`.
 9. Tell user to run `/commit-latest-report` for Sunday automation.
 
 **Never** upload in parallel with path-based `parentFolderId` (creates duplicate parents).

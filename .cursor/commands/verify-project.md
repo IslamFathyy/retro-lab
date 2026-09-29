@@ -4,7 +4,7 @@ Run verification before starting the Cursor test workflow.
 
 ## Steps
 
-1. Run `npm test` in `retro-api/` — all tests must pass.
+1. Run `npm test` in `repos/retro-api/` — all tests must pass.
 2. Confirm API health: `GET http://localhost:3001/api/health`
 3. Confirm web UI serves: `GET http://localhost:8080/index.html`
 4. Check orchestration assets exist:

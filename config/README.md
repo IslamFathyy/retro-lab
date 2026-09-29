@@ -17,7 +17,7 @@ Canonical **team owners** for retrospective action items (not individuals).
 | `management-team` | Management Team |
 
 - Each suggested action and approved action uses `ownerTeams: string[]` (one or more ids from this list).
-- `retro-api` loads from `GUARDRAILS_CONFIG` / `ACTION_TEAMS_CONFIG`, sibling `../config/`, or `retro-api/config/` fallback.
+- `retro-api` loads from `GUARDRAILS_CONFIG` / `ACTION_TEAMS_CONFIG`, sibling `../config/`, or `repos/retro-api/config/` fallback.
 
 ## Recurring topics — [`recurring-topics.json`](recurring-topics.json)
 

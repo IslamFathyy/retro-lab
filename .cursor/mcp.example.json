@@ -1,16 +1,22 @@
 {
   "mcpServers": {
+    "readme-doctor": {
+      "comment": "Bundled plugin MCP — requires npm run build in plugins/readme-doctor",
+      "command": "node",
+      "args": ["${workspaceFolder}/plugins/readme-doctor/dist/mcp-server.js"]
+    },
     "google-drive": {
-      "comment": "Copy to ~/.cursor/mcp.json. One-time: place OAuth Desktop app JSON at ~/.config/google-drive-mcp/gcp-oauth.keys.json then run: npx -y @piotr-agier/google-drive-mcp auth",
+      "comment": "One-time: OAuth Desktop JSON at ~/.config/google-drive-mcp/gcp-oauth.keys.json then npx -y @piotr-agier/google-drive-mcp auth",
       "command": "cmd",
       "args": ["/c", "npx", "-y", "@piotr-agier/google-drive-mcp"]
     },
-    "outlook": {
+    "gmail": {
+      "comment": "Approve OAuth on first send_message in agent chat (or Gmail plugin in Settings)",
       "type": "http",
-      "url": "https://api.cursor.com/rest-mcp/outlook/mcp"
+      "url": "https://gmailmcp.googleapis.com/mcp/v1"
     },
     "github": {
-      "comment": "Official GitHub remote MCP (OAuth). Copy url block to ~/.cursor/mcp.json, restart Cursor, then approve OAuth on first tool use. Alternative: enable GitHub plugin under Customize → Plugins.",
+      "comment": "Remote MCP — approve OAuth on first tool use",
       "url": "https://api.github.com/mcp/"
     }
   }

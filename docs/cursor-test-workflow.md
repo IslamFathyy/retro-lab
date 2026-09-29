@@ -16,17 +16,19 @@ You (prompts) → Cursor Agent → API + local JSON files
 
 ## Before you start
 
+If `repos/retro-api` and `repos/retro-web` are missing, from the retro-lab root run `./clone-repos.sh` (see [`repos/README.md`](../repos/README.md)).
+
 Terminal 1:
 
 ```powershell
-cd retro-api
+cd repos/retro-api
 npm start
 ```
 
 Terminal 2:
 
 ```powershell
-cd retro-web
+cd repos/retro-web
 npm start
 ```
 
@@ -43,7 +45,7 @@ npm start
 Check first:
 
 ```bash
-cd retro-api && npm run retro:status
+cd repos/retro-api && npm run retro:status
 ```
 
 If `hasData` is true, **skip** seeding and use `suggestedWorkflowTarget` (e.g. `RETRO-2026-001`). To force a reset: `/reset-demo-retro` then `/seed-demo-retro`.
@@ -139,8 +141,8 @@ Run the full retrospective test workflow in order. Use Cursor model for analysis
 | **Command** | `/analyze-retro`, `/seed-demo-retro`, etc. |
 | **Skill** | `analyze-retrospective`, `generate-retro-report` |
 | **Sub-agent** | `feedback-analyst`, `improvement-advisor`, `verifier` (required for `/analyze-retro`) — see [`sub-agents.md`](sub-agents.md) |
-| **Rules** | Root: `privacy.mdc`, `orchestration.mdc`, `development.mdc`; child: `retro-api/.cursor/rules/`, `retro-web/.cursor/rules/` — see [`rules-audit.md`](rules-audit.md) |
-| **AGENTS.md** | Parent + per-repo (`retro-api/`, `retro-web/`) |
+| **Rules** | Root: `privacy.mdc`, `orchestration.mdc`, `development.mdc`; child: `repos/retro-api/.cursor/rules/`, `repos/retro-web/.cursor/rules/` — see [`rules-audit.md`](rules-audit.md) |
+| **AGENTS.md** | Parent + per-repo (`repos/retro-api/`, `repos/retro-web/`) |
 | **Hooks** | JSON validation, dangerous-command block, `subagentStop` → `.cursor/logs/subagent-activity.log` |
 | **MCP** | Google Drive archive (required in full workflow) — setup: [`mcp-setup.md`](mcp-setup.md), sign-off: [`mcp-golden-path.md`](mcp-golden-path.md) |
 | **Human-in-the-loop** | Approve suggestions, archive, merge PRs |
@@ -148,7 +150,7 @@ Run the full retrospective test workflow in order. Use Cursor model for analysis
 ## Files produced
 
 ```text
-retro-api/data/retrospectives/RETRO-2026-001/
+repos/retro-api/data/retrospectives/RETRO-2026-001/
 ├── retro.json
 ├── feedback/FB-*.json
 ├── analysis.json      ← Cursor agent

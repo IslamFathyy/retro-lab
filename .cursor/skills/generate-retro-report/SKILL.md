@@ -25,7 +25,7 @@ Produce `report.md` and stored report insights (charts) from local retro files, 
 | Input | Source |
 | --- | --- |
 | `retroId` | User or command |
-| Current + prior retro context | `retro-api/data/` via API or files |
+| Current + prior retro context | `repos/retro-api/data/` via API or files |
 | Insights contract | [references/report-insights-contract.md](references/report-insights-contract.md) |
 
 ## Workflow

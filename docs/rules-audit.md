@@ -15,7 +15,7 @@ Highest wins first:
 |----------|--------|-------|---------|
 | 1 | **User Cursor rules** | Global (outside Git) | Personal tone, org-wide security |
 | 2 | **Project rules** `alwaysApply: true` | Repo or workspace | `privacy.mdc`, `development.mdc` |
-| 3 | **Project rules** (glob-scoped) | Matching file paths | `retro-api/.cursor/rules/storage.mdc` on `src/services/**` |
+| 3 | **Project rules** (glob-scoped) | Matching file paths | `repos/retro-api/.cursor/rules/storage.mdc` on `src/services/**` |
 | 4 | **`AGENTS.md`** | Per repository | Routing, stack, test expectations |
 | 5 | **Skills** `.cursor/skills/*/SKILL.md` | When command invokes skill | `/analyze-retro` workflow steps |
 | 6 | **Commands** `.cursor/commands/*.md` | Thin entry points | Args + “read skill X” |
@@ -88,7 +88,7 @@ Shared privacy/stack rules: **root** `.cursor/rules/privacy.mdc` + `development.
 
 | Issue | Resolution |
 |-------|------------|
-| README claimed child `AGENTS.md` existed | Added `retro-api/AGENTS.md`, `retro-web/AGENTS.md` |
+| README claimed child `AGENTS.md` existed | Added `repos/retro-api/AGENTS.md`, `repos/retro-web/AGENTS.md` |
 | `orchestration.mdc` said read child AGENTS.md | Files now exist |
 | PLAN §18 listed rules not in repo | Implemented subset in child repos; PLAN remains roadmap |
 | Privacy in 5+ places | Single source: `privacy.mdc`; skills reference it |

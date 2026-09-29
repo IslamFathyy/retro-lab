@@ -25,9 +25,9 @@ Produce `analysis.json` (themes, strengths, concerns, limitations, suggested act
 | Input | Source |
 | --- | --- |
 | `retroId` | User or command argument |
-| Retro metadata | `retro-api/data/retrospectives/{retroId}/retro.json` |
-| Feedback | All files in `retro-api/data/retrospectives/{retroId}/feedback/` |
-| Team ids for actions | `retro-api/config/action-teams.json` (or parent `config/`) |
+| Retro metadata | `repos/retro-api/data/retrospectives/{retroId}/retro.json` |
+| Feedback | All files in `repos/retro-api/data/retrospectives/{retroId}/feedback/` |
+| Team ids for actions | `repos/retro-api/config/action-teams.json` (or parent `config/`) |
 
 ## Workflow
 
@@ -37,7 +37,7 @@ Produce `analysis.json` (themes, strengths, concerns, limitations, suggested act
 4. **Task → `improvement-advisor`** — pass step 3 output; receive `suggestedActions` only.
 5. **Parent merges** payloads; validate every feedback ID reference and every `suggestedActions[].ownerTeams` against `action-teams.json`.
 6. `POST http://localhost:3001/api/retrospectives/{retroId}/analysis/import` with body per `references/analysis-contract.md`; set `generatedBy` to `"cursor-agent"`.
-7. **Task → `verifier`** — validate imported `analysis.json`, privacy rules, run `npm test` in `retro-api/`.
+7. **Task → `verifier`** — validate imported `analysis.json`, privacy rules, run `npm test` in `repos/retro-api/`.
 8. Tell the user to validate in the web UI or run `/validate-retro-ui`.
 
 Sub-agents must end with: `SUBAGENT_SUMMARY: <what was completed>` (logged by `subagentStop` hook).
@@ -57,7 +57,7 @@ Follow [`.cursor/rules/privacy.mdc`](../../rules/privacy.mdc) and [`.cursor/rule
 ## Validation
 
 - **Contract:** Payload matches [`.cursor/skills/analyze-retrospective/references/analysis-contract.md`](references/analysis-contract.md).
-- **Tests:** `cd retro-api && npm test` (verifier sub-agent).
+- **Tests:** `cd repos/retro-api && npm test` (verifier sub-agent).
 - **Deterministic checklist:** [`docs/skills/verify-analyze-retrospective.md`](../../../docs/skills/verify-analyze-retrospective.md).
 - **Sub-agent evidence:** `.cursor/logs/subagent-activity.log` contains `SUBAGENT_SUMMARY` lines for the three sub-agents.
 

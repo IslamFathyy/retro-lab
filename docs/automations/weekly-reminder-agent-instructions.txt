@@ -10,6 +10,6 @@ Send the weekly retrospective action reminder email. Do not modify any repositor
 
 3. Do NOT compose recipients from openActions.teams or ownerTeams — those are team labels (Dev Team, QA Team), not email addresses.
 
-4. Do NOT change, guess, or substitute the "to" addresses. If latest-email-payload.json is missing, stop with error: run cd retro-api && npm run export:reminder then /commit-latest-report.
+4. Do NOT change, guess, or substitute the "to" addresses. If latest-email-payload.json is missing, stop with error: run cd repos/retro-api && npm run export:reminder then /commit-latest-report.
 
 5. Report the Gmail message id on success.

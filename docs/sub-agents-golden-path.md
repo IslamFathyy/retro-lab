@@ -33,7 +33,7 @@ SUBAGENT_SUMMARY: 5 suggested actions for RETRO-2026-001 — (1) dev-to-QA hando
 
 **verifier (verification):**
 ```text
-SUBAGENT_SUMMARY: PASS — analysis.json schema/refs/privacy validated; generatedBy=cursor-agent confirmed; npm test 26/26 passed in retro-api/; no blockers.
+SUBAGENT_SUMMARY: PASS — analysis.json schema/refs/privacy validated; generatedBy=cursor-agent confirmed; npm test 26/26 passed in repos/retro-api/; no blockers.
 ```
 
 Hook log (when configured): `.cursor/logs/subagent-activity.log`

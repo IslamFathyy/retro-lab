@@ -29,7 +29,7 @@ Enforced settings live in [`config/guardrails.json`](../config/guardrails.json) 
 Full setup, allowed tools, and error handling: [`mcp-setup.md`](mcp-setup.md). Golden-path sign-off: [`mcp-golden-path.md`](mcp-golden-path.md).
 
 - Google Drive is archive/backup only — never delete local files on archive
-- Local `retro-api/data/` is source of truth during active workflow
+- Local `repos/retro-api/data/` is source of truth during active workflow
 - MCP runs in Cursor agents only — not in `retro-api` or `retro-web` at runtime
 - No OAuth tokens or `mcp.json` secrets in Git
 - Validate MCP output before merging into API import payloads

@@ -61,7 +61,7 @@ Same runs as Tier 2 — cloud VM executes the automation prompt.
 
 | Check | Result | Evidence |
 |-------|--------|----------|
-| Workflow file | ☑ PASS | `retro-api/.github/workflows/test.yml` |
+| Workflow file | ☑ PASS | `repos/retro-api/.github/workflows/test.yml` |
 | Local `npm test` | ☑ PASS | 26/26 tests (2026-09-19) |
 | Green run on GitHub | ☐ PENDING | Push workflow; attach Actions URL |
 
@@ -73,7 +73,7 @@ Same runs as Tier 2 — cloud VM executes the automation prompt.
 | Workflow run URL | |
 | Result | |
 
-**Rollback:** Revert failing commit; fix tests locally with `cd retro-api && npm test`.
+**Rollback:** Revert failing commit; fix tests locally with `cd repos/retro-api && npm test`.
 
 ---
 

@@ -14,7 +14,7 @@ Check results against files and tests. Report pass/fail only — do not fix code
 - Paths to verify: e.g. `analysis.json`, `report.md`, changed source files
 - Checklist from parent: privacy rules, schema, test expectations
 
-For `/analyze-retro`: imported `analysis.json`, privacy checklist, run `npm test` in `retro-api/`.
+For `/analyze-retro`: imported `analysis.json`, privacy checklist, run `npm test` in `repos/retro-api/`.
 
 ## Output
 

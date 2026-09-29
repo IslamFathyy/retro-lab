@@ -17,7 +17,7 @@ Publish `docs/reminders/latest-reminder.json` to `IslamFathyy/retro-lab` `main` 
 - Command `/commit-latest-report`
 - After `/archive-retro` export step (workflow step 9)
 
-**Do not use** before snapshot exists or to commit `retro-api/data/`.
+**Do not use** before snapshot exists or to commit `repos/retro-api/data/`.
 
 ## Inputs
 
@@ -29,7 +29,7 @@ Publish `docs/reminders/latest-reminder.json` to `IslamFathyy/retro-lab` `main` 
 
 ## Workflow
 
-1. Work from **orchestration root** (not `retro-api/`).
+1. Work from **orchestration root** (not `repos/retro-api/`).
 2. Confirm `docs/reminders/latest-reminder.json` exists.
 3. Run `git status` — file new or modified.
 4. If unchanged vs `HEAD`, report **SKIP** (already on GitHub).
