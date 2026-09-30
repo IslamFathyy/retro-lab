@@ -13,7 +13,10 @@ if (!file) {
 
 const basename = file.split('/').pop() || '';
 
+const isMcpJson = /\/\.cursor\/mcp\.json$/i.test(file);
+
 const blocked =
+  isMcpJson ||
   // .env and variants (allow .env.example templates)
   (/\.env$/i.test(basename) && basename.toLowerCase() !== '.env.example') ||
   /^\.env\.(?!example)/i.test(basename) ||
@@ -25,9 +28,15 @@ const blocked =
   /secrets\.json$/i.test(basename);
 
 if (blocked) {
-  console.error(
-    `Blocked: do not create or edit secret/credential files via the agent (${file}). Use local env or secret manager outside Git.`
-  );
+  if (isMcpJson) {
+    console.error(
+      `Blocked: do not edit generated MCP config (${file}). Change mcp-config.json and run scripts/setup-mcp.ps1.`
+    );
+  } else {
+    console.error(
+      `Blocked: do not create or edit secret/credential files via the agent (${file}). Use local env or secret manager outside Git.`
+    );
+  }
   process.exit(1);
 }
 

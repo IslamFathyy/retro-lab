@@ -5,8 +5,11 @@
       "args": ["${workspaceFolder}/plugins/readme-doctor/dist/mcp-server.js"]
     },
     "google-drive": {
-      "command": "cmd",
-      "args": ["/c", "npx", "-y", "@piotr-agier/google-drive-mcp"]
+      "command": "${env:MCP_NPX_PATH}",
+      "args": ["-y", "@piotr-agier/google-drive-mcp"],
+      "env": {
+        "GOOGLE_DRIVE_OAUTH_KEYS_DIR": "${env:GOOGLE_DRIVE_OAUTH_KEYS_DIR}"
+      }
     },
     "gmail": {
       "type": "http",

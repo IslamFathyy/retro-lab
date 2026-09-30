@@ -17,6 +17,7 @@ After the agent edits any file whose path matches a blocked secret pattern.
 | Pattern | Examples |
 |---------|----------|
 | `.env` (not `.env.example`) | `.env`, `.env.local`, `.env.production` |
+| Generated MCP config | `.cursor/mcp.json` (edit `mcp-config.json` + run setup script) |
 | Credential JSON | `credentials.json`, `secrets.json`, `gcp-oauth.keys.json` |
 | Key material | `*.pem`, `id_rsa`, `*.pfx` |
 

@@ -20,9 +20,27 @@ MCP servers are available to **Cursor agents only**. The running web app (`retro
 
 ## Configuration
 
-### Project config (this repo)
+### Template vs local (Chartswap-style)
 
-Retro Lab MCP servers live in **[`.cursor/mcp.json`](../.cursor/mcp.json)** at the orchestration root:
+| File | In git? | Purpose |
+|------|---------|---------|
+| [`mcp-config.json`](../mcp-config.json) | Yes | Team template — edit to add/change servers |
+| [`.cursor/mcp.json`](../.cursor/mcp.json) | **No** (gitignored) | Cursor loads this; copy from template via setup script |
+| [`.env`](../.env) | **No** | Real env values; copy from [`env.example`](../env.example) |
+
+**Setup:**
+
+1. `copy env.example .env` (Windows) or `cp env.example .env`
+2. `.\scripts\setup-mcp.ps1` or `bash scripts/setup-mcp.sh`
+3. **Restart Cursor** — `${env:VAR}` is resolved at MCP runtime from your user environment (Windows script sets User env vars from `.env`)
+
+Open **retro-lab** or **`retro-lab.code-workspace`**, then **Settings → MCP**. Reload after template or env changes.
+
+**Avoid duplicates:** remove the same server names from user `~/.cursor/mcp.json` if you moved config here (keep personal-only MCPs like Lokka in user config).
+
+Never commit OAuth key files or tokens. The committed template contains only commands, public URLs, and `${env:...}` placeholders.
+
+### Project servers (from template)
 
 | Server | Workflow |
 |--------|----------|
@@ -30,14 +48,6 @@ Retro Lab MCP servers live in **[`.cursor/mcp.json`](../.cursor/mcp.json)** at t
 | `google-drive` | `/archive-retro`, Drive cleanup on reset |
 | `gmail` | `/weekly-action-reminder` |
 | `github` | `/commit-latest-report`, PR/issue tools |
-
-Open the **retro-lab** workspace (or `retro-lab.code-workspace`), then **Settings → MCP** — project servers load with the repo. Reload the window after edits.
-
-Template with comments: [`.cursor/mcp.example.json`](../.cursor/mcp.example.json).
-
-**Avoid duplicates:** remove the same server names from user `~/.cursor/mcp.json` if you moved config here (keep personal-only MCPs like Outlook/Lokka in user config).
-
-Never commit OAuth key files or tokens. The committed `mcp.json` contains only commands and public MCP URLs.
 
 ### Google Drive (stdio)
 
@@ -50,7 +60,7 @@ Package: `@piotr-agier/google-drive-mcp`
 3. Create **Desktop app** OAuth client → download JSON.
 4. Save as `%USERPROFILE%\.config\google-drive-mcp\gcp-oauth.keys.json`
 5. Run: `npx -y @piotr-agier/google-drive-mcp auth`
-6. Add server block to `mcp.json` (see example file), restart Cursor.
+6. Run `.\scripts\setup-mcp.ps1` (copies template to `.cursor/mcp.json`), restart Cursor.
 7. **Settings → MCP** — confirm `google-drive` is connected.
 
 **Verify in chat:**
@@ -69,7 +79,7 @@ See [`cursor-automation-weekly-reminder.md`](cursor-automation-weekly-reminder.m
 
 ### GitHub (remote OAuth)
 
-Add `url: https://api.github.com/mcp/` block from `mcp.example.json`, restart Cursor, approve OAuth on first use.
+Add the `github` block from [`mcp-config.json`](../mcp-config.json) via setup script, restart Cursor, approve OAuth on first use.
 
 Alternative: enable GitHub under **Customize → Plugins**.
 
@@ -126,7 +136,7 @@ Full archive procedure: [`.cursor/skills/archive-retrospective/SKILL.md`](../.cu
 
 | Control | Implementation |
 |---------|----------------|
-| No secrets in Git | `mcp.example.json` only; `.env` blocked by hook |
+| No secrets in Git | `mcp-config.json` template only; `.cursor/mcp.json` gitignored; `.env` blocked by hook |
 | Least privilege | Drive: app-folder scope via OAuth; Gmail: send from connected account only |
 | Copy-only archive | Never delete local retro files on archive |
 | Agent-only | No MCP in `retro-api` / `retro-web` runtime |

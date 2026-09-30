@@ -2,6 +2,7 @@ node_modules/
 .env
 *.log
 .DS_Store
+.cursor/mcp.json
 
 # Application repos are separate git repositories — see repos.json
 repos/retro-api/

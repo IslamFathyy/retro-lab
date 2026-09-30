@@ -10,7 +10,7 @@
 - [Prerequisites](#prerequisites)
 - [Repository structure](#repository-structure)
 - [Development ports](#development-ports)
-- [MCP setup (Cursor agents)](#mcp-setup-cursor-agents)
+- [MCP Integration Setup (optional)](#mcp-integration-setup-optional)
 - [AI concepts in this repo](#ai-concepts-in-this-repo)
 - [Typical workflow](#typical-workflow)
 - [Documentation map](#documentation-map)
@@ -53,7 +53,7 @@ npm start
 ```
 
 1. Open **`retro-lab.code-workspace`** in Cursor (all three repos in Source Control).
-2. **Settings → MCP** — confirm project servers from [`.cursor/mcp.json`](.cursor/mcp.json) are enabled; **Reload Window** after changes.
+2. **MCP (optional):** `copy env.example .env`, then `.\scripts\setup-mcp.ps1` — see [MCP Integration Setup](#mcp-integration-setup-optional). **Restart Cursor** after setup.
 3. In chat: **`/verify-project`**, then **`/run-retro-workflow`** or [`docs/cursor-test-workflow.md`](docs/cursor-test-workflow.md).
 
 Open http://localhost:8080
@@ -65,7 +65,7 @@ Open http://localhost:8080
 1. Clone **retro-lab** and run **`clone-repos.sh`** (above).
 2. Open the **workspace file** and read **[`AGENTS.md`](AGENTS.md)** (orchestration agent + routing).
 3. Skim **[`docs/cursor-test-workflow.md`](docs/cursor-test-workflow.md)** — prompt order for testing.
-4. Optional: complete **[MCP setup](#mcp-setup-cursor-agents)** for archive, email, and GitHub workflows.
+4. Optional: complete **[MCP Integration Setup](#mcp-integration-setup-optional)** for archive, email, and GitHub workflows.
 5. Per-repo detail: [`repos/retro-api/README.md`](repos/retro-api/README.md), [`repos/retro-web/AGENTS.md`](repos/retro-web/AGENTS.md).
 
 **What you get:** one workspace, three git repos, shared Cursor commands/skills, and a full demo retrospective path without calling OpenAI/Anthropic from `retro-api`.
@@ -91,7 +91,10 @@ Optional for full workflow:
 
 ```
 retro-lab/                 ← you are here (orchestration)
-├── .cursor/               commands, skills, sub-agents, rules, hooks, mcp.json
+├── mcp-config.json        committed MCP template (${env:...} placeholders)
+├── env.example            copy to .env for MCP setup (gitignored)
+├── scripts/setup-mcp.ps1  generates .cursor/mcp.json from template
+├── .cursor/               commands, skills, sub-agents, rules, hooks (mcp.json local)
 ├── docs/                  workflows, MCP, guardrails, automation
 ├── plugins/readme-doctor/ optional Cursor plugin (README MCP)
 ├── clone-repos.sh         clones app repos into repos/
@@ -124,20 +127,38 @@ API env (see `repos/retro-api/.env.example`): `PORT`, `DATA_ROOT`.
 
 ---
 
-## MCP setup (Cursor agents)
+## MCP Integration Setup (optional)
 
-Project MCP config: **[`.cursor/mcp.json`](.cursor/mcp.json)** (template: [`.cursor/mcp.example.json`](.cursor/mcp.example.json)).
+| File | Role |
+|------|------|
+| [`mcp-config.json`](mcp-config.json) | **Committed template** — team source of truth; `${env:VAR}` only, no tokens |
+| [`.cursor/mcp.json`](.cursor/mcp.json) | **Generated locally** (gitignored) — Cursor reads this at runtime |
+| [`.env`](.env) | **Gitignored** — real values; copy from [`env.example`](env.example) |
 
-| Server | Used for |
-|--------|----------|
-| **readme-doctor** | `/check-readme`, `/fix-readme` |
-| **google-drive** | `/archive-retro`, Drive cleanup on `/reset-demo-retro` |
-| **gmail** | `/weekly-action-reminder` |
-| **github** | `/commit-latest-report`, PR/issue tools |
+**Developer flow:**
 
-**First-time:** open retro-lab as the workspace folder so `${workspaceFolder}/plugins/readme-doctor/...` resolves. Complete OAuth per [`docs/mcp-setup.md`](docs/mcp-setup.md). Avoid duplicating the same server names in user `~/.cursor/mcp.json`.
+1. `copy env.example .env` and set paths (e.g. `MCP_NPX_PATH`, `GOOGLE_DRIVE_OAUTH_KEYS_DIR`).
+2. Run **`.\scripts\setup-mcp.ps1`** (Windows) or **`bash scripts/setup-mcp.sh`** (Git Bash / macOS / Linux).
+3. **Restart Cursor** after any `.env` or `mcp-config.json` change (Cursor resolves `${env:...}` from your environment).
+4. **Settings → MCP** — confirm project servers are enabled.
 
-Sign-off checklist: [`docs/mcp-golden-path.md`](docs/mcp-golden-path.md).
+To share behavior via git: edit **`mcp-config.json`**, re-run setup locally — do not commit `.cursor/mcp.json`.
+
+| Server | Required? | Used for |
+|--------|-----------|----------|
+| **google-drive** | **Yes** for full archive golden path | `/archive-retro`, `/reset-demo-retro` Drive cleanup |
+| **gmail** | Optional | `/weekly-action-reminder` |
+| **github** | Optional | `/commit-latest-report`, PR/issue tools |
+| **readme-doctor** | Optional | `/check-readme`, `/fix-readme` (build plugin first) |
+| **Lokka / M365** | Personal | Keep in user `~/.cursor/mcp.json` — see `env.example` comments |
+
+OAuth details: [`docs/mcp-setup.md`](docs/mcp-setup.md). Sign-off: [`docs/mcp-golden-path.md`](docs/mcp-golden-path.md).
+
+---
+
+## AI Agent Integration
+
+Cursor agents use **commands, skills, and sub-agents** in this repo; MCP extends agents to Drive, Gmail, and GitHub. The running **retro-api / retro-web** stack never calls MCP — see [Architecture](#repository-structure) above and [`AGENTS.md`](AGENTS.md).
 
 ---
 
@@ -150,7 +171,7 @@ Sign-off checklist: [`docs/mcp-golden-path.md`](docs/mcp-golden-path.md).
 | **Skills** | [`.cursor/skills/`](.cursor/skills/) | analyze-retrospective, archive-retrospective |
 | **Sub-agents** | [`.cursor/agents/`](.cursor/agents/) + Task | feedback-analyst, verifier |
 | **Hooks** | [`.cursor/hooks.json`](.cursor/hooks.json) | JSON validation, subagent activity log |
-| **MCP** | [`.cursor/mcp.json`](.cursor/mcp.json) | Drive, Gmail, GitHub |
+| **MCP** | [`mcp-config.json`](mcp-config.json) → local [`.cursor/mcp.json`](.cursor/mcp.json) | Drive, Gmail, GitHub |
 | **Plugins** | [`.cursor-plugin/marketplace.json`](.cursor-plugin/marketplace.json) | readme-doctor |
 
 Deeper catalog: [`AGENTS.md`](AGENTS.md), [`docs/sub-agents.md`](docs/sub-agents.md), [`docs/guardrails.md`](docs/guardrails.md), [`docs/automation-tiers.md`](docs/automation-tiers.md).
@@ -190,7 +211,7 @@ Full prompt order: [`docs/cursor-test-workflow.md`](docs/cursor-test-workflow.md
 
 ## Security
 
-- Do not commit `.env`, OAuth keys, or `repos/retro-api/data/` (child repo local data).
+- Do not commit `.env`, `.cursor/mcp.json`, OAuth keys, or `repos/retro-api/data/` (child repo local data).
 - MCP tokens live on your machine (e.g. `~/.config/google-drive-mcp/`), not in git.
 - Anonymous feedback must not be deanonymized in analysis — see [`.cursor/rules/privacy.mdc`](.cursor/rules/privacy.mdc).
 

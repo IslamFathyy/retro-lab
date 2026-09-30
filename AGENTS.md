@@ -53,6 +53,8 @@ MCP (Google Drive, GitHub, Gmail) → Cursor agents only, not the running web ap
 
 Setup, auth, and security: [`docs/mcp-setup.md`](docs/mcp-setup.md). Golden-path checklist: [`docs/mcp-golden-path.md`](docs/mcp-golden-path.md).
 
+**Project MCP:** committed template [`mcp-config.json`](mcp-config.json) → run [`scripts/setup-mcp.ps1`](scripts/setup-mcp.ps1) → gitignored [`.cursor/mcp.json`](.cursor/mcp.json). Secrets in `.env` only (from [`env.example`](env.example)).
+
 | Task | Use | Do not use |
 |------|-----|------------|
 | Create feedback, close retro, import analysis, approve actions | `retro-api` REST (`localhost:3001`) | Google Drive MCP |
