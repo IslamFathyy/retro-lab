@@ -66,7 +66,7 @@ Open http://localhost:8080
 2. Open the **workspace file** and read **[`AGENTS.md`](AGENTS.md)** (orchestration agent + routing).
 3. Skim **[`docs/cursor-test-workflow.md`](docs/cursor-test-workflow.md)** — prompt order for testing.
 4. Optional: complete **[MCP Integration Setup](#mcp-integration-setup-optional)** for archive, email, and GitHub workflows.
-5. Per-repo stack and boundaries: root [`AGENTS.md`](AGENTS.md) (**Child repositories**); READMEs: [`repos/retro-api/README.md`](repos/retro-api/README.md), [`repos/retro-web/README.md`](repos/retro-web/README.md).
+5. Per-repo stack and boundaries: [`AGENTS.md`](AGENTS.md). Cursor workflows: [`docs/agentic-engineering.md`](docs/agentic-engineering.md).
 
 **What you get:** one workspace, three git repos, shared Cursor commands/skills, and a full demo retrospective path without calling OpenAI/Anthropic from `retro-api`.
 
@@ -158,7 +158,7 @@ OAuth details: [`docs/mcp-setup.md`](docs/mcp-setup.md). Sign-off: [`docs/mcp-go
 
 ## AI Agent Integration
 
-Cursor agents use **commands, skills, and sub-agents** in this repo; MCP extends agents to Drive, Gmail, and GitHub. The running **retro-api / retro-web** stack never calls MCP — see [Architecture](#repository-structure) above and [`AGENTS.md`](AGENTS.md).
+Cursor agents use **commands, skills, and sub-agents** documented in [`docs/agentic-engineering.md`](docs/agentic-engineering.md). Application code never calls MCP — see [`AGENTS.md`](AGENTS.md).
 
 ---
 
@@ -174,7 +174,7 @@ Cursor agents use **commands, skills, and sub-agents** in this repo; MCP extends
 | **MCP** | [`mcp-config.json`](mcp-config.json) → local [`.cursor/mcp.json`](.cursor/mcp.json) | Drive, Gmail, GitHub |
 | **Plugins** | [`.cursor-plugin/marketplace.json`](.cursor-plugin/marketplace.json) | readme-doctor |
 
-Deeper catalog: [`AGENTS.md`](AGENTS.md), [`docs/sub-agents.md`](docs/sub-agents.md), [`docs/guardrails.md`](docs/guardrails.md), [`docs/automation-tiers.md`](docs/automation-tiers.md).
+Deeper catalog: [`docs/agentic-engineering.md`](docs/agentic-engineering.md), [`docs/sub-agents.md`](docs/sub-agents.md), [`docs/guardrails.md`](docs/guardrails.md), [`docs/automation-tiers.md`](docs/automation-tiers.md).
 
 **Testing model:** Cursor is the test runner; the web UI is for **validation only**. AI analysis runs in the agent (`/analyze-retro`), then imports via `POST .../analysis/import` — no LLM API keys in `retro-api`.
 
@@ -199,7 +199,8 @@ Full prompt order: [`docs/cursor-test-workflow.md`](docs/cursor-test-workflow.md
 
 | Doc | Purpose |
 |-----|---------|
-| [`AGENTS.md`](AGENTS.md) | Parent agent, MCP matrix, skills catalog |
+| [`AGENTS.md`](AGENTS.md) | Stack, structure, tests, boundaries (all repos) |
+| [`docs/agentic-engineering.md`](docs/agentic-engineering.md) | Commands, skills, MCP, sub-agents, workflow |
 | [`PLAN.md`](PLAN.md) | Scope and acceptance criteria |
 | [`docs/cursor-test-workflow.md`](docs/cursor-test-workflow.md) | Step-by-step Cursor testing |
 | [`docs/mcp-setup.md`](docs/mcp-setup.md) | Drive / Gmail / GitHub auth |

@@ -143,7 +143,7 @@ Full archive procedure: [`.cursor/skills/archive-retrospective/SKILL.md`](../.cu
 | External data | Validate MCP output before merging into import payloads |
 | Audit | Sub-agent logging hooks; optional future `beforeMCPExecution` hook |
 
-Details: [`guardrails.md`](guardrails.md) MCP section, [`AGENTS.md`](../AGENTS.md) MCP section.
+Details: [`guardrails.md`](guardrails.md) MCP section, [`docs/agentic-engineering.md`](agentic-engineering.md).
 
 ---
 

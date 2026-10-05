@@ -79,7 +79,7 @@ Do not add custom instructions — the command and skill define the workflow.
 
 After a passing run, capture for your manager:
 
-- Link to [AGENTS.md](../../AGENTS.md) Skills catalog
+- Link to [AGENTS.md](../../AGENTS.md) and [docs/agentic-engineering.md](../../docs/agentic-engineering.md) Skills catalog
 - Link to [analyze-retrospective SKILL.md](../../.cursor/skills/analyze-retrospective/SKILL.md)
 - Screenshot of analysis page or snippet of `analysis.json` with `generatedBy: cursor-agent`
 - Optional: last lines of `.cursor/logs/subagent-activity.log`

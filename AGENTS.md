@@ -1,250 +1,241 @@
-# Parent Agent — Retrospective Lab Orchestrator
+# AGENTS.md — Retrospective Lab
 
-You are the **parent orchestration agent** for the Retrospective Lab project.
+Instructions for coding agents working in this workspace (retro-lab + `repos/retro-api` + `repos/retro-web`).
 
-## Primary testing model
+**Agentic AI (commands, skills, MCP, sub-agents, workflows):** [`docs/agentic-engineering.md`](docs/agentic-engineering.md)
 
-**Cursor-driven workflow, web UI for validation only.**
+---
 
-| Layer | Role |
-|-------|------|
-| Cursor commands/skills/sub-agents | Create data, AI analysis, reports, verification |
-| `retro-api` | REST API + local JSON storage |
-| `retro-web` | Read-only validation of results in the browser |
+## 1. Project overview
 
-Do **not** call external LLM APIs from `retro-api`. AI analysis is performed by **you** (the Cursor agent) when the user runs `/analyze-retro`, then imported via:
+**Retrospective Lab** is a small retrospective management app used to teach multi-repo development. Teams collect feedback, run analysis, approve actions, generate reports, and optionally archive to Google Drive — via a local API and browser UI.
 
-`POST /api/retrospectives/{retroId}/analysis/import`
+| Repo | Role |
+|------|------|
+| **retro-lab** (root) | Docs, shared config, Cursor assets (not the running app) |
+| **retro-api** | REST API, JSON/Markdown storage under `data/` |
+| **retro-web** | Static UI that calls the API |
 
-## Your role
+Child repos are **separate git remotes**, cloned into `repos/` ([`clone-repos.sh`](clone-repos.sh), [`repos.json`](repos.json)). Open [`retro-lab.code-workspace`](retro-lab.code-workspace) for all three in Source Control.
 
-Coordinate AI-assisted work across three locations:
+Scope and phases: [`PLAN.md`](PLAN.md).
 
-1. **This root repo** — orchestration, workflows, guardrails, teaching assets
-2. **`repos/retro-api/`** — backend REST API, file storage, analysis import, reports
-3. **`repos/retro-web/`** — frontend pages and API client
+---
 
-## Before making changes
+## 2. Tech stack and technologies
 
-1. Read `PLAN.md` for scope and acceptance criteria.
-2. Read `docs/cursor-test-workflow.md` for prompt-driven testing order.
-3. Identify which repository(s) a task affects.
-4. Apply rules per [`docs/rules-audit.md`](docs/rules-audit.md) precedence: root `.cursor/rules/`, then child `.cursor/rules/` under `repos/retro-api/` or `repos/retro-web/`, then this file.
-5. Read the **Child repositories** section below for stack, boundaries, and tests before editing `repos/retro-api/` or `repos/retro-web/`.
+### retro-lab (root)
 
-## Routing guide
-
-| Task type | Target repo |
-|---|---|
-| API endpoints, storage, analysis import, reports | `repos/retro-api/` |
-| HTML pages, CSS, JS, UI behavior | `repos/retro-web/` |
-| Commands, skills, sub-agents, hooks, docs | root (this repo) |
-| Cross-cutting feature (e.g. new field) | both `retro-api` + `retro-web` |
-
-## Child repositories
-
-Single source of agent instructions for all repos. Child folders have **no** separate `AGENTS.md` — only repo-specific **rules** under `repos/*/.cursor/rules/`.
-
-### retro-lab (this repo)
-
-| | |
-|---|---|
-| **Role** | Orchestration — commands, skills, sub-agents, hooks, MCP template, docs |
-| **Stack** | Markdown, JSON, PowerShell/Bash scripts; Cursor agent assets |
-| **Git** | https://github.com/IslamFathyy/retro-lab |
-| **Run** | Open `retro-lab.code-workspace`; MCP via `mcp-config.json` + `scripts/setup-mcp.ps1` |
+| Area | Technology |
+|------|------------|
+| Orchestration | Markdown, JSON, PowerShell/Bash |
+| Cursor | Rules, commands, skills (see agentic doc) |
+| MCP template | [`mcp-config.json`](mcp-config.json) + [`env.example`](env.example) |
 
 ### retro-api (`repos/retro-api/`)
 
-| | |
-|---|---|
-| **Role** | REST API, local JSON/Markdown storage, analysis import, reports, actions |
-| **Stack** | Node.js, Express, ES modules — **no database**, **no TypeScript**, **no external LLM** |
-| **Port** | 3001 — base URL `http://localhost:3001/api` |
-| **Git** | https://github.com/IslamFathyy/retro-api |
-| **Env** | `repos/retro-api/.env.example` — `PORT`, `DATA_ROOT` |
-| **Run** | `cd repos/retro-api && npm install && npm start` |
-
-**Architecture:** `routes → controllers → services → file-storage`
-
-- No business logic in route files.
-- Validators in `src/validators/`; paths in `src/config/`.
-- AI analysis is **imported** via `POST /api/retrospectives/{retroId}/analysis/import` — never call external LLM APIs from this repo.
-
-**Data boundaries**
-
-- Read/write only under `data/retrospectives/{retroId}/` via `file-storage.service.js`.
-- Never rewrite original feedback `text`.
-- Atomic JSON writes; safe IDs; no path traversal.
-
-**Repo rules:** `.cursor/rules/` — `architecture.mdc`, `storage.mdc`, `testing.mdc`, `security.mdc` (plus root `privacy.mdc`, `development.mdc` when workspace is open).
-
-**Tests:** `npm test` in `repos/retro-api/` after API, validator, or service changes. CI: `.github/workflows/test.yml`.
-
-**Parent commands that touch this repo**
-
-| Command | API surface |
-|---------|-------------|
-| `/seed-demo-retro` | Demo data |
-| `/close-retro` | `POST .../close` |
-| `/analyze-retro` | `POST .../analysis/import` |
-| `/approve-suggestions` | `POST .../actions/from-suggestion/:id` |
-| `/generate-report` | `POST .../report/generate` |
+| Area | Technology |
+|------|------------|
+| Runtime | Node.js 18+, Express, **ES modules** |
+| Storage | Local JSON + Markdown — **no database** |
+| Language | JavaScript only — **no TypeScript** |
+| AI at runtime | **None** — analysis is imported via REST after Cursor workflow |
 
 ### retro-web (`repos/retro-web/`)
 
-| | |
-|---|---|
-| **Role** | Browser UI — read-only validation of workflow results |
-| **Stack** | HTML, CSS, vanilla JavaScript — **no React**, **no TypeScript**, **no build step** |
-| **Port** | 8080 — `npm start` serves static files |
-| **Git** | https://github.com/IslamFathyy/retro-web |
-| **Run** | Requires `retro-api` on 3001; `cd repos/retro-web && npm start` |
+| Area | Technology |
+|------|------------|
+| UI | HTML, CSS, **vanilla JavaScript** |
+| Build | None — static files via `npm start` |
+| Frameworks | **No React, Vue, Angular, or TypeScript** |
 
-**Constraints**
+### Explicitly out of scope (v1)
 
-- All data via `js/api.js` → `retro-api` — **no direct filesystem access** to `data/`.
-- Semantic HTML, accessible labels, visible error states.
-- Small modules under `js/`; match existing page patterns.
+Database, Docker/Kubernetes, cloud hosting, SSO, React/TypeScript, external LLM calls from `retro-api`.
 
-**API contract:** Coordinate with `retro-api` before new fields or endpoints; update `js/api.js` and page scripts together.
+---
 
-**Repo rules:** `.cursor/rules/frontend.mdc` (plus root `privacy.mdc`, `development.mdc`).
+## 3. Repository structure and files
 
-**Validation pages**
-
-| Page | Validates |
-|------|-----------|
-| `analysis.html` | Imported analysis, suggested actions |
-| `actions.html` | Approved actions |
-| `report.html` | Generated report |
-
-Use `/validate-retro-ui {id}` from this repo after backend workflow steps.
-
-## Architecture boundaries
-
+```text
+retro-lab/
+├── AGENTS.md                 ← this file
+├── PLAN.md, README.md, repos.json, clone-repos.sh
+├── mcp-config.json, env.example, scripts/setup-mcp.ps1
+├── .cursor/                  ← rules, commands, skills, agents, hooks
+├── docs/                     ← workflows, guardrails, agentic-engineering.md
+├── config/                   ← shared JSON (e.g. guardrails, action-teams)
+└── repos/
+    ├── retro-api/            ← own .git — backend
+    │   ├── src/              routes → controllers → services
+    │   ├── data/retrospectives/{retroId}/
+    │   ├── tests/
+    │   └── .cursor/rules/
+    └── retro-web/            ← own .git — frontend
+        ├── *.html, css/, js/
+        └── .cursor/rules/
 ```
+
+**Data layout (API):** `data/retrospectives/{retroId}/retro.json`, `feedback/FB-*.json`, `analysis.json`, `actions.json`, `report.md`, `audit.jsonl`.
+
+Parent [`.gitignore`](.gitignore) excludes `repos/retro-api/` and `repos/retro-web/` from the retro-lab commit; each app repo has its own history.
+
+---
+
+## 4. Development / build commands
+
+### First-time workspace
+
+```bash
+git clone https://github.com/IslamFathyy/retro-lab.git && cd retro-lab
+bash clone-repos.sh
+```
+
+### retro-api (port **3001**)
+
+```bash
+cd repos/retro-api
+npm install
+copy .env.example .env    # Windows — PORT, DATA_ROOT
+npm start                 # or npm run dev (watch)
+```
+
+Health: `http://localhost:3001/api/health`
+
+### retro-web (port **8080**)
+
+```bash
+cd repos/retro-web
+npm install
+npm start
+```
+
+Requires API on 3001. UI: `http://localhost:8080`
+
+### MCP (optional, Cursor only)
+
+```powershell
+copy env.example .env
+.\scripts\setup-mcp.ps1
+# Restart Cursor
+```
+
+See [`README.md`](README.md#mcp-integration-setup-optional) and [`docs/mcp-setup.md`](docs/mcp-setup.md).
+
+---
+
+## 5. Testing
+
+| Repo | Command | When |
+|------|---------|------|
+| **retro-api** | `npm test` | After changes to `src/`, validators, or services |
+| **retro-api** | CI on push/PR | `.github/workflows/test.yml` |
+| **retro-web** | Manual + `/validate-retro-ui {id}` | UI validation against live API (agentic workflow) |
+| **Full stack** | `/verify-project` | See [`docs/agentic-engineering.md`](docs/agentic-engineering.md) |
+
+Bug fixes in `retro-api` need a regression test. New service behavior needs unit tests; API contract changes need integration tests. Do not delete tests to pass CI.
+
+---
+
+## 6. Code conventions
+
+### retro-api
+
+- Layering: `routes` → `controllers` → `services` → `file-storage` — no business logic in routes.
+- Validators in `src/validators/`; path config in `src/config/`.
+- ES module imports; match existing file naming and error handling (`AppError`).
+- One feedback file per item under `feedback/`; atomic JSON writes.
+
+### retro-web
+
+- One concern per file under `js/`; shared helpers in `common.js`, HTTP in `api.js`, base URL in `config.js`.
+- Semantic HTML, labels on inputs, visible error messages.
+- No direct reads of `data/` — only `fetch` to the API.
+
+### All repos
+
+- Follow [`.cursor/rules/`](.cursor/rules/) — precedence in [`docs/rules-audit.md`](docs/rules-audit.md).
+- Child rules: `repos/retro-api/.cursor/rules/`, `repos/retro-web/.cursor/rules/`.
+
+---
+
+## 7. Architecture / boundaries
+
+```text
 Browser → retro-web → REST → retro-api → data/*.json
-Cursor Agent → rules/skills/commands → API + data files
-MCP (Google Drive, GitHub, Gmail) → Cursor agents only, not the running web app
 ```
 
-## MCP — when to use external systems
+| Boundary | Rule |
+|----------|------|
+| Web → data | **Forbidden** — use `js/api.js` only |
+| API → storage | Only under `data/` via `file-storage.service.js`; safe IDs; no `..` paths |
+| Feedback `text` | **Immutable** after submit — never rewrite stored text |
+| Anonymous feedback | `displayName` must be `null`; never infer or store hidden identity |
+| Analysis | Imported JSON only — no LLM inside `retro-api` |
+| MCP / Drive / Gmail | **Cursor agents only** — not in `retro-api` or `retro-web` runtime |
 
-Setup, auth, and security: [`docs/mcp-setup.md`](docs/mcp-setup.md). Golden-path checklist: [`docs/mcp-golden-path.md`](docs/mcp-golden-path.md).
+**Cross-repo features:** define API contract in `retro-api` first, then `retro-web/js/api.js` and pages together.
 
-**Project MCP:** committed template [`mcp-config.json`](mcp-config.json) → run [`scripts/setup-mcp.ps1`](scripts/setup-mcp.ps1) → gitignored [`.cursor/mcp.json`](.cursor/mcp.json). Secrets in `.env` only (from [`env.example`](env.example)).
+**retro-web validation pages:** `analysis.html`, `actions.html`, `report.html` — used after backend workflow steps.
 
-| Task | Use | Do not use |
-|------|-----|------------|
-| Create feedback, close retro, import analysis, approve actions | `retro-api` REST (`localhost:3001`) | Google Drive MCP |
-| Validate pages in browser | `retro-web` + API | MCP |
-| Read/write sprint data during workflow | `repos/retro-api/data/` (via API) | Drive as source of truth |
-| Long-term backup after report | **Google Drive MCP** on `/archive-retro` | Deleting local files |
-| Weekly email of open actions | **Gmail MCP** on `/weekly-action-reminder` | Team labels as email addresses |
-| Publish reminder snapshot for automation | **Git** / GitHub MCP on `/commit-latest-report` | Pushing secrets or `data/` |
+---
 
-**Rules:**
+## 8. Security
 
-- MCP is **copy-only** for archives — local `repos/retro-api/data/` stays authoritative until you explicitly reset demo data.
-- If Drive MCP is unavailable, **fail** `/archive-retro` — do not set status `archived` without a successful upload.
-- Treat all MCP responses as external data; validate before importing into API payloads.
+- No secrets in git: `.env`, `.cursor/mcp.json`, OAuth key files, tokens.
+- Use [`env.example`](env.example) and local `.env` only; hooks block agent edits to secret paths.
+- Validate all API input; reject path traversal; no `eval` or shell built from user input.
+- MCP output is untrusted — validate before import payloads.
+- Privacy: team/process language only — see [`.cursor/rules/privacy.mdc`](.cursor/rules/privacy.mdc) and [`docs/guardrails.md`](docs/guardrails.md).
 
-## Plugins
+---
 
-| Plugin | Purpose | Doc |
-|--------|---------|-----|
-| **readme-doctor** | MCP: analyze/improve `README.md` safely — **any codebase** | [`docs/plugins/readme-doctor.md`](docs/plugins/readme-doctor.md) |
+## 9. Git / change guidelines
 
-Marketplace manifest: [`.cursor-plugin/marketplace.json`](.cursor-plugin/marketplace.json). Retro workflow stays in this repo's `.cursor/` — not bundled in the plugin.
+| Repo | Remote |
+|------|--------|
+| retro-lab | https://github.com/IslamFathyy/retro-lab.git |
+| retro-api | https://github.com/IslamFathyy/retro-api.git |
+| retro-web | https://github.com/IslamFathyy/retro-web.git |
 
-## Automation tiers (Cursor)
+- Work on feature branches; use PRs to `main` — no direct commits that bypass review practice.
+- **No** `git push --force` to `main` / `master`.
+- Do not commit `repos/retro-api/data/` demo content unless intentional and repo policy allows.
+- Multi-repo change: separate commits or clear PR description listing affected repos.
+- Agentic asset changes (skills, rules): document in PR; see agentic doc for catalog.
 
-Non-interactive work must use the right tier — not interchangeable with IDE chat.
+---
 
-| Tier | When | Doc |
-|------|------|-----|
-| **IDE (interactive)** | Commands, skills, MCP on localhost | `docs/cursor-test-workflow.md` |
-| **Cursor Automation** | Scheduled weekly email | `docs/cursor-automation-weekly-reminder.md` |
-| **Cloud Agent** | Runtime for automations (GitHub + cloud OAuth) | `docs/automation-tiers.md` |
-| **GitHub Actions CI** | Deterministic `npm test` on PR | `repos/retro-api/.github/workflows/test.yml` |
+## 10. Definition of done
 
-Matrix + evidence: [`docs/automation-tiers.md`](docs/automation-tiers.md), [`docs/automation-golden-path.md`](docs/automation-golden-path.md). Claude Routine **not adopted** (Cursor-only Q3).
+- [ ] Change matches [`PLAN.md`](PLAN.md) v1 scope (no unapproved stack expansion).
+- [ ] Correct repo(s) updated; routing table in section 3 respected.
+- [ ] `npm test` passes in `retro-api` when backend touched.
+- [ ] API + UI aligned when contract or fields changed.
+- [ ] Privacy guardrails preserved (feedback text, anonymity).
+- [ ] No secrets or generated MCP config committed.
+- [ ] README or docs updated if setup or behavior changed for humans.
 
-## Sub-agents catalog
+For full retrospective **workflow** sign-off, use [`docs/cursor-test-workflow.md`](docs/cursor-test-workflow.md) and [`docs/agentic-engineering.md`](docs/agentic-engineering.md).
 
-Thin parent, scoped children. Full handoffs: [`docs/sub-agents.md`](docs/sub-agents.md). Golden-path sign-off: [`docs/sub-agents-golden-path.md`](docs/sub-agents-golden-path.md).
+---
 
-| Role | Agent | Launched by |
-|------|-------|-------------|
-| Exploration | `feedback-analyst` | `/analyze-retro` |
-| Execution | `improvement-advisor` | `/analyze-retro` |
-| Verification | `verifier` | `/analyze-retro`, `/generate-report`, `/verify-project` |
-| Exploration (report) | `insights-visualizer` | `/generate-report` |
+## 11. Common pitfalls
 
-Always use **Task** with `subagent_type` matching the agent name. Never inline their work in the parent.
+- Editing only `retro-web` for a new API field — backend and `api.js` must match.
+- Using MCP or Drive as live database — local `repos/retro-api/data/` is authoritative until archive.
+- Marking retro `archived` without successful Drive upload when `/archive-retro` requires MCP.
+- Duplicating long workflows in chat instead of reading the skill for the command.
+- Opening a single child repo folder and losing root rules/skills — prefer **workspace file**.
+- Empty `GOOGLE_DRIVE_OAUTH_KEYS_DIR` is OK if OAuth files live in the default user config path (see `mcp-setup.md`).
+- Assuming child `AGENTS.md` exists — **only this file**; per-repo detail is in sections 2–7 above.
 
-## Skills catalog
+---
 
-Project skills live in `.cursor/skills/<name>/SKILL.md`. Read the matching skill before running its command.
+## 12. Before making any changes
 
-**Rules vs skills:** Non-negotiables live in [`.cursor/rules/`](.cursor/rules/) (`privacy.mdc`, `orchestration.mdc`, `development.mdc`). Skills hold procedures only — link rules, do not copy them. Full inventory: [`docs/rules-audit.md`](docs/rules-audit.md).
-
-| Skill | Path | Command | When to use |
-|-------|------|---------|-------------|
-| **analyze-retrospective** (published) | `.cursor/skills/analyze-retrospective/SKILL.md` | `/analyze-retro {id}` | Closed retro — AI themes, strengths, concerns, suggested actions |
-| generate-retro-report | `.cursor/skills/generate-retro-report/SKILL.md` | `/generate-report {id}` | After actions approved — report markdown + insights charts |
-| archive-retrospective | `.cursor/skills/archive-retrospective/SKILL.md` | `/archive-retro {id}` | Google Drive backup, local `archived`, export reminder snapshot |
-| weekly-action-reminder | `.cursor/skills/weekly-action-reminder/SKILL.md` | `/weekly-action-reminder` | Email open actions (manual test or Sunday automation) |
-| commit-latest-report | `.cursor/skills/commit-latest-report/SKILL.md` | `/commit-latest-report` | Push `docs/reminders/latest-reminder.json` to GitHub `main` |
-| reset-demo-environment | `.cursor/skills/reset-demo-environment/SKILL.md` | `/reset-demo-retro` | Wipe demo data + Drive archives (requires `RESET DEMO` confirmation) |
-
-**Verify the published skill:** `docs/skills/verify-analyze-retrospective.md`
-
-## Hooks (chat-time guardrails)
-
-Policy hooks in [`.cursor/hooks.json`](.cursor/hooks.json) enforce rules agents forget in chat. One-page docs: [`docs/hooks/`](docs/hooks/) (indexed from [`docs/guardrails.md`](docs/guardrails.md)).
-
-| Hook | Forgotten rule |
-|------|----------------|
-| `block-dangerous-command.js` | Force push / destructive shell |
-| `validate-json.js` | Broken JSON after edits |
-| `protect-feedback-text.js` | Changing original feedback `text` |
-| `block-secrets-path.js` | Writing `.env` / credentials into repo |
-
-Commands without a dedicated skill (e.g. `/verify-project`, `/close-retro`, `/approve-suggestions`) are in `.cursor/commands/`. Full prompt order: `docs/cursor-test-workflow.md`.
-
-## Command order for testing
-
-See `.cursor/commands/run-retro-workflow.md` or `docs/cursor-test-workflow.md`:
-
-1. `/verify-project`
-2. `/seed-demo-retro`
-3. `/close-retro {id}`
-4. `/analyze-retro {id}` ← **sub-agents** (`feedback-analyst`, `improvement-advisor`, `verifier`) via Task; parent merges + imports
-5. `/approve-suggestions {id}`
-6. `/review-actions {id}`
-7. `/generate-report {id}`
-8. `/validate-retro-ui {id}`
-9. `/archive-retro {id}` — Google Drive backup + local archived status + export reminder snapshot
-10. `/commit-latest-report` — commit + push `docs/reminders/latest-reminder.json` to GitHub `main` (mail automation)
-
-## Human approval required before
-
-- Resetting all demo data and Drive archives (via `/reset-demo-retro` — user must confirm `RESET DEMO`)
-- Converting suggested action to approved action (via `/approve-suggestions` — user must type `approve SUG-###`; **only workflow step that stops for human input**)
-- Merging pull requests
-- Changing project architecture
-
-## Multi-repo coordination
-
-When a feature spans frontend and backend:
-
-1. Implement API contract in `retro-api` first (or in parallel with clear contract).
-2. Update `repos/retro-web/js/api.js` and relevant pages.
-3. Add tests in both repos.
-4. Run `retro-api` tests before finishing.
-
-## Persistent constraints
-
-See [`.cursor/rules/`](.cursor/rules/) — especially `privacy.mdc` and `development.mdc`. Archive skill: MCP upload is copy-only (never delete local data).
+1. Read [`PLAN.md`](PLAN.md) for scope and the current phase.
+2. Identify target repo(s) — API, web, root, or all three.
+3. Read **sections 2–7** of this file for stack, structure, and boundaries.
+4. Apply rules: root [`.cursor/rules/`](.cursor/rules/) then child rules under `repos/*/.cursor/rules/` ([`docs/rules-audit.md`](docs/rules-audit.md)).
+5. For Cursor commands, MCP, or sub-agents — read [`docs/agentic-engineering.md`](docs/agentic-engineering.md) instead of duplicating procedures here.

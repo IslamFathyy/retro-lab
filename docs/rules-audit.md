@@ -40,7 +40,8 @@ Highest wins first:
 | `.cursor/rules/privacy.mdc` | Rule | always | Deanonymization, feedback text, team language |
 | `.cursor/rules/orchestration.mdc` | Rule | always | Multi-repo routing; read root AGENTS.md child sections |
 | `.cursor/rules/development.mdc` | Rule | always | v1 stack, no secrets, no force push, Cursor-as-LLM |
-| `AGENTS.md` | Agent context | — | Orchestration, child repo stacks, skills catalog, hooks index |
+| `AGENTS.md` | Agent context | — | Product engineering: stack, structure, tests, boundaries |
+| `docs/agentic-engineering.md` | Agent catalog | — | Commands, skills, MCP, sub-agents, hooks, workflow order |
 | `.cursor/skills/*/SKILL.md` | Skills | on command | Workflows (analyze, report, archive, …) |
 | `.cursor/commands/*.md` | Commands | on invoke | Thin triggers |
 | `.cursor/hooks/*.js` | Hooks | events | Policy + logging |
@@ -129,5 +130,5 @@ Referenced from [`AGENTS.md`](../AGENTS.md) MCP section.
 
 1. List `.cursor/rules/*.mdc` in each repo.
 2. Grep skills/commands for “Never” / “Do not” — should point to rules.
-3. Confirm `AGENTS.md` has no long procedure blocks (those belong in skills).
+3. Confirm `AGENTS.md` stays product-focused; long agent procedures belong in `docs/agentic-engineering.md` and skills.
 4. Update this file and bump **Last audit** date.
