@@ -142,7 +142,7 @@ Run the full retrospective test workflow in order. Use Cursor model for analysis
 | **Skill** | `analyze-retrospective`, `generate-retro-report` |
 | **Sub-agent** | `feedback-analyst`, `improvement-advisor`, `verifier` (required for `/analyze-retro`) — see [`sub-agents.md`](sub-agents.md) |
 | **Rules** | Root: `privacy.mdc`, `orchestration.mdc`, `development.mdc`; child: `repos/retro-api/.cursor/rules/`, `repos/retro-web/.cursor/rules/` — see [`rules-audit.md`](rules-audit.md) |
-| **AGENTS.md** | Parent + per-repo (`repos/retro-api/`, `repos/retro-web/`) |
+| **AGENTS.md** | Single parent [`AGENTS.md`](AGENTS.md) — orchestration + retro-api + retro-web stack |
 | **Hooks** | JSON validation, dangerous-command block, `subagentStop` → `.cursor/logs/subagent-activity.log` |
 | **MCP** | Google Drive archive (required in full workflow) — setup: [`mcp-setup.md`](mcp-setup.md), sign-off: [`mcp-golden-path.md`](mcp-golden-path.md) |
 | **Human-in-the-loop** | Approve suggestions, archive, merge PRs |

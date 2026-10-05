@@ -7,7 +7,7 @@ alwaysApply: true
 
 - Open and work from the **root repo** when changes may span `retro-api` and `retro-web`.
 - Route backend work to `repos/retro-api/`, frontend work to `repos/retro-web/`.
-- Read child `AGENTS.md` (`repos/retro-api/`, `repos/retro-web/`) before editing that repository.
+- Read the **Child repositories** section in root [`AGENTS.md`](../../AGENTS.md) before editing `repos/retro-api/` or `repos/retro-web/`.
 - Rules precedence: see `docs/rules-audit.md`.
 - Follow phase scope in `PLAN.md`; do not expand v1 scope without approval.
 - Coordinate API contract before UI when adding new fields or endpoints.

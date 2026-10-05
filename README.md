@@ -66,7 +66,7 @@ Open http://localhost:8080
 2. Open the **workspace file** and read **[`AGENTS.md`](AGENTS.md)** (orchestration agent + routing).
 3. Skim **[`docs/cursor-test-workflow.md`](docs/cursor-test-workflow.md)** — prompt order for testing.
 4. Optional: complete **[MCP Integration Setup](#mcp-integration-setup-optional)** for archive, email, and GitHub workflows.
-5. Per-repo detail: [`repos/retro-api/README.md`](repos/retro-api/README.md), [`repos/retro-web/AGENTS.md`](repos/retro-web/AGENTS.md).
+5. Per-repo stack and boundaries: root [`AGENTS.md`](AGENTS.md) (**Child repositories**); READMEs: [`repos/retro-api/README.md`](repos/retro-api/README.md), [`repos/retro-web/README.md`](repos/retro-web/README.md).
 
 **What you get:** one workspace, three git repos, shared Cursor commands/skills, and a full demo retrospective path without calling OpenAI/Anthropic from `retro-api`.
 

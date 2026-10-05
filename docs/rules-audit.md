@@ -16,7 +16,7 @@ Highest wins first:
 | 1 | **User Cursor rules** | Global (outside Git) | Personal tone, org-wide security |
 | 2 | **Project rules** `alwaysApply: true` | Repo or workspace | `privacy.mdc`, `development.mdc` |
 | 3 | **Project rules** (glob-scoped) | Matching file paths | `repos/retro-api/.cursor/rules/storage.mdc` on `src/services/**` |
-| 4 | **`AGENTS.md`** | Per repository | Routing, stack, test expectations |
+| 4 | **`AGENTS.md`** | Root only — orchestration + child repo stack (see **Child repositories**) |
 | 5 | **Skills** `.cursor/skills/*/SKILL.md` | When command invokes skill | `/analyze-retro` workflow steps |
 | 6 | **Commands** `.cursor/commands/*.md` | Thin entry points | Args + “read skill X” |
 | 7 | **Hooks** `.cursor/hooks/*.js` | Deterministic enforcement | Block `.env` edits, feedback `text` |
@@ -38,9 +38,9 @@ Highest wins first:
 | File | Type | alwaysApply / globs | Purpose |
 |------|------|---------------------|---------|
 | `.cursor/rules/privacy.mdc` | Rule | always | Deanonymization, feedback text, team language |
-| `.cursor/rules/orchestration.mdc` | Rule | always | Multi-repo routing, read child AGENTS.md |
+| `.cursor/rules/orchestration.mdc` | Rule | always | Multi-repo routing; read root AGENTS.md child sections |
 | `.cursor/rules/development.mdc` | Rule | always | v1 stack, no secrets, no force push, Cursor-as-LLM |
-| `AGENTS.md` | Agent context | — | Orchestration, skills catalog, hooks index |
+| `AGENTS.md` | Agent context | — | Orchestration, child repo stacks, skills catalog, hooks index |
 | `.cursor/skills/*/SKILL.md` | Skills | on command | Workflows (analyze, report, archive, …) |
 | `.cursor/commands/*.md` | Commands | on invoke | Thin triggers |
 | `.cursor/hooks/*.js` | Hooks | events | Policy + logging |
@@ -50,7 +50,6 @@ Highest wins first:
 
 | File | Type | alwaysApply / globs | Purpose |
 |------|------|---------------------|---------|
-| `AGENTS.md` | Agent context | — | API layering, tests, storage boundaries |
 | `.cursor/rules/architecture.mdc` | Rule | `src/**/*.js` | routes → controllers → services → storage |
 | `.cursor/rules/storage.mdc` | Rule | `src/services/**`, `src/config/paths.js` | data dir, atomic writes, safe IDs |
 | `.cursor/rules/testing.mdc` | Rule | `src/**`, `tests/**` | regression + API tests required |
@@ -62,7 +61,6 @@ Shared privacy/stack rules: **root** `.cursor/rules/privacy.mdc` + `development.
 
 | File | Type | alwaysApply / globs | Purpose |
 |------|------|---------------------|---------|
-| `AGENTS.md` | Agent context | — | Vanilla JS, API-only data, a11y |
 | `.cursor/rules/frontend.mdc` | Rule | `**/*.{html,js,css}` | No framework, semantic HTML, API client only |
 
 ---
@@ -88,8 +86,8 @@ Shared privacy/stack rules: **root** `.cursor/rules/privacy.mdc` + `development.
 
 | Issue | Resolution |
 |-------|------------|
-| README claimed child `AGENTS.md` existed | Added `repos/retro-api/AGENTS.md`, `repos/retro-web/AGENTS.md` |
-| `orchestration.mdc` said read child AGENTS.md | Files now exist |
+| Per-repo agent instructions | Consolidated in root `AGENTS.md` (**Child repositories**); removed child `AGENTS.md` files |
+| `orchestration.mdc` routing | Points to root AGENTS.md child sections |
 | PLAN §18 listed rules not in repo | Implemented subset in child repos; PLAN remains roadmap |
 | Privacy in 5+ places | Single source: `privacy.mdc`; skills reference it |
 

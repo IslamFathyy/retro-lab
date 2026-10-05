@@ -29,8 +29,8 @@ Coordinate AI-assisted work across three locations:
 1. Read `PLAN.md` for scope and acceptance criteria.
 2. Read `docs/cursor-test-workflow.md` for prompt-driven testing order.
 3. Identify which repository(s) a task affects.
-4. Apply rules per [`docs/rules-audit.md`](docs/rules-audit.md) precedence: root `.cursor/rules/`, then child `.cursor/rules/`, then this file.
-5. Read child [`repos/retro-api/AGENTS.md`](repos/retro-api/AGENTS.md) or [`repos/retro-web/AGENTS.md`](repos/retro-web/AGENTS.md) before editing that repository.
+4. Apply rules per [`docs/rules-audit.md`](docs/rules-audit.md) precedence: root `.cursor/rules/`, then child `.cursor/rules/` under `repos/retro-api/` or `repos/retro-web/`, then this file.
+5. Read the **Child repositories** section below for stack, boundaries, and tests before editing `repos/retro-api/` or `repos/retro-web/`.
 
 ## Routing guide
 
@@ -40,6 +40,86 @@ Coordinate AI-assisted work across three locations:
 | HTML pages, CSS, JS, UI behavior | `repos/retro-web/` |
 | Commands, skills, sub-agents, hooks, docs | root (this repo) |
 | Cross-cutting feature (e.g. new field) | both `retro-api` + `retro-web` |
+
+## Child repositories
+
+Single source of agent instructions for all repos. Child folders have **no** separate `AGENTS.md` — only repo-specific **rules** under `repos/*/.cursor/rules/`.
+
+### retro-lab (this repo)
+
+| | |
+|---|---|
+| **Role** | Orchestration — commands, skills, sub-agents, hooks, MCP template, docs |
+| **Stack** | Markdown, JSON, PowerShell/Bash scripts; Cursor agent assets |
+| **Git** | https://github.com/IslamFathyy/retro-lab |
+| **Run** | Open `retro-lab.code-workspace`; MCP via `mcp-config.json` + `scripts/setup-mcp.ps1` |
+
+### retro-api (`repos/retro-api/`)
+
+| | |
+|---|---|
+| **Role** | REST API, local JSON/Markdown storage, analysis import, reports, actions |
+| **Stack** | Node.js, Express, ES modules — **no database**, **no TypeScript**, **no external LLM** |
+| **Port** | 3001 — base URL `http://localhost:3001/api` |
+| **Git** | https://github.com/IslamFathyy/retro-api |
+| **Env** | `repos/retro-api/.env.example` — `PORT`, `DATA_ROOT` |
+| **Run** | `cd repos/retro-api && npm install && npm start` |
+
+**Architecture:** `routes → controllers → services → file-storage`
+
+- No business logic in route files.
+- Validators in `src/validators/`; paths in `src/config/`.
+- AI analysis is **imported** via `POST /api/retrospectives/{retroId}/analysis/import` — never call external LLM APIs from this repo.
+
+**Data boundaries**
+
+- Read/write only under `data/retrospectives/{retroId}/` via `file-storage.service.js`.
+- Never rewrite original feedback `text`.
+- Atomic JSON writes; safe IDs; no path traversal.
+
+**Repo rules:** `.cursor/rules/` — `architecture.mdc`, `storage.mdc`, `testing.mdc`, `security.mdc` (plus root `privacy.mdc`, `development.mdc` when workspace is open).
+
+**Tests:** `npm test` in `repos/retro-api/` after API, validator, or service changes. CI: `.github/workflows/test.yml`.
+
+**Parent commands that touch this repo**
+
+| Command | API surface |
+|---------|-------------|
+| `/seed-demo-retro` | Demo data |
+| `/close-retro` | `POST .../close` |
+| `/analyze-retro` | `POST .../analysis/import` |
+| `/approve-suggestions` | `POST .../actions/from-suggestion/:id` |
+| `/generate-report` | `POST .../report/generate` |
+
+### retro-web (`repos/retro-web/`)
+
+| | |
+|---|---|
+| **Role** | Browser UI — read-only validation of workflow results |
+| **Stack** | HTML, CSS, vanilla JavaScript — **no React**, **no TypeScript**, **no build step** |
+| **Port** | 8080 — `npm start` serves static files |
+| **Git** | https://github.com/IslamFathyy/retro-web |
+| **Run** | Requires `retro-api` on 3001; `cd repos/retro-web && npm start` |
+
+**Constraints**
+
+- All data via `js/api.js` → `retro-api` — **no direct filesystem access** to `data/`.
+- Semantic HTML, accessible labels, visible error states.
+- Small modules under `js/`; match existing page patterns.
+
+**API contract:** Coordinate with `retro-api` before new fields or endpoints; update `js/api.js` and page scripts together.
+
+**Repo rules:** `.cursor/rules/frontend.mdc` (plus root `privacy.mdc`, `development.mdc`).
+
+**Validation pages**
+
+| Page | Validates |
+|------|-----------|
+| `analysis.html` | Imported analysis, suggested actions |
+| `actions.html` | Approved actions |
+| `report.html` | Generated report |
+
+Use `/validate-retro-ui {id}` from this repo after backend workflow steps.
 
 ## Architecture boundaries
 
