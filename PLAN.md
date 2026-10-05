@@ -132,7 +132,7 @@ By completing the project, the team should understand:
 | Concept | What the team should learn |
 |---|---|
 | Multi-repository | How an agent reasons and works across separate frontend and backend repositories |
-| `AGENTS.md` | How repository-level agent instructions are defined |
+| `AGENTS.md` | How workspace-level agent instructions are defined (single retro-lab root + child sections) |
 | Rules | How persistent architecture, coding, testing, privacy, and security constraints are enforced |
 | Commands | How developers explicitly invoke repeatable workflows |
 | Skills | How reusable agent capabilities are packaged |
@@ -261,7 +261,9 @@ Keep the project focused.
 
 # 6. Repository Strategy
 
-Use **two GitHub repositories**.
+Use **three GitHub repositories**: parent **retro-lab** (orchestration) plus **retro-api** and **retro-web** (application). Clone app repos into `repos/` — see root `clone-repos.sh` and `repos.json`.
+
+**Agent instructions:** one root [`AGENTS.md`](AGENTS.md) in **retro-lab** with a **Child repositories** section for `retro-api` and `retro-web`. Child repos do **not** ship their own `AGENTS.md`; they keep repo-specific **Rules** under `.cursor/rules/`.
 
 ## Repository 1: `retro-web`
 
@@ -270,7 +272,6 @@ Purpose: browser user interface.
 ```text
 repos/retro-web/
 |
-+-- AGENTS.md
 +-- README.md
 +-- index.html
 +-- retrospectives.html
@@ -319,7 +320,6 @@ Purpose: REST API, local files, analysis, reports, actions, and agentic workflow
 ```text
 repos/retro-api/
 |
-+-- AGENTS.md
 +-- README.md
 +-- package.json
 +-- .env.example
@@ -423,19 +423,18 @@ Create a parent folder that is **not required to be a Git repository**:
 ```text
 retro-lab/
 |
++-- AGENTS.md              orchestration + child repo stacks (single agent doc)
 +-- repos/retro-web/
 +-- repos/retro-api/
 ```
 
-Clone both GitHub repositories into `retro-lab`.
-
-Open `retro-lab` in Cursor so the developer can inspect both repositories locally.
+Clone **retro-lab**, run `clone-repos.sh`, then open `retro-lab.code-workspace` in Cursor.
 
 For Cursor Cloud Agents later, configure a multi-repository environment containing both GitHub repositories.
 
 Teaching objective:
 
-> One feature can require coordinated frontend and backend changes while each repository keeps its own instructions, rules, tests, and Git history.
+> One feature can require coordinated frontend and backend changes while each repository keeps its own **rules**, tests, and Git history. **Agent routing and stack** live in the parent `AGENTS.md`.
 
 ---
 
@@ -965,44 +964,46 @@ Better:
 
 # 17. `AGENTS.md`
 
-Each repository must have its own `AGENTS.md`.
+Use **one** `AGENTS.md` at the **retro-lab** root. It is the parent orchestration agent document and includes a **Child repositories** section covering `retro-api` and `retro-web` (stack, boundaries, tests, ports). Child application repos do **not** maintain separate `AGENTS.md` files.
 
-## 17.1 `repos/retro-web/AGENTS.md`
+## 17.1 Parent `retro-lab/AGENTS.md`
+
+Must explain:
+
+- parent orchestration role and multi-repo routing
+- primary testing model (Cursor workflow + web UI validation)
+- MCP matrix, skills, sub-agents, hooks, command order
+- human approval gates
+
+## 17.2 Content for `retro-api` (section inside parent `AGENTS.md`)
 
 Must explain:
 
 - repository purpose
-- technology stack
+- technology stack (Node.js, Express, ES modules)
+- architecture boundaries: routes → controllers → services → storage
+- file storage restrictions
+- anonymous feedback protections
+- no database, no external LLM in API
+- tests required (`npm test`, CI)
+- report/analysis import contracts
+- exact original feedback must never be rewritten
+
+## 17.3 Content for `retro-web` (section inside parent `AGENTS.md`)
+
+Must explain:
+
+- repository purpose
+- technology stack (HTML, CSS, vanilla JavaScript)
 - no React/TypeScript
 - frontend must use API, never direct local file access
 - accessibility expectations
-- no secrets
-- keep JavaScript modular
-- error handling
-- tests required for important behavior
-- do not introduce a framework without approval
-- preserve simple teaching-oriented code
-
-## 17.2 `repos/retro-api/AGENTS.md`
-
-Must explain:
-
-- repository purpose
-- architecture boundaries
-- routes -> controllers -> services -> storage
-- file storage restrictions
-- anonymous feedback protections
-- no database
-- no direct Google Drive dependency in core application
-- no production deployment
-- tests required
-- human approval rules
-- report/analysis contracts
-- exact original feedback must never be rewritten
+- API contract coordination with `retro-api`
+- validation pages and `/validate-retro-ui`
 
 Teaching point:
 
-> `AGENTS.md` explains how an agent should work in a repository.
+> One `AGENTS.md` at the workspace root explains how the agent works across repos; **Rules** (`.cursor/rules/*.mdc`) stay scoped per repository where needed.
 
 ---
 
@@ -1621,7 +1622,7 @@ Scope:
 
 Automation prompt should:
 1. inspect changed files
-2. read applicable `AGENTS.md`
+2. read root `AGENTS.md` and applicable Rules for repos in scope
 3. apply Rules
 4. run relevant tests
 5. invoke verifier/review skill
@@ -1920,6 +1921,10 @@ Do not implement everything in one uncontrolled change.
 
 ## Phase 0 — Repository Bootstrap
 
+### `retro-lab` (parent)
+- `AGENTS.md` with orchestration + **Child repositories** sections (retro-api, retro-web)
+- README, `repos.json`, `clone-repos.sh`, workspace file
+
 ### `retro-api`
 - initialize npm
 - Express
@@ -1928,14 +1933,12 @@ Do not implement everything in one uncontrolled change.
 - folders
 - `.gitignore`
 - README
-- `AGENTS.md`
 
 ### `retro-web`
 - base HTML/CSS/JS
 - navigation
 - API configuration
 - README
-- `AGENTS.md`
 
 ### Acceptance
 - API runs
@@ -2240,7 +2243,7 @@ The project is complete when:
 - original feedback is immutable after submission except explicit facilitator correction feature, which is not included in Version 1
 
 ## Agentic Engineering
-- both repositories have `AGENTS.md`
+- parent `retro-lab/AGENTS.md` documents all repos (no per-child `AGENTS.md`)
 - Rules exist
 - Commands exist
 - Skills exist
@@ -2272,7 +2275,7 @@ When this file is given to Cursor Agent, use the following working behavior.
 
 1. Read this entire plan.
 2. Inspect both repositories.
-3. Read all existing `AGENTS.md` and applicable Rules.
+3. Read root `AGENTS.md` (including **Child repositories**) and applicable Rules in each repo touched.
 4. Do not change the selected stack.
 5. Do not add hosting.
 6. Do not add a database.
@@ -2397,8 +2400,8 @@ docs/architecture.md
 
 Record these decisions:
 
-## ADR-001: Two repositories
-Reason: teach multi-repository Agentic development.
+## ADR-001: Three repositories (orchestration + API + web)
+Reason: teach multi-repository Agentic development with a dedicated retro-lab orchestration repo; single parent `AGENTS.md` for agent routing.
 
 ## ADR-002: Vanilla frontend
 Reason: reduce framework complexity.
