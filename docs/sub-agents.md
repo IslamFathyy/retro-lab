@@ -23,14 +23,31 @@ Profiles live in [`.cursor/agents/`](../.cursor/agents/). Parent launches via **
 
 ## Profile template (each agent file)
 
-| Section | Purpose |
+Each profile answers five questions for the parent and humans, then pins contracts the orchestrator relies on.
+
+| Section | Answers |
 |---------|---------|
-| **Input** | What parent must pass |
-| **Output** | Exact return shape |
+| **Role** | What is this agent responsible for? |
+| **Scope** (**Do** / **Never**) | What it should and must not do |
+| **Context** | Paths, contracts, rules, sibling agents |
+| **Workflow** | Steps to run when invoked |
+| **Input** | What parent must pass in the Task prompt |
+| **Output** | Exact return shape (schemas, ID rules) |
 | **Stop** | When to finish — do not over-delegate |
 | **Escalation** | When to return to parent / human |
-| **Handoff** | What parent does next |
-| **SUBAGENT_SUMMARY** | Required one-line log for hooks |
+| **Handoff** | What parent does next (merge, API, next Task) |
+| **Final response** | Required `SUBAGENT_SUMMARY:` line for hooks |
+
+**YAML frontmatter** (Cursor + this repo):
+
+| Field | Purpose |
+|-------|---------|
+| `name` | Matches Task `subagent_type` (defaults from filename if omitted) |
+| `description` | Short trigger for delegation — include **when to use** (see [Cursor subagents](https://cursor.com/docs/subagents.md)) |
+| `role` | `exploration`, `execution`, or `verification` (org convention) |
+| `readonly` | `true` for read-only exploration/execution; `false` for **verifier** (`npm test`) |
+
+Keep prompts focused (one job per file). Parent handoff diagrams below stay in this doc — agent files only describe that agent’s handoff line.
 
 ---
 
