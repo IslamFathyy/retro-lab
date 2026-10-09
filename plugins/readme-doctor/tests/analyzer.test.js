@@ -30,32 +30,44 @@ describe('analyzeReadme', () => {
     assert.equal(result.readme.exists, false);
     assert.equal(result.score, 0);
     assert.ok(result.suggestions.length > 0);
+    assert.ok(result.enabledSectionIds.includes('features'));
   });
 
-  it('detects present sections', () => {
+  it('detects canonical sections', () => {
     fs.writeFileSync(
       path.join(tmp, 'README.md'),
       `# Demo
 
-## Installation
+> Tagline
+
+## Quick start
 npm install
 
-## Usage
+## 5-minute setup
 npm start
 
-## Development
-npm run dev
+## Prerequisites
+Git
 
-## Environment
-See .env.example
+## Repository structure
+src/
 
-## Testing
-npm test
+## Development ports
+3000
+
+## Features
+API
+
+## Security
+no secrets
+
+## Links
+git
 `
     );
     const result = analyzeReadme(tmp);
-    assert.equal(result.sections.installation, 'present');
-    assert.equal(result.sections.testing, 'present');
+    assert.equal(result.sections.features, 'present');
+    assert.equal(result.sections.development_ports, 'present');
     assert.ok(result.score >= 5);
     assert.deepEqual(result.envVarNames, ['API_PORT', 'SECRET_KEY']);
   });

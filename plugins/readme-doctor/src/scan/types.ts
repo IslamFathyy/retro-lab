@@ -31,6 +31,23 @@ export interface EnvVarDoc {
   source: '.env.example' | 'inferred';
 }
 
+export interface HtmlPage {
+  file: string;
+  title: string | null;
+}
+
+export interface WorkflowCommand {
+  name: string;
+  description: string;
+  path: string;
+}
+
+export interface PortHint {
+  port: number | string;
+  label: string;
+  source: string;
+}
+
 export interface ProjectScan {
   root: string;
   name: string;
@@ -49,4 +66,12 @@ export interface ProjectScan {
   hasDataDir: boolean;
   hasConfigDir: boolean;
   agentsMdPath: string | null;
+  htmlPages: HtmlPage[];
+  workflowCommands: WorkflowCommand[];
+  makefileTargets: string[];
+  ciWorkflowNames: string[];
+  docMarkdownFiles: string[];
+  portHints: PortHint[];
+  hasMultiRepoHints: boolean;
+  hasMcpTemplate: boolean;
 }

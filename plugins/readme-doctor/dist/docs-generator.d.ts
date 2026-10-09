@@ -1,2 +1,2 @@
-import type { ProjectScan } from './scan/types.js';
-export declare function buildComprehensiveReadme(scan: ProjectScan): string;
+/** @deprecated Import from canonical-readme.js */
+export { buildCanonicalReadme } from './canonical-readme.js';

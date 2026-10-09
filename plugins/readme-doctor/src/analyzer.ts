@@ -2,85 +2,38 @@ import fs from 'node:fs';
 import path from 'node:path';
 import type { AnalyzeResult, ReadmeSections, SectionStatus } from './types.js';
 import { detectProject } from './detector.js';
+import { scanProject } from './scan/index.js';
+import {
+  type SectionId,
+  SECTION_TITLE_PATTERNS,
+  resolveSections,
+} from './section-capabilities.js';
 
-const SECTION_PATTERNS: Record<keyof ReadmeSections, RegExp[]> = {
-  description: [/^#\s/m, /^##\s*(about|overview|description)/im],
-  installation: [/^##\s*(install(ation)?|getting\s+started|setup)/im],
-  usage: [/^##\s*(usage|how\s+to\s+use|quick\s+start)/im],
-  development: [/^##\s*(develop(ment)?|contributing|local\s+dev)/im],
-  environment: [/^##\s*(environment|env(\s+vars)?|configuration|config)/im],
-  testing: [/^##\s*(test(ing)?|running\s+tests)/im],
-  api: [/^##\s*(api|endpoints|rest)/im],
-  deployment: [/^##\s*(deploy(ment)?|production|release)/im],
-};
-
-const REQUIRED: Array<keyof ReadmeSections> = [
-  'description',
-  'installation',
-  'usage',
-  'development',
-  'environment',
-  'testing',
-];
-
-const OPTIONAL: Array<keyof ReadmeSections> = ['api', 'deployment'];
-
-function sectionStatus(content: string, key: keyof ReadmeSections): SectionStatus {
-  if (OPTIONAL.includes(key)) {
-    const found = SECTION_PATTERNS[key].some((re) => re.test(content));
-    return found ? 'present' : 'optional';
-  }
-  const found = SECTION_PATTERNS[key].some((re) => re.test(content));
+function sectionStatus(content: string, id: SectionId): SectionStatus {
+  const patterns = SECTION_TITLE_PATTERNS[id];
+  const found = patterns.some((re) => re.test(content));
   return found ? 'present' : 'missing';
-}
-
-function scoreSections(sections: ReadmeSections): { score: number; maxScore: number } {
-  let score = 0;
-  const maxScore = REQUIRED.length;
-  for (const key of REQUIRED) {
-    if (sections[key] === 'present') score += 1;
-  }
-  return { score, maxScore };
 }
 
 function buildSuggestions(
   sections: ReadmeSections,
-  project: ReturnType<typeof detectProject>,
+  enabledIds: SectionId[],
   readmeExists: boolean
 ): string[] {
   const suggestions: string[] = [];
-
   if (!readmeExists) {
-    suggestions.push('Create a README.md at the project root.');
+    suggestions.push('Create README.md with /generate-readme (canonical company structure).');
+    return suggestions;
   }
-  if (sections.description === 'missing') {
-    suggestions.push('Add a project description (title or ## About section).');
+  for (const id of enabledIds) {
+    if (sections[id] === 'missing' && id !== 'features') {
+      const title = id.replace(/_/g, ' ');
+      suggestions.push(`Add canonical section: ## ${title} (see references/canonical-readme-outline.md).`);
+    }
   }
-  if (sections.installation === 'missing') {
-    suggestions.push('Add an ## Installation section with setup steps.');
+  if (sections.features === 'missing') {
+    suggestions.unshift('Add ## Features immediately after ## Development ports.');
   }
-  if (sections.usage === 'missing') {
-    suggestions.push('Add a ## Usage section explaining how to run the project.');
-  }
-  if (sections.development === 'missing') {
-    suggestions.push('Add a ## Development section for local contributor workflow.');
-  }
-  if (sections.environment === 'missing' && project.envVarNames.length > 0) {
-    suggestions.push(
-      `Add an ## Environment section documenting: ${project.envVarNames.join(', ')}.`
-    );
-  } else if (sections.environment === 'missing') {
-    suggestions.push('Add an ## Environment section if the project uses configuration.');
-  }
-  if (sections.testing === 'missing' && project.commands.test) {
-    suggestions.push(`Document testing — detected script: npm test (${project.commands.test}).`);
-  } else if (sections.testing === 'missing') {
-    suggestions.push('Add a ## Testing section if tests exist.');
-  }
-  if (sections.api === 'optional' && project.type === 'Node.js') {
-    suggestions.push('Consider an ## API section if this project exposes HTTP endpoints.');
-  }
-
   return suggestions;
 }
 
@@ -90,19 +43,28 @@ export function analyzeReadme(projectRoot: string): AnalyzeResult {
   const content = readmeExists ? fs.readFileSync(readmePath, 'utf8') : '';
 
   const project = detectProject(projectRoot);
+  const scan = scanProject(projectRoot);
+  const enabled = resolveSections(scan);
+  const enabledSectionIds = enabled.map((s) => s.id);
 
   const sections = {} as ReadmeSections;
-  for (const key of Object.keys(SECTION_PATTERNS) as Array<keyof ReadmeSections>) {
-    sections[key] = sectionStatus(content, key);
+  for (const id of enabledSectionIds) {
+    sections[id] = sectionStatus(content, id);
   }
 
-  const { score, maxScore } = scoreSections(sections);
-  const suggestions = buildSuggestions(sections, project, readmeExists);
+  let score = 0;
+  for (const id of enabledSectionIds) {
+    if (sections[id] === 'present') score += 1;
+  }
+  const maxScore = enabledSectionIds.length;
+
+  const suggestions = buildSuggestions(sections, enabledSectionIds, readmeExists);
 
   return {
     project: { name: project.name, type: project.type },
     readme: { exists: readmeExists, path: readmePath },
     sections,
+    enabledSectionIds,
     score,
     maxScore,
     suggestions,

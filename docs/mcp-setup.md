@@ -44,7 +44,7 @@ Never commit OAuth key files or tokens. The committed template contains only com
 
 | Server | Workflow |
 |--------|----------|
-| `readme-doctor` | `/check-readme`, `/fix-readme` |
+| `readme-doctor` | `/check-readme`, `/generate-readme` |
 | `google-drive` | `/archive-retro`, Drive cleanup on reset |
 | `gmail` | `/weekly-action-reminder` |
 | `github` | `/commit-latest-report`, PR/issue tools |

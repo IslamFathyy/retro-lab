@@ -149,7 +149,7 @@ To share behavior via git: edit **`mcp-config.json`**, re-run setup locally — 
 | **google-drive** | **Yes** for full archive golden path | `/archive-retro`, `/reset-demo-retro` Drive cleanup |
 | **gmail** | Optional | `/weekly-action-reminder` |
 | **github** | Optional | `/commit-latest-report`, PR/issue tools |
-| **readme-doctor** | Optional | `/check-readme`, `/fix-readme` (build plugin first) |
+| **readme-doctor** | Optional | `/check-readme`, `/generate-readme` (build plugin first) |
 | **Lokka / M365** | Personal | Keep in user `~/.cursor/mcp.json` — see `env.example` comments |
 
 OAuth details: [`docs/mcp-setup.md`](docs/mcp-setup.md). Sign-off: [`docs/mcp-golden-path.md`](docs/mcp-golden-path.md).

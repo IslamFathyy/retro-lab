@@ -1,3 +1,4 @@
+import type { SectionId } from './section-capabilities.js';
 export type SectionStatus = 'present' | 'missing' | 'optional';
 export interface ProjectInfo {
     name: string;
@@ -5,16 +6,7 @@ export interface ProjectInfo {
     commands: Record<string, string>;
     envVarNames: string[];
 }
-export interface ReadmeSections {
-    description: SectionStatus;
-    installation: SectionStatus;
-    usage: SectionStatus;
-    development: SectionStatus;
-    environment: SectionStatus;
-    testing: SectionStatus;
-    api: SectionStatus;
-    deployment: SectionStatus;
-}
+export type ReadmeSections = Partial<Record<SectionId, SectionStatus>>;
 export interface AnalyzeResult {
     project: {
         name: string;
@@ -25,6 +17,7 @@ export interface AnalyzeResult {
         path: string;
     };
     sections: ReadmeSections;
+    enabledSectionIds: SectionId[];
     score: number;
     maxScore: number;
     suggestions: string[];

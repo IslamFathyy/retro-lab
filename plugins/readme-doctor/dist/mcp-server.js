@@ -3258,8 +3258,8 @@ var require_utils = __commonJS({
       }
       return ind;
     }
-    function removeDotSegments(path10) {
-      let input = path10;
+    function removeDotSegments(path12) {
+      let input = path12;
       const output = [];
       let nextSlash = -1;
       let len = 0;
@@ -3668,8 +3668,8 @@ var require_schemes = __commonJS({
       }
       if (wsComponent.resourceName) {
         const queryIndex = wsComponent.resourceName.indexOf("?");
-        const path10 = queryIndex === -1 ? wsComponent.resourceName : wsComponent.resourceName.slice(0, queryIndex);
-        wsComponent.path = path10 && path10 !== "/" ? path10 : void 0;
+        const path12 = queryIndex === -1 ? wsComponent.resourceName : wsComponent.resourceName.slice(0, queryIndex);
+        wsComponent.path = path12 && path12 !== "/" ? path12 : void 0;
         wsComponent.query = queryIndex === -1 ? void 0 : wsComponent.resourceName.slice(queryIndex + 1);
         wsComponent.resourceName = void 0;
       }
@@ -7182,12 +7182,12 @@ var require_dist = __commonJS({
         throw new Error(`Unknown format "${name}"`);
       return f;
     };
-    function addFormats(ajv, list, fs10, exportName) {
+    function addFormats(ajv, list, fs12, exportName) {
       var _a;
       var _b;
       (_a = (_b = ajv.opts.code).formats) !== null && _a !== void 0 ? _a : _b.formats = (0, codegen_1._)`require("ajv-formats/dist/formats").${exportName}`;
       for (const f of list)
-        ajv.addFormat(f, fs10[f]);
+        ajv.addFormat(f, fs12[f]);
     }
     module.exports = exports = formatsPlugin;
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -7673,8 +7673,8 @@ function getErrorMap() {
 
 // node_modules/zod/v3/helpers/parseUtil.js
 var makeIssue = (params) => {
-  const { data, path: path10, errorMaps, issueData } = params;
-  const fullPath = [...path10, ...issueData.path || []];
+  const { data, path: path12, errorMaps, issueData } = params;
+  const fullPath = [...path12, ...issueData.path || []];
   const fullIssue = {
     ...issueData,
     path: fullPath
@@ -7790,11 +7790,11 @@ var errorUtil;
 
 // node_modules/zod/v3/types.js
 var ParseInputLazyPath = class {
-  constructor(parent, value, path10, key) {
+  constructor(parent, value, path12, key) {
     this._cachedPath = [];
     this.parent = parent;
     this.data = value;
-    this._path = path10;
+    this._path = path12;
     this._key = key;
   }
   get path() {
@@ -11432,10 +11432,10 @@ function assignProp(target, prop, value) {
     configurable: true
   });
 }
-function getElementAtPath(obj, path10) {
-  if (!path10)
+function getElementAtPath(obj, path12) {
+  if (!path12)
     return obj;
-  return path10.reduce((acc, key) => acc?.[key], obj);
+  return path12.reduce((acc, key) => acc?.[key], obj);
 }
 function promiseAllObject(promisesObj) {
   const keys = Object.keys(promisesObj);
@@ -11755,11 +11755,11 @@ function aborted(x, startIndex = 0) {
   }
   return false;
 }
-function prefixIssues(path10, issues) {
+function prefixIssues(path12, issues) {
   return issues.map((iss) => {
     var _a;
     (_a = iss).path ?? (_a.path = []);
-    iss.path.unshift(path10);
+    iss.path.unshift(path12);
     return iss;
   });
 }
@@ -15172,11 +15172,11 @@ function normalizeObjectSchema(schema) {
   }
   return void 0;
 }
-function getDotPath(path10) {
-  if (path10.length === 0) {
+function getDotPath(path12) {
+  if (path12.length === 0) {
     return "object root";
   }
-  return path10.reduce((acc, seg, index) => {
+  return path12.reduce((acc, seg, index) => {
     if (index === 0) {
       return String(seg);
     }
@@ -21433,8 +21433,8 @@ var StdioServerTransport = class {
 };
 
 // src/analyzer.ts
-import fs3 from "node:fs";
-import path3 from "node:path";
+import fs10 from "node:fs";
+import path10 from "node:path";
 
 // src/detector.ts
 import fs2 from "node:fs";
@@ -21540,388 +21540,13 @@ function detectEnvVarNames(projectRoot) {
   return [...names].sort();
 }
 
-// src/analyzer.ts
-var SECTION_PATTERNS = {
-  description: [/^#\s/m, /^##\s*(about|overview|description)/im],
-  installation: [/^##\s*(install(ation)?|getting\s+started|setup)/im],
-  usage: [/^##\s*(usage|how\s+to\s+use|quick\s+start)/im],
-  development: [/^##\s*(develop(ment)?|contributing|local\s+dev)/im],
-  environment: [/^##\s*(environment|env(\s+vars)?|configuration|config)/im],
-  testing: [/^##\s*(test(ing)?|running\s+tests)/im],
-  api: [/^##\s*(api|endpoints|rest)/im],
-  deployment: [/^##\s*(deploy(ment)?|production|release)/im]
-};
-var REQUIRED = [
-  "description",
-  "installation",
-  "usage",
-  "development",
-  "environment",
-  "testing"
-];
-var OPTIONAL = ["api", "deployment"];
-function sectionStatus(content, key) {
-  if (OPTIONAL.includes(key)) {
-    const found2 = SECTION_PATTERNS[key].some((re) => re.test(content));
-    return found2 ? "present" : "optional";
-  }
-  const found = SECTION_PATTERNS[key].some((re) => re.test(content));
-  return found ? "present" : "missing";
-}
-function scoreSections(sections) {
-  let score = 0;
-  const maxScore = REQUIRED.length;
-  for (const key of REQUIRED) {
-    if (sections[key] === "present") score += 1;
-  }
-  return { score, maxScore };
-}
-function buildSuggestions(sections, project, readmeExists) {
-  const suggestions = [];
-  if (!readmeExists) {
-    suggestions.push("Create a README.md at the project root.");
-  }
-  if (sections.description === "missing") {
-    suggestions.push("Add a project description (title or ## About section).");
-  }
-  if (sections.installation === "missing") {
-    suggestions.push("Add an ## Installation section with setup steps.");
-  }
-  if (sections.usage === "missing") {
-    suggestions.push("Add a ## Usage section explaining how to run the project.");
-  }
-  if (sections.development === "missing") {
-    suggestions.push("Add a ## Development section for local contributor workflow.");
-  }
-  if (sections.environment === "missing" && project.envVarNames.length > 0) {
-    suggestions.push(
-      `Add an ## Environment section documenting: ${project.envVarNames.join(", ")}.`
-    );
-  } else if (sections.environment === "missing") {
-    suggestions.push("Add an ## Environment section if the project uses configuration.");
-  }
-  if (sections.testing === "missing" && project.commands.test) {
-    suggestions.push(`Document testing \u2014 detected script: npm test (${project.commands.test}).`);
-  } else if (sections.testing === "missing") {
-    suggestions.push("Add a ## Testing section if tests exist.");
-  }
-  if (sections.api === "optional" && project.type === "Node.js") {
-    suggestions.push("Consider an ## API section if this project exposes HTTP endpoints.");
-  }
-  return suggestions;
-}
-function analyzeReadme(projectRoot) {
-  const readmePath = path3.join(projectRoot, "README.md");
-  const readmeExists = fs3.existsSync(readmePath);
-  const content = readmeExists ? fs3.readFileSync(readmePath, "utf8") : "";
-  const project = detectProject(projectRoot);
-  const sections = {};
-  for (const key of Object.keys(SECTION_PATTERNS)) {
-    sections[key] = sectionStatus(content, key);
-  }
-  const { score, maxScore } = scoreSections(sections);
-  const suggestions = buildSuggestions(sections, project, readmeExists);
-  return {
-    project: { name: project.name, type: project.type },
-    readme: { exists: readmeExists, path: readmePath },
-    sections,
-    score,
-    maxScore,
-    suggestions,
-    detectedCommands: project.commands,
-    envVarNames: project.envVarNames
-  };
-}
-
-// src/readme.ts
+// src/scan/index.ts
 import fs9 from "node:fs";
 import path9 from "node:path";
 
-// src/scan/tree.ts
-import fs4 from "node:fs";
-import path4 from "node:path";
-var SKIP_DIRS = /* @__PURE__ */ new Set([
-  "node_modules",
-  ".git",
-  "dist",
-  "build",
-  "coverage",
-  ".next",
-  "__pycache__",
-  ".venv",
-  "vendor"
-]);
-var FOLDER_NOTES = {
-  src: "Application source code",
-  tests: "Automated tests",
-  test: "Automated tests",
-  data: "Local data / file storage",
-  scripts: "Maintenance and utility scripts",
-  config: "Runtime configuration (JSON/YAML)",
-  docs: "Project documentation",
-  ".cursor": "Cursor IDE rules, agents, and workflow assets",
-  ".github": "GitHub Actions and repository automation",
-  public: "Static assets served to clients",
-  routes: "HTTP route definitions",
-  controllers: "Request/response handlers",
-  services: "Business logic layer",
-  validators: "Input validation",
-  utils: "Shared utilities"
-};
-var MAX_DEPTH = 3;
-var MAX_CHILDREN = 40;
-function scanTree(projectRoot) {
-  return walkDir(projectRoot, projectRoot, 0);
-}
-function topLevelNotes(projectRoot) {
-  const notes = {};
-  if (!fs4.existsSync(projectRoot)) return notes;
-  for (const name of fs4.readdirSync(projectRoot)) {
-    if (SKIP_DIRS.has(name)) continue;
-    const full = path4.join(projectRoot, name);
-    if (!fs4.statSync(full).isDirectory()) continue;
-    notes[name] = FOLDER_NOTES[name] ?? "Project directory";
-  }
-  return notes;
-}
-function walkDir(projectRoot, dir, depth) {
-  if (depth > MAX_DEPTH) return [];
-  let names;
-  try {
-    names = fs4.readdirSync(dir);
-  } catch {
-    return [];
-  }
-  names.sort((a, b) => a.localeCompare(b));
-  const entries = [];
-  for (const name of names.slice(0, MAX_CHILDREN)) {
-    if (SKIP_DIRS.has(name)) continue;
-    if (name.startsWith(".") && name !== ".cursor" && name !== ".github") continue;
-    const full = path4.join(dir, name);
-    let stat;
-    try {
-      stat = fs4.statSync(full);
-    } catch {
-      continue;
-    }
-    const rel = path4.relative(projectRoot, full).replace(/\\/g, "/");
-    if (stat.isDirectory()) {
-      const note = depth === 0 ? FOLDER_NOTES[name] : FOLDER_NOTES[name.split("/").pop() ?? ""];
-      entries.push({
-        path: rel,
-        type: "directory",
-        note,
-        children: walkDir(projectRoot, full, depth + 1)
-      });
-    } else if (depth < MAX_DEPTH) {
-      entries.push({ path: rel, type: "file" });
-    }
-  }
-  return entries;
-}
-function renderTree(entries, indent = "") {
-  const lines = [];
-  for (const entry of entries) {
-    const suffix = entry.type === "directory" ? "/" : "";
-    const note = entry.note ? ` \u2014 ${entry.note}` : "";
-    lines.push(`${indent}- \`${entry.path}${suffix}\`${note}`);
-    if (entry.children?.length) {
-      lines.push(renderTree(entry.children, indent + "  "));
-    }
-  }
-  return lines.join("\n");
-}
-
-// src/docs-generator.ts
-function buildComprehensiveReadme(scan) {
-  const lines = [
-    `# ${scan.name}`,
-    "",
-    scan.description || `${scan.type} project.`,
-    "",
-    "> Onboarding README generated by **README Doctor**. Review auto-detected sections before commit.",
-    "",
-    "## Quick start",
-    "",
-    "```bash",
-    "npm install",
-    "cp .env.example .env   # if present",
-    "npm start",
-    "```",
-    ""
-  ];
-  if (scan.apis.some((e) => e.path.includes("/health"))) {
-    const port = scan.envVars.find((v) => v.name === "PORT")?.example?.replace(/['"]/g, "") || "3001";
-    const health = scan.apis.find((e) => e.path.includes("/health"));
-    lines.push(`Health: \`http://localhost:${port}${health?.path ?? "/api/health"}\``, "");
-  }
-  if (scan.git.isRepo) {
-    lines.push("## Source control", "");
-    if (scan.git.remoteUrl) lines.push(`- **Remote:** ${scan.git.remoteUrl}`);
-    if (scan.git.branch) lines.push(`- **Branch:** \`${scan.git.branch}\``);
-    if (scan.hasCi) lines.push("- **CI:** GitHub Actions (`.github/workflows/`)");
-    lines.push("");
-  }
-  lines.push("## Project structure", "");
-  if (Object.keys(scan.topLevelNotes).length > 0) {
-    lines.push("| Path | Purpose |", "| --- | --- |");
-    for (const [dir, note] of Object.entries(scan.topLevelNotes).sort()) {
-      lines.push(`| \`${dir}/\` | ${note} |`);
-    }
-    lines.push("");
-  }
-  lines.push("### Directory tree", "", renderTree(scan.tree), "");
-  if (scan.hasDataDir) {
-    lines.push(
-      "### Data layout",
-      "",
-      "Local files under `data/` (no database in v1). Example retrospective folder:",
-      "",
-      "```text",
-      "data/retrospectives/{retroId}/",
-      "\u251C\u2500\u2500 retro.json",
-      "\u251C\u2500\u2500 feedback/",
-      "\u251C\u2500\u2500 analysis.json",
-      "\u251C\u2500\u2500 actions.json",
-      "\u251C\u2500\u2500 report.md",
-      "\u2514\u2500\u2500 audit.jsonl",
-      "```",
-      ""
-    );
-  }
-  if (scan.hasConfigDir) {
-    lines.push("### Configuration", "", "- `config/` \u2014 runtime JSON (e.g. guardrails, teams)", "");
-  }
-  if (scan.apis.length > 0) {
-    const port = scan.envVars.find((v) => v.name === "PORT")?.example?.replace(/['"]/g, "") || "3001";
-    const healthPath = scan.apis.find((e) => e.path.includes("/health"))?.path ?? `${scan.apiMountPrefix}/health`;
-    lines.push(
-      "## API",
-      "",
-      `${scan.apis.length} HTTP endpoints (base path \`${scan.apiMountPrefix}\`). Detected from route files.`,
-      "",
-      "| Method | Path | Source |",
-      "| --- | --- | --- |"
-    );
-    for (const ep of scan.apis) {
-      lines.push(`| ${ep.method} | \`${ep.path}\` | \`${ep.sourceFile}\` |`);
-    }
-    lines.push(
-      "",
-      "### Health check",
-      "",
-      "```bash",
-      `curl http://localhost:${port}${healthPath}`,
-      "```",
-      ""
-    );
-  }
-  if (scan.apis.some((e) => e.path.includes("/analysis/import"))) {
-    lines.push(
-      "## Analysis model",
-      "",
-      "| Source | How |",
-      "| --- | --- |",
-      "| **Cursor agent** (primary) | `/analyze-retro` \u2192 `POST .../analysis/import` |",
-      "| **Baseline** (tests only) | `POST .../analysis/generate/baseline` |",
-      "",
-      "No external LLM API keys in this service. AI analysis is performed by the Cursor agent in the parent orchestration repo.",
-      ""
-    );
-  }
-  if (scan.hasDataDir && scan.name.includes("retro")) {
-    lines.push(
-      "## Data storage",
-      "",
-      "JSON and Markdown under `data/retrospectives/{retroId}/`. Status lifecycle: `draft` \u2192 `open` \u2192 `closed` \u2192 `archived`.",
-      ""
-    );
-  }
-  if (scan.cursor.length > 0) {
-    lines.push(
-      "## Cursor / agentic AI",
-      "",
-      "Cursor rules and workflow assets detected in this repo:",
-      ""
-    );
-    const groups = {
-      rule: [],
-      agent: [],
-      skill: [],
-      command: [],
-      hook: []
-    };
-    for (const asset of scan.cursor) {
-      groups[asset.kind].push(asset);
-    }
-    const titles = {
-      rule: "Rules",
-      agent: "Sub-agents",
-      skill: "Skills",
-      command: "Commands",
-      hook: "Hooks"
-    };
-    for (const [kind, title] of Object.entries(titles)) {
-      const items = groups[kind];
-      if (!items.length) continue;
-      lines.push(`### ${title}`, "");
-      for (const item of items) {
-        const desc = item.description ? ` \u2014 ${item.description}` : "";
-        lines.push(`- **${item.name}** (\`${item.path}\`)${desc}`);
-      }
-      lines.push("");
-    }
-    lines.push(
-      "If this repo is part of a monorepo, the root `.cursor/` folder may hold workflow commands (`/analyze-retro`, `/generate-report`, etc.), skills, and sub-agents. Check the parent `AGENTS.md` and `docs/cursor-test-workflow.md`.",
-      ""
-    );
-  }
-  if (scan.agentsMdPath) {
-    lines.push(`Agent boundaries: [\`${scan.agentsMdPath}\`](${scan.agentsMdPath}).`, "");
-  }
-  if (scan.envVars.length > 0) {
-    lines.push(
-      "## Environment",
-      "",
-      "Copy `.env.example` to `.env` and set:",
-      "",
-      "| Variable | Example | Description |",
-      "| --- | --- | --- |"
-    );
-    for (const v of scan.envVars) {
-      lines.push(`| \`${v.name}\` | ${v.example ? `\`${v.example}\`` : "\u2014"} | ${v.description} |`);
-    }
-    lines.push("");
-  }
-  if (Object.keys(scan.allScripts).length > 0) {
-    lines.push("## NPM scripts", "", "| Script | Command |", "| --- | --- |");
-    for (const [name, cmd] of Object.entries(scan.allScripts)) {
-      lines.push(`| \`${name}\` | \`${cmd}\` |`);
-    }
-    lines.push("");
-  }
-  if (scan.hasTests) {
-    lines.push(
-      "## Testing",
-      "",
-      "```bash",
-      "npm test",
-      "```",
-      "",
-      scan.hasCi ? "CI runs tests on push/PR via GitHub Actions." : "",
-      ""
-    );
-  }
-  return lines.filter((l) => l !== void 0).join("\n").replace(/\n{3,}/g, "\n\n");
-}
-
-// src/scan/index.ts
-import fs8 from "node:fs";
-import path8 from "node:path";
-
 // src/scan/api.ts
-import fs5 from "node:fs";
-import path5 from "node:path";
+import fs3 from "node:fs";
+import path3 from "node:path";
 var ROUTE_RE = /router\.(get|post|put|patch|delete)\s*\(\s*['"`]([^'"`]+)['"`]/gi;
 var APP_MOUNT_RE = /app\.use\s*\(\s*['"`]([^'"`]+)['"`]\s*,\s*(\w+)/g;
 function scanApis(projectRoot) {
@@ -21962,11 +21587,11 @@ function scanApis(projectRoot) {
 }
 function findRouteFiles(projectRoot) {
   const found = [];
-  const routesDir = path5.join(projectRoot, "src", "routes");
-  if (fs5.existsSync(routesDir)) {
-    for (const name of fs5.readdirSync(routesDir)) {
+  const routesDir = path3.join(projectRoot, "src", "routes");
+  if (fs3.existsSync(routesDir)) {
+    for (const name of fs3.readdirSync(routesDir)) {
       if (/\.(js|ts|mjs|cjs)$/.test(name)) {
-        found.push(path5.join("src", "routes", name).replace(/\\/g, "/"));
+        found.push(path3.join("src", "routes", name).replace(/\\/g, "/"));
       }
     }
   }
@@ -21986,20 +21611,20 @@ function walk(projectRoot, dir, results, predicate, depth) {
   if (depth > 6 || results.length > 50) return;
   let names;
   try {
-    names = fs5.readdirSync(dir);
+    names = fs3.readdirSync(dir);
   } catch {
     return;
   }
   for (const name of names) {
     if (name === "node_modules" || name === ".git" || name === "dist") continue;
-    const full = path5.join(dir, name);
+    const full = path3.join(dir, name);
     let stat;
     try {
-      stat = fs5.statSync(full);
+      stat = fs3.statSync(full);
     } catch {
       continue;
     }
-    const rel = path5.relative(projectRoot, full).replace(/\\/g, "/");
+    const rel = path3.relative(projectRoot, full).replace(/\\/g, "/");
     if (stat.isDirectory()) {
       walk(projectRoot, full, results, predicate, depth + 1);
     } else if (predicate(rel)) {
@@ -22009,12 +21634,12 @@ function walk(projectRoot, dir, results, predicate, depth) {
 }
 
 // src/scan/cursor.ts
-import fs6 from "node:fs";
-import path6 from "node:path";
+import fs4 from "node:fs";
+import path4 from "node:path";
 var FRONTMATTER_DESC = /description:\s*(.+)/i;
 function scanCursor(projectRoot) {
-  const cursorRoot = path6.join(projectRoot, ".cursor");
-  if (!fs6.existsSync(cursorRoot)) return [];
+  const cursorRoot = path4.join(projectRoot, ".cursor");
+  if (!fs4.existsSync(cursorRoot)) return [];
   const assets = [];
   scanRules(projectRoot, cursorRoot, assets);
   scanAgents(projectRoot, cursorRoot, assets);
@@ -22024,11 +21649,11 @@ function scanCursor(projectRoot) {
   return assets;
 }
 function scanRules(projectRoot, cursorRoot, assets) {
-  const rulesDir = path6.join(cursorRoot, "rules");
-  if (!fs6.existsSync(rulesDir)) return;
-  for (const name of fs6.readdirSync(rulesDir)) {
+  const rulesDir = path4.join(cursorRoot, "rules");
+  if (!fs4.existsSync(rulesDir)) return;
+  for (const name of fs4.readdirSync(rulesDir)) {
     if (!/\.(mdc|md)$/.test(name)) continue;
-    const rel = path6.relative(projectRoot, path6.join(rulesDir, name)).replace(/\\/g, "/");
+    const rel = path4.relative(projectRoot, path4.join(rulesDir, name)).replace(/\\/g, "/");
     const content = safeReadFile(projectRoot, rel) ?? "";
     assets.push({
       kind: "rule",
@@ -22039,11 +21664,11 @@ function scanRules(projectRoot, cursorRoot, assets) {
   }
 }
 function scanAgents(projectRoot, cursorRoot, assets) {
-  const agentsDir = path6.join(cursorRoot, "agents");
-  if (!fs6.existsSync(agentsDir)) return;
-  for (const name of fs6.readdirSync(agentsDir)) {
+  const agentsDir = path4.join(cursorRoot, "agents");
+  if (!fs4.existsSync(agentsDir)) return;
+  for (const name of fs4.readdirSync(agentsDir)) {
     if (!/\.(md|mdc)$/.test(name)) continue;
-    const rel = path6.relative(projectRoot, path6.join(agentsDir, name)).replace(/\\/g, "/");
+    const rel = path4.relative(projectRoot, path4.join(agentsDir, name)).replace(/\\/g, "/");
     const content = safeReadFile(projectRoot, rel) ?? "";
     assets.push({
       kind: "agent",
@@ -22054,12 +21679,12 @@ function scanAgents(projectRoot, cursorRoot, assets) {
   }
 }
 function scanSkills(projectRoot, cursorRoot, assets) {
-  const skillsDir = path6.join(cursorRoot, "skills");
-  if (!fs6.existsSync(skillsDir)) return;
-  for (const name of fs6.readdirSync(skillsDir)) {
-    const skillFile = path6.join(skillsDir, name, "SKILL.md");
-    if (!fs6.existsSync(skillFile)) continue;
-    const rel = path6.relative(projectRoot, skillFile).replace(/\\/g, "/");
+  const skillsDir = path4.join(cursorRoot, "skills");
+  if (!fs4.existsSync(skillsDir)) return;
+  for (const name of fs4.readdirSync(skillsDir)) {
+    const skillFile = path4.join(skillsDir, name, "SKILL.md");
+    if (!fs4.existsSync(skillFile)) continue;
+    const rel = path4.relative(projectRoot, skillFile).replace(/\\/g, "/");
     const content = safeReadFile(projectRoot, rel) ?? "";
     assets.push({
       kind: "skill",
@@ -22070,11 +21695,11 @@ function scanSkills(projectRoot, cursorRoot, assets) {
   }
 }
 function scanCommands(projectRoot, cursorRoot, assets) {
-  const commandsDir = path6.join(cursorRoot, "commands");
-  if (!fs6.existsSync(commandsDir)) return;
-  for (const name of fs6.readdirSync(commandsDir)) {
+  const commandsDir = path4.join(cursorRoot, "commands");
+  if (!fs4.existsSync(commandsDir)) return;
+  for (const name of fs4.readdirSync(commandsDir)) {
     if (!/\.(md|mdc|txt)$/.test(name)) continue;
-    const rel = path6.relative(projectRoot, path6.join(commandsDir, name)).replace(/\\/g, "/");
+    const rel = path4.relative(projectRoot, path4.join(commandsDir, name)).replace(/\\/g, "/");
     const content = safeReadFile(projectRoot, rel) ?? "";
     assets.push({
       kind: "command",
@@ -22085,9 +21710,9 @@ function scanCommands(projectRoot, cursorRoot, assets) {
   }
 }
 function scanHooks(projectRoot, cursorRoot, assets) {
-  const hooksJson = path6.join(cursorRoot, "hooks.json");
-  const hooksDir = path6.join(cursorRoot, "hooks", "hooks.json");
-  const rel = fs6.existsSync(hooksJson) ? ".cursor/hooks.json" : fs6.existsSync(hooksDir) ? ".cursor/hooks/hooks.json" : null;
+  const hooksJson = path4.join(cursorRoot, "hooks.json");
+  const hooksDir = path4.join(cursorRoot, "hooks", "hooks.json");
+  const rel = fs4.existsSync(hooksJson) ? ".cursor/hooks.json" : fs4.existsSync(hooksDir) ? ".cursor/hooks/hooks.json" : null;
   if (!rel) return;
   assets.push({
     kind: "hook",
@@ -22151,11 +21776,11 @@ function scanEnvVars(projectRoot) {
 
 // src/scan/git.ts
 import { execFileSync } from "node:child_process";
-import fs7 from "node:fs";
-import path7 from "node:path";
+import fs5 from "node:fs";
+import path5 from "node:path";
 function scanGit(projectRoot) {
-  const gitDir = path7.join(projectRoot, ".git");
-  if (!fs7.existsSync(gitDir)) {
+  const gitDir = path5.join(projectRoot, ".git");
+  if (!fs5.existsSync(gitDir)) {
     return { isRepo: false, remoteUrl: null, branch: null };
   }
   let remoteUrl = null;
@@ -22179,6 +21804,247 @@ function scanGit(projectRoot) {
   return { isRepo: true, remoteUrl, branch };
 }
 
+// src/scan/pages.ts
+import fs6 from "node:fs";
+import path6 from "node:path";
+var SKIP = /* @__PURE__ */ new Set(["node_modules", ".git", "dist", "build", "coverage"]);
+function scanHtmlPages(projectRoot) {
+  const pages = [];
+  collectHtml(projectRoot, projectRoot, pages, 0);
+  const publicDir = path6.join(projectRoot, "public");
+  if (fs6.existsSync(publicDir) && fs6.statSync(publicDir).isDirectory()) {
+    collectHtml(projectRoot, publicDir, pages, 0);
+  }
+  return pages.sort((a, b) => a.file.localeCompare(b.file));
+}
+function collectHtml(projectRoot, dir, out, depth) {
+  if (depth > 2) return;
+  let names;
+  try {
+    names = fs6.readdirSync(dir);
+  } catch {
+    return;
+  }
+  for (const name of names) {
+    if (SKIP.has(name)) continue;
+    const full = path6.join(dir, name);
+    let stat;
+    try {
+      stat = fs6.statSync(full);
+    } catch {
+      continue;
+    }
+    if (stat.isDirectory()) {
+      collectHtml(projectRoot, full, out, depth + 1);
+      continue;
+    }
+    if (!name.endsWith(".html")) continue;
+    const rel = path6.relative(projectRoot, full).replace(/\\/g, "/");
+    const content = safeReadFile(projectRoot, rel);
+    let title = null;
+    if (content) {
+      const m = content.match(/<title[^>]*>([^<]+)<\/title>/i);
+      if (m) title = m[1].trim();
+    }
+    out.push({ file: rel, title });
+  }
+}
+
+// src/scan/ports.ts
+function scanPortHints(projectRoot, envVars) {
+  const hints = [];
+  const seen = /* @__PURE__ */ new Set();
+  for (const v of envVars) {
+    if (!/PORT/i.test(v.name)) continue;
+    const raw = v.example?.replace(/['"]/g, "").trim() ?? "";
+    if (raw && /^\d+$/.test(raw)) {
+      const key = `${v.name}:${raw}`;
+      if (!seen.has(key)) {
+        seen.add(key);
+        hints.push({ port: raw, label: v.name, source: ".env.example" });
+      }
+    }
+  }
+  const compose = safeReadFile(projectRoot, "docker-compose.yml") ?? safeReadFile(projectRoot, "docker-compose.yaml");
+  if (compose) {
+    const portRe = /['"]?(\d{2,5}):(\d{2,5})['"]?/g;
+    let m;
+    while ((m = portRe.exec(compose)) !== null) {
+      const host = m[1];
+      if (!seen.has(`compose:${host}`)) {
+        seen.add(`compose:${host}`);
+        hints.push({ port: host, label: "docker-compose published port", source: "docker-compose" });
+      }
+    }
+  }
+  const pkgRaw = safeReadFile(projectRoot, "package.json");
+  if (pkgRaw) {
+    try {
+      const pkg = JSON.parse(pkgRaw);
+      const start = pkg.scripts?.start ?? "";
+      const portMatch = start.match(/(?:PORT=|--port[=\s])(\d{2,5})/);
+      if (portMatch && !seen.has(`script:${portMatch[1]}`)) {
+        seen.add(`script:${portMatch[1]}`);
+        hints.push({ port: portMatch[1], label: "npm start", source: "package.json" });
+      }
+    } catch {
+    }
+  }
+  if (hints.length === 0) {
+    hints.push({ port: "3000", label: "default (configure in .env)", source: "inferred" });
+  }
+  return hints;
+}
+
+// src/scan/workflows.ts
+import fs7 from "node:fs";
+import path7 from "node:path";
+function scanWorkflowCommands(projectRoot) {
+  const commandsDir = path7.join(projectRoot, ".cursor", "commands");
+  if (!fs7.existsSync(commandsDir)) return [];
+  const out = [];
+  for (const name of fs7.readdirSync(commandsDir)) {
+    if (!name.endsWith(".md")) continue;
+    const rel = path7.join(".cursor", "commands", name).replace(/\\/g, "/");
+    const content = safeReadFile(projectRoot, rel);
+    if (!content) continue;
+    const fm = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+    let cmdName = name.replace(/\.md$/, "");
+    let description = "";
+    if (fm) {
+      const nameLine = fm[1].match(/^name:\s*(.+)$/m);
+      const descLine = fm[1].match(/^description:\s*(.+)$/m);
+      if (nameLine) cmdName = nameLine[1].trim();
+      if (descLine) description = descLine[1].trim();
+    }
+    if (!description) {
+      const body = content.replace(/^---[\s\S]*?---\r?\n?/, "").trim();
+      description = body.split("\n").find((l) => l.trim() && !l.startsWith("#"))?.trim() ?? "";
+    }
+    out.push({ name: cmdName, description, path: rel });
+  }
+  return out.sort((a, b) => a.name.localeCompare(b.name));
+}
+function scanMakefileTargets(projectRoot) {
+  const makefile = safeReadFile(projectRoot, "Makefile") ?? safeReadFile(projectRoot, "makefile");
+  if (!makefile) return [];
+  const targets = [];
+  for (const line of makefile.split("\n")) {
+    const m = line.match(/^([a-zA-Z0-9_.-]+):/);
+    if (m && !m[1].startsWith(".")) targets.push(m[1]);
+  }
+  return targets.slice(0, 12);
+}
+function scanCiWorkflowNames(projectRoot) {
+  const dir = path7.join(projectRoot, ".github", "workflows");
+  if (!fs7.existsSync(dir)) return [];
+  return fs7.readdirSync(dir).filter((f) => f.endsWith(".yml") || f.endsWith(".yaml")).map((f) => f.replace(/\.(ya?ml)$/, "")).sort();
+}
+function scanDocMarkdown(projectRoot) {
+  const docs = path7.join(projectRoot, "docs");
+  if (!fs7.existsSync(docs)) return [];
+  const files = [];
+  for (const name of fs7.readdirSync(docs)) {
+    if (name.endsWith(".md")) files.push(`docs/${name}`);
+  }
+  return files.sort();
+}
+
+// src/scan/tree.ts
+import fs8 from "node:fs";
+import path8 from "node:path";
+var SKIP_DIRS = /* @__PURE__ */ new Set([
+  "node_modules",
+  ".git",
+  "dist",
+  "build",
+  "coverage",
+  ".next",
+  "__pycache__",
+  ".venv",
+  "vendor"
+]);
+var FOLDER_NOTES = {
+  src: "Application source code",
+  tests: "Automated tests",
+  test: "Automated tests",
+  data: "Local data / file storage",
+  scripts: "Maintenance and utility scripts",
+  config: "Runtime configuration (JSON/YAML)",
+  docs: "Project documentation",
+  ".cursor": "Cursor IDE rules, agents, and workflow assets",
+  ".github": "GitHub Actions and repository automation",
+  public: "Static assets served to clients",
+  routes: "HTTP route definitions",
+  controllers: "Request/response handlers",
+  services: "Business logic layer",
+  validators: "Input validation",
+  utils: "Shared utilities"
+};
+var MAX_DEPTH = 3;
+var MAX_CHILDREN = 40;
+function scanTree(projectRoot) {
+  return walkDir(projectRoot, projectRoot, 0);
+}
+function topLevelNotes(projectRoot) {
+  const notes = {};
+  if (!fs8.existsSync(projectRoot)) return notes;
+  for (const name of fs8.readdirSync(projectRoot)) {
+    if (SKIP_DIRS.has(name)) continue;
+    const full = path8.join(projectRoot, name);
+    if (!fs8.statSync(full).isDirectory()) continue;
+    notes[name] = FOLDER_NOTES[name] ?? "Project directory";
+  }
+  return notes;
+}
+function walkDir(projectRoot, dir, depth) {
+  if (depth > MAX_DEPTH) return [];
+  let names;
+  try {
+    names = fs8.readdirSync(dir);
+  } catch {
+    return [];
+  }
+  names.sort((a, b) => a.localeCompare(b));
+  const entries = [];
+  for (const name of names.slice(0, MAX_CHILDREN)) {
+    if (SKIP_DIRS.has(name)) continue;
+    if (name.startsWith(".") && name !== ".cursor" && name !== ".github") continue;
+    const full = path8.join(dir, name);
+    let stat;
+    try {
+      stat = fs8.statSync(full);
+    } catch {
+      continue;
+    }
+    const rel = path8.relative(projectRoot, full).replace(/\\/g, "/");
+    if (stat.isDirectory()) {
+      const note = depth === 0 ? FOLDER_NOTES[name] : FOLDER_NOTES[name.split("/").pop() ?? ""];
+      entries.push({
+        path: rel,
+        type: "directory",
+        note,
+        children: walkDir(projectRoot, full, depth + 1)
+      });
+    } else if (depth < MAX_DEPTH) {
+      entries.push({ path: rel, type: "file" });
+    }
+  }
+  return entries;
+}
+function renderTree(entries, indent = "") {
+  const lines = [];
+  for (const entry of entries) {
+    const suffix = entry.type === "directory" ? "/" : "";
+    const note = entry.note ? ` \u2014 ${entry.note}` : "";
+    lines.push(`${indent}- \`${entry.path}${suffix}\`${note}`);
+    if (entry.children?.length) {
+      lines.push(renderTree(entry.children, indent + "  "));
+    }
+  }
+  return lines.join("\n");
+}
+
 // src/scan/index.ts
 var TYPE_MAP2 = [
   { file: "package.json", type: "Node.js" },
@@ -22191,12 +22057,12 @@ var TYPE_MAP2 = [
 function scanProject(projectRoot) {
   let type = "Unknown";
   for (const entry of TYPE_MAP2) {
-    if (fs8.existsSync(path8.join(projectRoot, entry.file))) {
+    if (fs9.existsSync(path9.join(projectRoot, entry.file))) {
       type = entry.type;
       break;
     }
   }
-  let name = path8.basename(projectRoot);
+  let name = path9.basename(projectRoot);
   let description = "";
   const allScripts = {};
   const pkgRaw = safeReadFile(projectRoot, "package.json");
@@ -22210,6 +22076,9 @@ function scanProject(projectRoot) {
     }
   }
   const { endpoints, mountPrefix } = scanApis(projectRoot);
+  const envVars = scanEnvVars(projectRoot);
+  const hasMultiRepoHints = fs9.existsSync(path9.join(projectRoot, "repos.json")) || fs9.existsSync(path9.join(projectRoot, "pnpm-workspace.yaml")) || fs9.existsSync(path9.join(projectRoot, "go.work")) || fs9.existsSync(path9.join(projectRoot, "apps")) || fs9.existsSync(path9.join(projectRoot, "packages"));
+  const hasMcpTemplate = fs9.existsSync(path9.join(projectRoot, "mcp-config.json")) || fs9.existsSync(path9.join(projectRoot, "env.example")) && (safeReadFile(projectRoot, "env.example") ?? "").includes("MCP");
   return {
     root: projectRoot,
     name,
@@ -22221,29 +22090,520 @@ function scanProject(projectRoot) {
     apiMountPrefix: mountPrefix,
     git: scanGit(projectRoot),
     cursor: scanCursor(projectRoot),
-    envVars: scanEnvVars(projectRoot),
+    envVars,
     allScripts,
-    hasTests: fs8.existsSync(path8.join(projectRoot, "tests")) || fs8.existsSync(path8.join(projectRoot, "test")),
-    hasCi: fs8.existsSync(path8.join(projectRoot, ".github", "workflows")),
-    hasDataDir: fs8.existsSync(path8.join(projectRoot, "data")),
-    hasConfigDir: fs8.existsSync(path8.join(projectRoot, "config")),
-    agentsMdPath: fs8.existsSync(path8.join(projectRoot, "AGENTS.md")) ? "AGENTS.md" : null
+    hasTests: fs9.existsSync(path9.join(projectRoot, "tests")) || fs9.existsSync(path9.join(projectRoot, "test")),
+    hasCi: fs9.existsSync(path9.join(projectRoot, ".github", "workflows")),
+    hasDataDir: fs9.existsSync(path9.join(projectRoot, "data")),
+    hasConfigDir: fs9.existsSync(path9.join(projectRoot, "config")),
+    agentsMdPath: fs9.existsSync(path9.join(projectRoot, "AGENTS.md")) ? "AGENTS.md" : null,
+    htmlPages: scanHtmlPages(projectRoot),
+    workflowCommands: scanWorkflowCommands(projectRoot),
+    makefileTargets: scanMakefileTargets(projectRoot),
+    ciWorkflowNames: scanCiWorkflowNames(projectRoot),
+    docMarkdownFiles: scanDocMarkdown(projectRoot),
+    portHints: scanPortHints(projectRoot, envVars),
+    hasMultiRepoHints,
+    hasMcpTemplate
+  };
+}
+
+// src/section-capabilities.ts
+var DEFINITIONS = {
+  quick_start: { title: "Quick start" },
+  setup_5min: { title: "5-minute setup" },
+  team_onboarding: { title: "Team onboarding" },
+  prerequisites: { title: "Prerequisites" },
+  repository_structure: { title: "Repository structure" },
+  development_ports: { title: "Development ports" },
+  features: { title: "Features" },
+  mcp_optional: { title: "MCP Integration Setup (optional)" },
+  ai_agent_integration: { title: "AI Agent Integration" },
+  ai_concepts: { title: "AI concepts in this repo" },
+  typical_workflow: { title: "Typical workflow" },
+  documentation_map: { title: "Documentation map" },
+  security: { title: "Security" },
+  links: { title: "Links" }
+};
+function anchorFromTitle(title) {
+  return title.toLowerCase().replace(/[^\w\s-]/g, "").replace(/\s+/g, "-");
+}
+function resolveSections(scan) {
+  const hasQuickScripts = Object.keys(scan.allScripts).some((k) => ["start", "dev", "build"].includes(k)) || scan.makefileTargets.length > 0;
+  const hasCursorWorkflow = scan.workflowCommands.length > 0 || scan.cursor.length > 0;
+  const hasHttpApi = scan.apis.length > 0;
+  const hasStaticUi = scan.htmlPages.length > 0;
+  const enabled = /* @__PURE__ */ new Set([
+    "prerequisites",
+    "repository_structure",
+    "development_ports",
+    "features",
+    "security",
+    "links"
+  ]);
+  if (hasQuickScripts) {
+    enabled.add("quick_start");
+    enabled.add("setup_5min");
+  }
+  if (scan.hasMultiRepoHints) enabled.add("team_onboarding");
+  if (scan.hasMcpTemplate) enabled.add("mcp_optional");
+  if (hasCursorWorkflow) {
+    enabled.add("ai_agent_integration");
+    enabled.add("ai_concepts");
+  }
+  if (scan.workflowCommands.length > 0 || scan.makefileTargets.length > 0) {
+    enabled.add("typical_workflow");
+  }
+  if (scan.docMarkdownFiles.length > 0) enabled.add("documentation_map");
+  void hasHttpApi;
+  void hasStaticUi;
+  const order = [
+    "quick_start",
+    "setup_5min",
+    "team_onboarding",
+    "prerequisites",
+    "repository_structure",
+    "development_ports",
+    "features",
+    "mcp_optional",
+    "ai_agent_integration",
+    "ai_concepts",
+    "typical_workflow",
+    "documentation_map",
+    "security",
+    "links"
+  ];
+  return order.filter((id) => enabled.has(id)).map((id) => ({
+    id,
+    title: DEFINITIONS[id].title,
+    anchor: anchorFromTitle(DEFINITIONS[id].title)
+  }));
+}
+var SECTION_TITLE_PATTERNS = {
+  quick_start: [/^##\s*quick\s+start/im],
+  setup_5min: [/^##\s*5-minute\s+setup/im],
+  team_onboarding: [/^##\s*team\s+onboarding/im],
+  prerequisites: [/^##\s*prerequisites/im],
+  repository_structure: [/^##\s*repository\s+structure/im],
+  development_ports: [/^##\s*development\s+ports/im],
+  features: [/^##\s*features/im],
+  mcp_optional: [/^##\s*mcp\s+integration/im],
+  ai_agent_integration: [/^##\s*ai\s+agent\s+integration/im],
+  ai_concepts: [/^##\s*ai\s+concepts/im],
+  typical_workflow: [/^##\s*typical\s+workflow/im],
+  documentation_map: [/^##\s*documentation\s+map/im],
+  security: [/^##\s*security/im],
+  links: [/^##\s*links/im]
+};
+
+// src/analyzer.ts
+function sectionStatus(content, id) {
+  const patterns = SECTION_TITLE_PATTERNS[id];
+  const found = patterns.some((re) => re.test(content));
+  return found ? "present" : "missing";
+}
+function buildSuggestions(sections, enabledIds, readmeExists) {
+  const suggestions = [];
+  if (!readmeExists) {
+    suggestions.push("Create README.md with /generate-readme (canonical company structure).");
+    return suggestions;
+  }
+  for (const id of enabledIds) {
+    if (sections[id] === "missing" && id !== "features") {
+      const title = id.replace(/_/g, " ");
+      suggestions.push(`Add canonical section: ## ${title} (see references/canonical-readme-outline.md).`);
+    }
+  }
+  if (sections.features === "missing") {
+    suggestions.unshift("Add ## Features immediately after ## Development ports.");
+  }
+  return suggestions;
+}
+function analyzeReadme(projectRoot) {
+  const readmePath = path10.join(projectRoot, "README.md");
+  const readmeExists = fs10.existsSync(readmePath);
+  const content = readmeExists ? fs10.readFileSync(readmePath, "utf8") : "";
+  const project = detectProject(projectRoot);
+  const scan = scanProject(projectRoot);
+  const enabled = resolveSections(scan);
+  const enabledSectionIds = enabled.map((s) => s.id);
+  const sections = {};
+  for (const id of enabledSectionIds) {
+    sections[id] = sectionStatus(content, id);
+  }
+  let score = 0;
+  for (const id of enabledSectionIds) {
+    if (sections[id] === "present") score += 1;
+  }
+  const maxScore = enabledSectionIds.length;
+  const suggestions = buildSuggestions(sections, enabledSectionIds, readmeExists);
+  return {
+    project: { name: project.name, type: project.type },
+    readme: { exists: readmeExists, path: readmePath },
+    sections,
+    enabledSectionIds,
+    score,
+    maxScore,
+    suggestions,
+    detectedCommands: project.commands,
+    envVarNames: project.envVarNames
   };
 }
 
 // src/readme.ts
-function improveReadme(projectRoot) {
-  const readmePath = path9.join(projectRoot, "README.md");
-  const created = !fs9.existsSync(readmePath);
-  const scan = scanProject(projectRoot);
-  const content = buildComprehensiveReadme(scan);
-  const backupPath = safeBackupReadme(projectRoot);
-  safeWriteReadme(projectRoot, content);
+import fs11 from "node:fs";
+import path11 from "node:path";
+
+// src/features.ts
+function groupApis(scan) {
+  const groups = /* @__PURE__ */ new Map();
+  const prefix = scan.apiMountPrefix.replace(/\/$/, "") || "";
+  for (const ep of scan.apis) {
+    const full = ep.path.startsWith("/") ? ep.path : `/${ep.path}`;
+    const segments = full.split("/").filter(Boolean);
+    const key = segments[0] ?? "root";
+    if (!groups.has(key)) groups.set(key, { methods: /* @__PURE__ */ new Set(), paths: [] });
+    const g = groups.get(key);
+    g.methods.add(ep.method);
+    const display = `${prefix}${full}`.replace(/\/+/g, "/");
+    if (!g.paths.includes(display)) g.paths.push(display);
+  }
+  return groups;
+}
+function renderFeaturesSection(scan) {
+  const lines = ["## Features", ""];
+  if (scan.description) {
+    lines.push(scan.description, "");
+  }
+  const apiGroups = groupApis(scan);
+  if (apiGroups.size > 0) {
+    lines.push("### HTTP API capabilities", "");
+    for (const [group, info] of [...apiGroups.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
+      const methods = [...info.methods].sort().join(", ");
+      lines.push(
+        `- **${group}** \u2014 exposes ${methods} on ${info.paths.slice(0, 4).join(", ")}${info.paths.length > 4 ? ", \u2026" : ""} (detected from route files).`
+      );
+    }
+    lines.push("");
+  }
+  if (scan.htmlPages.length > 0) {
+    lines.push("### User interface", "");
+    for (const page of scan.htmlPages) {
+      const label = page.title ?? page.file;
+      lines.push(`- **${label}** \u2014 \`${page.file}\``);
+    }
+    lines.push("");
+  }
+  const notableScripts = Object.entries(scan.allScripts).filter(
+    ([name]) => /^(seed|reset|export|migrate|demo)/i.test(name)
+  );
+  if (notableScripts.length > 0) {
+    lines.push("### Operational scripts", "");
+    for (const [name, cmd] of notableScripts) {
+      lines.push(`- \`npm run ${name}\` \u2014 \`${cmd}\``);
+    }
+    lines.push("");
+  }
+  if (scan.workflowCommands.length > 0) {
+    lines.push("### Agent / facilitator workflows", "");
+    for (const cmd of scan.workflowCommands.slice(0, 15)) {
+      const desc = cmd.description ? ` \u2014 ${cmd.description}` : "";
+      lines.push(`- \`/${cmd.name}\`${desc}`);
+    }
+    if (scan.workflowCommands.length > 15) {
+      lines.push(`- _(${scan.workflowCommands.length - 15} more commands in \`.cursor/commands/\`)_`);
+    }
+    lines.push("");
+  }
+  if (scan.hasDataDir) {
+    lines.push(
+      "### Local data",
+      "",
+      "- File-backed storage under `data/` (no database detected).",
+      ""
+    );
+  }
+  if (scan.hasCi) {
+    const names = scan.ciWorkflowNames.length > 0 ? scan.ciWorkflowNames.join(", ") : "workflows";
+    lines.push("### Automation", "", `- CI runs on push/PR via GitHub Actions (\`${names}\`).`, "");
+  }
+  if (lines.length <= 3) {
+    lines.push(
+      "- Core capabilities are defined in source under this repository; expand this section after review.",
+      ""
+    );
+  }
+  return lines;
+}
+
+// src/canonical-readme.ts
+function extractTaglineFromReadme(content) {
+  const afterTitle = content.replace(/^#\s+.+\n?/, "");
+  const m = afterTitle.match(/^>\s*(.+)$/m);
+  return m ? m[1].trim() : null;
+}
+function buildCanonicalReadme(scan, options = {}) {
+  const sections = resolveSections(scan);
+  const lines = [];
+  const displayName = scan.name.replace(/^@[^/]+\//, "");
+  lines.push(`# ${displayName}`, "");
+  const tagline = options.preservedTagline?.trim() || (scan.description ? scan.description : `${scan.type} project \u2014 onboarding README generated by **README Doctor**. Review before commit.`);
+  lines.push(`> ${tagline.replace(/^>\s*/, "")}`, "");
+  lines.push("## Table of contents", "");
+  for (const s of sections) {
+    lines.push(`- [${s.title}](#${s.anchor})`);
+  }
+  lines.push("", "---", "");
+  for (const section of sections) {
+    lines.push(...renderSection(section, scan));
+    lines.push("", "---", "");
+  }
+  return lines.join("\n").replace(/\n{3,}/g, "\n\n").trimEnd() + "\n";
+}
+function renderSection(section, scan) {
+  switch (section.id) {
+    case "quick_start":
+      return renderQuickStart(scan);
+    case "setup_5min":
+      return renderSetup5Min(scan);
+    case "team_onboarding":
+      return renderTeamOnboarding(scan);
+    case "prerequisites":
+      return renderPrerequisites(scan);
+    case "repository_structure":
+      return renderRepositoryStructure(scan);
+    case "development_ports":
+      return renderDevelopmentPorts(scan);
+    case "features":
+      return renderFeaturesSection(scan);
+    case "mcp_optional":
+      return renderMcpOptional(scan);
+    case "ai_agent_integration":
+      return renderAiAgentIntegration(scan);
+    case "ai_concepts":
+      return renderAiConcepts(scan);
+    case "typical_workflow":
+      return renderTypicalWorkflow(scan);
+    case "documentation_map":
+      return renderDocumentationMap(scan);
+    case "security":
+      return renderSecurity(scan);
+    case "links":
+      return renderLinks(scan);
+    default:
+      return [];
+  }
+}
+function renderQuickStart(scan) {
+  const lines = ["## Quick start", ""];
+  if (scan.hasMultiRepoHints) {
+    lines.push("| Component | Role |", "| --- | --- |", "| **This repository** | Application or orchestration root |");
+    if (scan.hasMultiRepoHints) {
+      lines.push("| **Related repos** | See `repos.json` or workspace file if present |");
+    }
+    lines.push("");
+  }
+  lines.push("```bash", "npm install", "");
+  if (scan.envVars.length > 0) lines.push("cp .env.example .env   # if present", "");
+  lines.push("npm start", "```", "");
+  return lines;
+}
+function renderSetup5Min(scan) {
+  const start = scan.allScripts.start ? "npm start" : scan.allScripts.dev ? "npm run dev" : "npm start";
+  const test = scan.allScripts.test ? "\nnpm test" : "";
+  return [
+    "## 5-minute setup",
+    "",
+    "```bash",
+    "npm install",
+    scan.envVars.length ? "cp .env.example .env" : "# configure environment if needed",
+    start + test,
+    "```",
+    "",
+    scan.agentsMdPath ? `Read [\`${scan.agentsMdPath}\`](${scan.agentsMdPath}) for stack, boundaries, and tests.` : "Skim this README and project docs before changing production data.",
+    ""
+  ];
+}
+function renderTeamOnboarding(scan) {
+  return [
+    "## Team onboarding",
+    "",
+    "1. Clone this repository (and sibling repos from `repos.json` or your org runbook if applicable).",
+    "2. Open the workspace file in your IDE when provided.",
+    "3. Complete local setup in [5-minute setup](#5-minute-setup).",
+    "4. Read agent or contributor docs (`AGENTS.md`, `docs/`) when present.",
+    ""
+  ];
+}
+function renderPrerequisites(scan) {
+  const lines = ["## Prerequisites", "", "- **Git**"];
+  if (scan.type === "Node.js" || Object.keys(scan.allScripts).length > 0) {
+    lines.push("- **Node.js 18+** and **npm**");
+  }
+  if (scan.cursor.length > 0 || scan.workflowCommands.length > 0) {
+    lines.push("- **Cursor** (commands, skills, MCP) when using agentic workflows");
+  }
+  if (scan.hasMcpTemplate) {
+    lines.push("- **MCP setup** \u2014 see [MCP Integration Setup (optional)](#mcp-integration-setup-optional)");
+  }
+  lines.push("");
+  return lines;
+}
+function renderRepositoryStructure(scan) {
+  const lines = ["## Repository structure", "", "```text", `${scan.name}/`];
+  if (Object.keys(scan.topLevelNotes).length > 0) {
+    for (const [dir, note] of Object.entries(scan.topLevelNotes).sort().slice(0, 12)) {
+      lines.push(`\u251C\u2500\u2500 ${dir}/    # ${note}`);
+    }
+  }
+  lines.push("```", "");
+  lines.push("### Directory tree", "", renderTree(scan.tree), "");
+  if (scan.apis.length > 0) {
+    lines.push(
+      "### API surface",
+      "",
+      `${scan.apis.length} endpoints under \`${scan.apiMountPrefix}\` (detected from route files). Details in [Features](#features).`,
+      ""
+    );
+  }
+  return lines;
+}
+function renderDevelopmentPorts(scan) {
+  const lines = ["## Development ports", "", "| Service | URL | Notes |", "| --- | --- | --- |"];
+  const primary = scan.portHints[0];
+  const port = String(primary.port);
+  const health = scan.apis.find((e) => e.path.includes("health"));
+  const pathPart = health ? `${scan.apiMountPrefix}${health.path.startsWith("/") ? health.path : `/${health.path}`}` : scan.apis.length ? scan.apiMountPrefix : "/";
+  const url = scan.apis.length ? `http://localhost:${port}${pathPart.replace(/\/+/g, "/")}` : `http://localhost:${port}`;
+  lines.push(`| Application | ${url} | \`npm start\` (${primary.label}) |`);
+  if (scan.htmlPages.length > 0 && scan.portHints.length > 1) {
+    const webPort = scan.portHints[1];
+    lines.push(`| Static UI | http://localhost:${webPort.port} | detected secondary port |`);
+  }
+  lines.push("");
+  if (scan.envVars.length > 0) {
+    lines.push("Environment variables (from `.env.example` names only):", "");
+    for (const v of scan.envVars) {
+      lines.push(`- \`${v.name}\`${v.example ? ` \u2014 example: \`${v.example}\`` : ""}`);
+    }
+    lines.push("");
+  }
+  return lines;
+}
+function renderMcpOptional(scan) {
+  return [
+    "## MCP Integration Setup (optional)",
+    "",
+    "| File | Role |",
+    "| --- | --- |",
+    "| `mcp-config.json` or template | Committed MCP template \u2014 no secrets |",
+    "| `.cursor/mcp.json` | Generated locally (gitignored) \u2014 Cursor runtime |",
+    "| `.env` / `env.example` | Paths and OAuth directory hints |",
+    "",
+    "1. Copy `env.example` to `.env` and set MCP-related variables.",
+    "2. Run your org setup script (e.g. `scripts/setup-mcp.ps1`) if provided.",
+    "3. **Restart Cursor** after MCP config changes.",
+    ""
+  ];
+}
+function renderAiAgentIntegration(scan) {
+  const lines = [
+    "## AI Agent Integration",
+    "",
+    "Cursor agents may use commands, skills, and sub-agents in this repository. Application runtime should not call MCP unless explicitly designed to \u2014 check `AGENTS.md` when present.",
+    ""
+  ];
+  if (scan.agentsMdPath) {
+    lines.push(`See [\`${scan.agentsMdPath}\`](${scan.agentsMdPath}).`, "");
+  }
+  return lines;
+}
+function renderAiConcepts(scan) {
+  if (scan.cursor.length === 0) {
+    return [
+      "## AI concepts in this repo",
+      "",
+      "No `.cursor/` workflow assets detected in this project root.",
+      ""
+    ];
+  }
+  const lines = ["## AI concepts in this repo", "", "| Concept | Location |", "| --- | --- |"];
+  const byKind = {
+    rule: ".cursor/rules/",
+    command: ".cursor/commands/",
+    skill: ".cursor/skills/",
+    agent: ".cursor/agents/",
+    hook: ".cursor/hooks.json"
+  };
+  for (const [kind, loc] of Object.entries(byKind)) {
+    const count = scan.cursor.filter((c) => c.kind === kind).length;
+    if (count > 0) lines.push(`| **${kind}** | \`${loc}\` (${count} detected) |`);
+  }
+  lines.push("");
+  return lines;
+}
+function renderTypicalWorkflow(scan) {
+  const lines = ["## Typical workflow", ""];
+  if (scan.workflowCommands.length > 0) {
+    scan.workflowCommands.slice(0, 12).forEach((cmd, i) => {
+      lines.push(`${i + 1}. \`/${cmd.name}\`${cmd.description ? ` \u2014 ${cmd.description}` : ""}`);
+    });
+    lines.push("");
+    return lines;
+  }
+  if (scan.makefileTargets.length > 0) {
+    lines.push("Common Makefile targets:", "");
+    for (const t of scan.makefileTargets.slice(0, 8)) {
+      lines.push(`- \`make ${t}\``);
+    }
+    lines.push("");
+  }
+  return lines;
+}
+function renderDocumentationMap(scan) {
+  const lines = ["## Documentation map", "", "| Doc | Purpose |", "| --- | --- |"];
+  for (const file of scan.docMarkdownFiles.slice(0, 20)) {
+    const base = file.split("/").pop()?.replace(/\.md$/, "") ?? file;
+    lines.push(`| [\`${file}\`](${file}) | ${base.replace(/-/g, " ")} |`);
+  }
+  if (scan.agentsMdPath) {
+    lines.push(`| [\`${scan.agentsMdPath}\`](${scan.agentsMdPath}) | Agent / engineering context |`);
+  }
+  lines.push("");
+  return lines;
+}
+function renderSecurity(scan) {
+  const lines = [
+    "## Security",
+    "",
+    "- Do not commit `.env`, local MCP config with secrets, or OAuth key files.",
+    "- Validate all external input in application code."
+  ];
+  if (scan.hasDataDir) {
+    lines.push("- Treat local `data/` as sensitive; exclude from git unless policy allows.");
+  }
+  lines.push("");
+  return lines;
+}
+function renderLinks(scan) {
+  const lines = ["## Links", "", "| Resource | URL |", "| --- | --- |"];
+  if (scan.git.remoteUrl) {
+    lines.push(`| Repository | ${scan.git.remoteUrl} |`);
+  } else {
+    lines.push("| Repository | _(add git remote)_ |");
+  }
+  lines.push("");
+  return lines;
+}
+
+// src/readme.ts
+function writeReadmeResult(projectRoot, created, scan) {
+  const readmePath = path11.join(projectRoot, "README.md");
   return {
     success: true,
-    message: created ? "Created README.md with full project scan (single file, all sections inline)." : "Updated README.md from project scan. Original saved to README.md.backup.",
+    message: created ? "Created README.md with company canonical structure (scan-derived content)." : "Aligned README.md to canonical structure. Original saved to README.md.backup.",
     readmePath,
-    backupPath,
+    backupPath: created ? null : path11.join(projectRoot, "README.md.backup"),
     created,
     generatedDocs: [],
     scanSummary: {
@@ -22252,6 +22612,40 @@ function improveReadme(projectRoot) {
       topLevelDirs: Object.keys(scan.topLevelNotes).length
     }
   };
+}
+function generateReadme(projectRoot) {
+  const readmePath = path11.join(projectRoot, "README.md");
+  if (fs11.existsSync(readmePath)) {
+    throw new Error(
+      "README.md already exists. Use align_readme (/check-readme) to update the existing file, or remove it before generate_readme."
+    );
+  }
+  const scan = scanProject(projectRoot);
+  const content = buildCanonicalReadme(scan);
+  safeWriteReadme(projectRoot, content);
+  return writeReadmeResult(projectRoot, true, scan);
+}
+function alignReadme(projectRoot) {
+  const readmePath = path11.join(projectRoot, "README.md");
+  if (!fs11.existsSync(readmePath)) {
+    throw new Error("README.md not found. Use generate_readme (/generate-readme) to create a new file.");
+  }
+  const existing = safeReadFile(projectRoot, "README.md") ?? "";
+  const preservedTagline = extractTaglineFromReadme(existing);
+  const backupPath = safeBackupReadme(projectRoot);
+  const scan = scanProject(projectRoot);
+  const content = buildCanonicalReadme(scan, { preservedTagline });
+  safeWriteReadme(projectRoot, content);
+  const result = writeReadmeResult(projectRoot, false, scan);
+  result.backupPath = backupPath;
+  return result;
+}
+function improveReadme(projectRoot) {
+  const readmePath = path11.join(projectRoot, "README.md");
+  if (fs11.existsSync(readmePath)) {
+    return alignReadme(projectRoot);
+  }
+  return generateReadme(projectRoot);
 }
 
 // src/index.ts
@@ -22264,12 +22658,12 @@ function formatAnalyzeText(result) {
     "",
     `**Type:** ${result.project.type}`,
     `**README:** ${result.readme.exists ? "found" : "missing"} (${result.readme.path})`,
-    `**Score:** ${result.score}/${result.maxScore}`,
+    `**Score:** ${result.score}/${result.maxScore} (canonical sections enabled for this project)`,
     "",
     "## Sections"
   ];
-  for (const [key, status] of Object.entries(result.sections)) {
-    lines.push(`- ${key}: ${status}`);
+  for (const id of result.enabledSectionIds) {
+    lines.push(`- ${id}: ${result.sections[id]}`);
   }
   if (result.detectedCommands && Object.keys(result.detectedCommands).length > 0) {
     lines.push("", "## Detected npm scripts");
@@ -22291,11 +22685,11 @@ function formatAnalyzeText(result) {
 async function main() {
   const server = new McpServer({
     name: "readme-doctor",
-    version: "1.0.0"
+    version: "1.1.0"
   });
   server.tool(
     "analyze_readme",
-    "Read-only analysis of README.md quality: sections, score, and suggestions. Never modifies files.",
+    "Read-only analysis against the company canonical README outline: sections, score, and suggestions. Never modifies files.",
     projectPathSchema.shape,
     async (args) => {
       try {
@@ -22314,26 +22708,44 @@ async function main() {
     }
   );
   server.tool(
+    "align_readme",
+    "Align existing README.md to the company canonical structure (scan-derived content). Requires README.md; creates README.md.backup. Only modifies README.md and backup.",
+    projectPathSchema.shape,
+    async (args) => {
+      try {
+        const root = resolveProjectPath(args.project_path ?? process.cwd());
+        const result = alignReadme(root);
+        return improveToolContent(result);
+      } catch (err) {
+        const message = err instanceof Error ? err.message : String(err);
+        return { content: [{ type: "text", text: `Error: ${message}` }], isError: true };
+      }
+    }
+  );
+  server.tool(
+    "generate_readme",
+    "Create README.md with company canonical structure when no README exists. Errors if README.md is already present.",
+    projectPathSchema.shape,
+    async (args) => {
+      try {
+        const root = resolveProjectPath(args.project_path ?? process.cwd());
+        const result = generateReadme(root);
+        return improveToolContent(result);
+      } catch (err) {
+        const message = err instanceof Error ? err.message : String(err);
+        return { content: [{ type: "text", text: `Error: ${message}` }], isError: true };
+      }
+    }
+  );
+  server.tool(
     "improve_readme",
-    "Scan project structure and write a comprehensive README.md (API, project map, Cursor assets, env, scripts \u2014 all inline). Creates README.md.backup before edits. Only modifies README.md. API endpoints detected from route files \u2014 never invents routes or reads .env secrets.",
+    "Deprecated: use align_readme (existing README) or generate_readme (new README).",
     projectPathSchema.shape,
     async (args) => {
       try {
         const root = resolveProjectPath(args.project_path ?? process.cwd());
         const result = improveReadme(root);
-        return {
-          content: [
-            {
-              type: "text",
-              text: `${result.message}
-
-README: ${result.readmePath}
-Backup: ${result.backupPath ?? "(none \u2014 new file)"}
-APIs: ${result.scanSummary?.apiCount ?? 0} | Cursor assets: ${result.scanSummary?.cursorAssets ?? 0}`
-            },
-            { type: "text", text: JSON.stringify(result, null, 2) }
-          ]
-        };
+        return improveToolContent(result);
       } catch (err) {
         const message = err instanceof Error ? err.message : String(err);
         return { content: [{ type: "text", text: `Error: ${message}` }], isError: true };
@@ -22342,6 +22754,21 @@ APIs: ${result.scanSummary?.apiCount ?? 0} | Cursor assets: ${result.scanSummary
   );
   const transport = new StdioServerTransport();
   await server.connect(transport);
+}
+function improveToolContent(result) {
+  return {
+    content: [
+      {
+        type: "text",
+        text: `${result.message}
+
+README: ${result.readmePath}
+Backup: ${result.backupPath ?? "(none \u2014 new file)"}
+APIs: ${result.scanSummary?.apiCount ?? 0} | Cursor assets: ${result.scanSummary?.cursorAssets ?? 0}`
+      },
+      { type: "text", text: JSON.stringify(result, null, 2) }
+    ]
+  };
 }
 main().catch((err) => {
   console.error(err);

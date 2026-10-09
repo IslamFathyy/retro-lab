@@ -1,7 +1,7 @@
 {
   "name": "readme-doctor",
-  "version": "1.0.0",
-  "description": "Analyze and safely improve project README.md via MCP tools (analyze_readme, improve_readme).",
+  "version": "1.1.0",
+  "description": "Company canonical README.md via MCP (analyze_readme, align_readme, generate_readme).",
   "author": {
     "name": "Integrant — Retrospective Lab",
     "email": "islam.fathy@integrant.com"

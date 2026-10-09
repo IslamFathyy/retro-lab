@@ -3,9 +3,9 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { improveReadme } from '../dist/readme.js';
+import { alignReadme, generateReadme } from '../dist/readme.js';
 
-describe('improveReadme (comprehensive)', () => {
+describe('canonical README generation', () => {
   let tmp;
 
   before(() => {
@@ -39,17 +39,55 @@ describe('improveReadme (comprehensive)', () => {
     fs.rmSync(tmp, { recursive: true, force: true });
   });
 
-  it('generates single README with all sections inline', () => {
-    const result = improveReadme(tmp);
+  it('generateReadme creates canonical README with Features after Development ports', () => {
+    const result = generateReadme(tmp);
     assert.equal(result.success, true);
-    assert.deepEqual(result.generatedDocs, []);
-    assert.equal(fs.existsSync(path.join(tmp, 'docs', 'API.md')), false);
+    assert.equal(result.created, true);
 
     const readme = fs.readFileSync(path.join(tmp, 'README.md'), 'utf8');
-    assert.match(readme, /## API/);
-    assert.match(readme, /GET.*\/api\/health/);
-    assert.match(readme, /## Cursor/);
-    assert.match(readme, /## Project structure/);
+    const portsIdx = readme.indexOf('## Development ports');
+    const featuresIdx = readme.indexOf('## Features');
+    assert.ok(portsIdx >= 0);
+    assert.ok(featuresIdx > portsIdx);
+    assert.match(readme, /### HTTP API capabilities/);
     assert.match(readme, /PORT/);
+  });
+
+  it('generateReadme throws when README exists', () => {
+    assert.throws(() => generateReadme(tmp), /already exists/);
+  });
+
+  it('alignReadme updates existing README and preserves tagline', () => {
+    fs.writeFileSync(path.join(tmp, 'README.md'), '# fixme\n\n> Custom tagline here.\n\n## Old\n');
+    const result = alignReadme(tmp);
+    assert.equal(result.created, false);
+    assert.ok(fs.existsSync(path.join(tmp, 'README.md.backup')));
+    const readme = fs.readFileSync(path.join(tmp, 'README.md'), 'utf8');
+    assert.match(readme, /Custom tagline here/);
+    assert.match(readme, /## Features/);
+  });
+});
+
+describe('static site fixture', () => {
+  let tmp;
+
+  before(() => {
+    tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'readme-doctor-web-'));
+    fs.writeFileSync(
+      path.join(tmp, 'package.json'),
+      JSON.stringify({ name: 'web-ui', scripts: { start: 'npx serve' } })
+    );
+    fs.writeFileSync(path.join(tmp, 'index.html'), '<html><title>Home</title></html>');
+  });
+
+  after(() => {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  });
+
+  it('includes UI features without API section', () => {
+    generateReadme(tmp);
+    const readme = fs.readFileSync(path.join(tmp, 'README.md'), 'utf8');
+    assert.match(readme, /### User interface/);
+    assert.match(readme, /index\.html/);
   });
 });

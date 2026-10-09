@@ -1,48 +1,53 @@
 ---
 name: readme-doctor
 description: >-
-  The readme-doctor MCP plugin scores README onboarding quality from a project
-  scan or regenerates README.md from detected routes, tree, scripts, and
-  .env.example names—without reading secrets or inventing APIs.
+  The readme-doctor MCP plugin scores or writes README.md using a fixed company
+  outline (Features after Development ports) with content derived from each
+  project's scan—routes, pages, scripts, and Cursor assets—without reading
+  secrets or inventing APIs.
 ---
 
 # README Doctor
 
 ## When to use
 
-- `/check-readme` or user asks to **check** README → `analyze_readme` only
-- `/fix-readme` or user asks to **fix/update** README → `improve_readme`
-- Target path: workspace root or subproject (e.g. `retro-api`)
+- `/check-readme` — **existing** `README.md` → align structure and refresh content (`align_readme`)
+- `/generate-readme` — **no** `README.md` → create canonical README (`generate_readme`)
+- Optional read-only score before writes → `analyze_readme`
 
-**Out of scope:** `improve_readme` when the user only asked for analysis; edits outside `README.md` / `README.md.backup`.
+**Out of scope:** edits outside `README.md` / `README.md.backup`; `generate_readme` when README already exists.
 
 ## Inputs
 
 | Input | MCP tool | Notes |
 | --- | --- | --- |
-| `project_path` | both | Optional; defaults to MCP cwd |
+| `project_path` | all | Optional; defaults to MCP cwd (any company repo root) |
 | MCP server | `readme-doctor` | Plugin `mcp.json` or project `.cursor/mcp.json` |
 
 ## Output
 
 | Mode | Deliverable |
 | --- | --- |
-| **Check** | Score, section checklist, and suggestions in chat (no file writes) |
-| **Fix** | Updated `README.md` at `project_path`; `README.md.backup` when a prior file existed |
+| **Analyze** | Canonical section score and suggestions in chat (no file writes) |
+| **Check / align** | Updated `README.md`; `README.md.backup` when a prior file existed |
+| **Generate** | New `README.md` at `project_path` |
 | **Handoff** | User reminded to review generated content before commit |
 
 ## Workflow
 
-**Check (read-only)**
+**Analyze (optional)**
 
 1. Call `analyze_readme` with `{ "project_path": "<root>" }`.
-2. Present **Output** for check mode.
 
-**Fix (writes)**
+**Check / align**
 
-1. Optionally run `analyze_readme` first.
-2. Call `improve_readme` with the same `project_path`.
-3. Report backup path and sections added per **Output**.
+1. Confirm `README.md` exists.
+2. Call `align_readme` with the same `project_path`.
+
+**Generate**
+
+1. Confirm `README.md` is missing.
+2. Call `generate_readme` with `project_path`.
 
 ## Decision rules
 
@@ -51,12 +56,13 @@ description: >-
 | Invent endpoints/scripts | **Forbidden** — only detected routes and `package.json` scripts. |
 | Read `.env` | **Forbidden** — `.env.example` names only. |
 | Write files | **Only** `README.md` and `README.md.backup`. |
+| README exists + generate requested | **Stop** — use `align_readme` / `/check-readme`. |
 | MCP missing | Run `cd plugins/readme-doctor && npm install && npm run build`; reload Cursor; enable MCP. |
 
 ## Validation
 
-- **Check:** score and suggestions delivered; `improve_readme` was not called.
-- **Fix:** `README.md` exists at target path; no unexpected files under `docs/` from this tool.
+- **Align:** canonical headings include `## Development ports` then `## Features`.
+- **Generate:** `README.md` exists; no unexpected files under `docs/` from this tool.
 - **Plugin tests:** `cd plugins/readme-doctor && npm test`
 
 ## Failure handling
@@ -68,6 +74,7 @@ description: >-
 
 ## References
 
+- [references/canonical-readme-outline.md](../../references/canonical-readme-outline.md)
 - [plugins/readme-doctor/README.md](../../README.md)
 - [docs/plugins/readme-doctor.md](../../../../docs/plugins/readme-doctor.md)
-- Commands: `commands/check-readme.md`, `commands/fix-readme.md`
+- Commands: `commands/check-readme.md`, `commands/generate-readme.md`

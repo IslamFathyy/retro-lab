@@ -12,7 +12,7 @@
     {
       "name": "readme-doctor",
       "source": "plugins/readme-doctor",
-      "description": "MCP tools to analyze and safely improve README.md (analyze_readme, improve_readme).",
+      "description": "MCP tools for company canonical README.md (analyze_readme, align_readme, generate_readme).",
       "version": "1.0.0",
       "category": "Development",
       "tags": ["readme", "documentation", "mcp", "teaching"]

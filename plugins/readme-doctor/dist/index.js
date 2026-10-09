@@ -3,7 +3,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { z } from 'zod';
 import { analyzeReadme } from './analyzer.js';
-import { improveReadme } from './readme.js';
+import { alignReadme, generateReadme, improveReadme } from './readme.js';
 import { resolveProjectPath } from './security.js';
 const projectPathSchema = z.object({
     project_path: z
@@ -17,12 +17,12 @@ function formatAnalyzeText(result) {
         '',
         `**Type:** ${result.project.type}`,
         `**README:** ${result.readme.exists ? 'found' : 'missing'} (${result.readme.path})`,
-        `**Score:** ${result.score}/${result.maxScore}`,
+        `**Score:** ${result.score}/${result.maxScore} (canonical sections enabled for this project)`,
         '',
         '## Sections',
     ];
-    for (const [key, status] of Object.entries(result.sections)) {
-        lines.push(`- ${key}: ${status}`);
+    for (const id of result.enabledSectionIds) {
+        lines.push(`- ${id}: ${result.sections[id]}`);
     }
     if (result.detectedCommands && Object.keys(result.detectedCommands).length > 0) {
         lines.push('', '## Detected npm scripts');
@@ -44,9 +44,9 @@ function formatAnalyzeText(result) {
 async function main() {
     const server = new McpServer({
         name: 'readme-doctor',
-        version: '1.0.0',
+        version: '1.1.0',
     });
-    server.tool('analyze_readme', 'Read-only analysis of README.md quality: sections, score, and suggestions. Never modifies files.', projectPathSchema.shape, async (args) => {
+    server.tool('analyze_readme', 'Read-only analysis against the company canonical README outline: sections, score, and suggestions. Never modifies files.', projectPathSchema.shape, async (args) => {
         try {
             const root = resolveProjectPath(args.project_path ?? process.cwd());
             const result = analyzeReadme(root);
@@ -62,19 +62,33 @@ async function main() {
             return { content: [{ type: 'text', text: `Error: ${message}` }], isError: true };
         }
     });
-    server.tool('improve_readme', 'Scan project structure and write a comprehensive README.md (API, project map, Cursor assets, env, scripts — all inline). Creates README.md.backup before edits. Only modifies README.md. API endpoints detected from route files — never invents routes or reads .env secrets.', projectPathSchema.shape, async (args) => {
+    server.tool('align_readme', 'Align existing README.md to the company canonical structure (scan-derived content). Requires README.md; creates README.md.backup. Only modifies README.md and backup.', projectPathSchema.shape, async (args) => {
+        try {
+            const root = resolveProjectPath(args.project_path ?? process.cwd());
+            const result = alignReadme(root);
+            return improveToolContent(result);
+        }
+        catch (err) {
+            const message = err instanceof Error ? err.message : String(err);
+            return { content: [{ type: 'text', text: `Error: ${message}` }], isError: true };
+        }
+    });
+    server.tool('generate_readme', 'Create README.md with company canonical structure when no README exists. Errors if README.md is already present.', projectPathSchema.shape, async (args) => {
+        try {
+            const root = resolveProjectPath(args.project_path ?? process.cwd());
+            const result = generateReadme(root);
+            return improveToolContent(result);
+        }
+        catch (err) {
+            const message = err instanceof Error ? err.message : String(err);
+            return { content: [{ type: 'text', text: `Error: ${message}` }], isError: true };
+        }
+    });
+    server.tool('improve_readme', 'Deprecated: use align_readme (existing README) or generate_readme (new README).', projectPathSchema.shape, async (args) => {
         try {
             const root = resolveProjectPath(args.project_path ?? process.cwd());
             const result = improveReadme(root);
-            return {
-                content: [
-                    {
-                        type: 'text',
-                        text: `${result.message}\n\nREADME: ${result.readmePath}\nBackup: ${result.backupPath ?? '(none — new file)'}\nAPIs: ${result.scanSummary?.apiCount ?? 0} | Cursor assets: ${result.scanSummary?.cursorAssets ?? 0}`,
-                    },
-                    { type: 'text', text: JSON.stringify(result, null, 2) },
-                ],
-            };
+            return improveToolContent(result);
         }
         catch (err) {
             const message = err instanceof Error ? err.message : String(err);
@@ -83,6 +97,17 @@ async function main() {
     });
     const transport = new StdioServerTransport();
     await server.connect(transport);
+}
+function improveToolContent(result) {
+    return {
+        content: [
+            {
+                type: 'text',
+                text: `${result.message}\n\nREADME: ${result.readmePath}\nBackup: ${result.backupPath ?? '(none — new file)'}\nAPIs: ${result.scanSummary?.apiCount ?? 0} | Cursor assets: ${result.scanSummary?.cursorAssets ?? 0}`,
+            },
+            { type: 'text', text: JSON.stringify(result, null, 2) },
+        ],
+    };
 }
 main().catch((err) => {
     console.error(err);

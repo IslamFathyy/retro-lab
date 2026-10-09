@@ -1,5 +1,5 @@
 import type { ImproveResult } from './types.js';
-/**
- * Scan the project and write a single comprehensive README.md (all sections inline).
- */
+export declare function generateReadme(projectRoot: string): ImproveResult;
+export declare function alignReadme(projectRoot: string): ImproveResult;
+/** @deprecated Use alignReadme or generateReadme */
 export declare function improveReadme(projectRoot: string): ImproveResult;

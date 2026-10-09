@@ -1,25 +1,19 @@
 # Plugin: readme-doctor
 
-**Teaching focus:** Small, understandable developer tool — MCP + Cursor plugin format.
+**Teaching focus:** Small, understandable developer tool — MCP + Cursor plugin format. Works on **any company repository** after install.
 
 | Field | Value |
 |-------|-------|
 | **Name** | `readme-doctor` |
-| **Version** | `1.0.0` |
+| **Version** | `1.1.0` |
 | **Path** | [`plugins/readme-doctor/`](../../plugins/readme-doctor/) |
 | **Marketplace** | [`.cursor-plugin/marketplace.json`](../../.cursor-plugin/marketplace.json) |
 
 ---
 
-## Why this plugin (plugin goal)
+## Canonical README
 
-| Option | Verdict |
-|--------|---------|
-| Full retrospective workflow plugin | Too domain-specific |
-| **readme-doctor** | **Selected** — MCP tools, clear I/O, any repo |
-
-**One problem:** READMEs are incomplete and agents invent fake commands.  
-**One audience:** Teams using Cursor on application code.
+All projects get the same **section order** (Integrant default). See [`plugins/readme-doctor/references/canonical-readme-outline.md`](../../plugins/readme-doctor/references/canonical-readme-outline.md). **Features** always follows **Development ports**; body text is scan-derived only.
 
 ---
 
@@ -27,9 +21,9 @@
 
 | Component | Files |
 |-----------|-------|
-| MCP server | `mcp.json` → `analyze_readme`, `improve_readme` |
+| MCP server | `mcp.json` → `analyze_readme`, `align_readme`, `generate_readme` (`improve_readme` deprecated) |
 | Skill | `skills/readme-doctor/SKILL.md` |
-| Commands | `check-readme`, `fix-readme` |
+| Commands | `check-readme`, `generate-readme` |
 | Rules / hooks | None (MVP) |
 
 ---
@@ -39,17 +33,13 @@
 ### Local / teaching
 
 1. `cd plugins/readme-doctor && npm install`
-2. Cursor → **Plugins → + Add → From GitHub Repository** → `IslamFathyy/retro-lab` with path `plugins/readme-doctor` (or copy to `%USERPROFILE%\.cursor\plugins\local\readme-doctor`)
+2. Cursor → **Plugins** → install `plugins/readme-doctor` (or org marketplace)
 3. Reload; enable MCP server **readme-doctor**
-4. `/check-readme` on `retro-api` or `retro-web`
+4. `/generate-readme` on a repo without README, or `/check-readme` to align an existing README
 
 ### Org marketplace
 
 Register root `.cursor-plugin/marketplace.json`; users install **readme-doctor** from catalog.
-
-### Public marketplace
-
-Submit after GitHub push: **https://cursor.com/marketplace/publish**
 
 ---
 
@@ -59,11 +49,11 @@ Submit after GitHub push: **https://cursor.com/marketplace/publish**
 |------|----------|
 | Fresh clone; `npm install` in `plugins/readme-doctor` | `dist/` built, `npm test` passes |
 | Install plugin folder only in Cursor | MCP **readme-doctor** appears |
-| `analyze_readme` on `retro-api` | JSON score + suggestions |
-| `improve_readme` on temp copy | `README.md.backup` if file existed |
+| `analyze_readme` on any app repo | Canonical section score + suggestions |
+| `align_readme` on repo with README | `README.md.backup` + canonical structure |
+| `generate_readme` when README missing | New `README.md` only |
+| `generate_readme` when README exists | Error — use `align_readme` |
 | No `.env` values in tool output | Names only from `.env.example` |
-
-Status: **pending** manual Cursor install sign-off.
 
 ---
 
