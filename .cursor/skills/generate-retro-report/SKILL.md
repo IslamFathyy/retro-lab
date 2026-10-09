@@ -1,24 +1,19 @@
 ---
 name: generate-retro-report
 description: >-
-  Generate retrospective markdown report and chart insights after actions are
-  approved. Use for /generate-report {id} or when the user needs report.md and
-  report insights. Do not use before analysis import or before approved actions
-  exist unless user explicitly wants a partial report.
+  Approved actions, analysis, and chart-oriented insights are merged into
+  API-generated markdown (PLAN section 15) plus stored report insights for the
+  retrospective UI and archive flow.
 ---
 
 # Generate Retro Report
 
-## Purpose
-
-Produce `report.md` and stored report insights (charts) from local retro files, following PLAN.md section 15 structure.
-
 ## When to use
 
-- Command `/generate-report {retroId}`
-- User asks for retrospective report or insights charts after workflow step 6+
+- `/generate-report {retroId}`
+- User needs `report.md` or insights charts after workflow step 6+
 
-**Do not use** for analysis-only (`/analyze-retro`) or Drive archive (`/archive-retro`).
+**Out of scope:** `/analyze-retro`, `/archive-retro`, or full reports before analysis import and approved actions unless the user explicitly accepts a partial report.
 
 ## Inputs
 
@@ -27,6 +22,15 @@ Produce `report.md` and stored report insights (charts) from local retro files, 
 | `retroId` | User or command |
 | Current + prior retro context | `repos/retro-api/data/` via API or files |
 | Insights contract | [references/report-insights-contract.md](references/report-insights-contract.md) |
+
+## Output
+
+| Deliverable | Location / effect |
+| --- | --- |
+| Report markdown | `repos/retro-api/data/retrospectives/{retroId}/report.md` via generate API |
+| Insights JSON | Stored per [report-insights-contract.md](references/report-insights-contract.md) |
+| Verification | `verifier` sub-agent when `/generate-report` command requires it |
+| Handoff | User directed to `/validate-retro-ui` or review `report.md` |
 
 ## Workflow
 
@@ -43,26 +47,22 @@ Produce `report.md` and stored report insights (charts) from local retro files, 
 | Missing analysis or actions | Stop or report prerequisites per command doc. |
 | Feedback traceability | Reference feedback IDs where helpful; **never** rewrite feedback `text`. |
 
-Follow [`.cursor/rules/privacy.mdc`](../../rules/privacy.mdc).
+[`.cursor/rules/privacy.mdc`](../../rules/privacy.mdc) applies.
 
 ## Validation
 
-- Report sections present: Overview, Participation counts, **Insights at a Glance**, Themes, Concerns, Approved Actions, Previous Actions, Limitations.
-- `GET .../report` returns markdown; insights stored per contract.
+- Report sections: Overview, Participation counts, **Insights at a Glance**, Themes, Concerns, Approved Actions, Previous Actions, Limitations.
+- `GET .../report` returns markdown; insights match contract.
 
 ## Failure handling
 
 | Failure | Action |
 | --- | --- |
-| Generate API error | Report error; do not hand-edit `report.md` to bypass API unless user explicitly requests manual fix. |
+| Generate API error | Report error; do not hand-edit `report.md` to bypass API unless user explicitly requests a manual fix. |
 | Insights import invalid | Fix payload per contract; re-import. |
-
-## Completion criteria
-
-**Done when:** report generated via API, user directed to `/validate-retro-ui` or review `report.md`.
 
 ## References
 
-- Insights contract: [references/report-insights-contract.md](references/report-insights-contract.md)
-- Template: `PLAN.md` section 15
-- Command: [`.cursor/commands/generate-report.md`](../../commands/generate-report.md)
+- [references/report-insights-contract.md](references/report-insights-contract.md)
+- `PLAN.md` section 15
+- [`.cursor/commands/generate-report.md`](../../commands/generate-report.md)

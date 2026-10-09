@@ -58,6 +58,20 @@ Other commands (no dedicated skill): `.cursor/commands/` — e.g. `/verify-proje
 
 Read `.cursor/skills/<name>/SKILL.md` before running the matching command. Procedures live in skills; non-negotiables live in [`.cursor/rules/`](../.cursor/rules/) — see [`rules-audit.md`](rules-audit.md).
 
+### Skill file shape
+
+| Section | Role |
+| --- | --- |
+| YAML `description` | Informative summary of what the capability does in this lab (not step orders or “use when” imperatives). |
+| **When to use** | Triggers and a single **Out of scope** line. |
+| **Inputs** | Data sources and prerequisites. |
+| **Output** | Artifacts, API effects, and handoffs (pairs with **Inputs**; replaces the old **Purpose** section). |
+| **Workflow** | Ordered steps only. |
+| **Decision rules** / **Validation** / **Failure handling** | Judgment, checks, and recovery — no repeat of **Output** bullets. |
+| **References** | Links and paths not already stated above. |
+
+Avoid a separate **Completion criteria** section when **Validation** already states done conditions.
+
 | Skill | Command | When |
 |-------|---------|------|
 | analyze-retrospective | `/analyze-retro {id}` | Closed retro — themes, strengths, concerns, suggested actions |

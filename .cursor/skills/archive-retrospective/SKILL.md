@@ -1,23 +1,19 @@
 ---
 name: archive-retrospective
 description: >-
-  Copy retrospective files to Google Drive via MCP, mark retro archived locally,
-  and export weekly reminder snapshot. Use for /archive-retro {id}. Copy-only —
-  never delete local data. Fail if Drive upload cannot complete.
+  A retrospective’s on-disk artifacts are copied into Google Drive, local status
+  moves to archived, and the weekly-reminder export is refreshed; local data is
+  never deleted.
 ---
 
 # Archive Retrospective
 
-## Purpose
-
-Back up one retrospective to Google Drive, set local status `archived`, and export `docs/reminders/latest-reminder.json` for weekly email automation.
-
 ## When to use
 
-- Command `/archive-retro {retroId}`
-- After report generated and user confirmed archive
+- `/archive-retro {retroId}`
+- Report exists and the user confirmed archive (per command)
 
-**Do not use** without Drive MCP when policy requires upload success before `archived` status.
+**Out of scope:** marking `archived` when Drive upload is required but MCP upload cannot complete.
 
 ## Inputs
 
@@ -27,6 +23,15 @@ Back up one retrospective to Google Drive, set local status `archived`, and expo
 | Local files | `repos/retro-api/data/retrospectives/{retroId}/` |
 | Drive MCP | `user-google-drive` tools |
 | Setup | [docs/mcp-setup.md](../../../docs/mcp-setup.md), [docs/mcp-golden-path.md](../../../docs/mcp-golden-path.md) |
+
+## Output
+
+| Deliverable | Location / effect |
+| --- | --- |
+| Drive backup | `Retrospective Management/{retroId} - {title}/` with `retro.json`, `analysis.json`, `actions.json`, `report.md`, and `feedback/FB-*.json` |
+| Local status | `retro.json` → `archived` only after upload success; all local files retained |
+| Reminder snapshot | `docs/reminders/latest-reminder.json` from `npm run export:reminder` |
+| Handoff | User prompted for `/commit-latest-report` |
 
 ## Workflow
 
@@ -38,9 +43,8 @@ Back up one retrospective to Google Drive, set local status `archived`, and expo
    - Retro folder: `retro.json`, `analysis.json`, `actions.json`, `report.md`
    - Feedback folder: each `feedback/FB-*.json`
 6. **Verify** with `listFolder` on retro folder — expect 4 files + feedback folder.
-7. Mark archived via API; **keep** all local files.
-8. Run `cd repos/retro-api && npm run export:reminder` → writes `docs/reminders/latest-reminder.json`.
-9. Tell user to run `/commit-latest-report` for Sunday automation.
+7. Mark archived via API.
+8. Run `cd repos/retro-api && npm run export:reminder`.
 
 **Never** upload in parallel with path-based `parentFolderId` (creates duplicate parents).
 
@@ -48,16 +52,15 @@ Back up one retrospective to Google Drive, set local status `archived`, and expo
 
 | Situation | Action |
 | --- | --- |
-| Drive MCP unavailable | **Fail** `/archive-retro` — do not set `archived` without successful upload. |
+| Drive MCP unavailable | **Fail** — do not set `archived` without successful upload. |
 | Multiple `Retrospective Management` folders | Keep one with retro children; trash duplicate empty roots only if safe. |
 | Delete local files after upload | **Forbidden** — copy-only. |
 
-Follow root [`.cursor/rules/development.mdc`](../../rules/development.mdc) archive policy.
+[`.cursor/rules/development.mdc`](../../rules/development.mdc) archive policy applies.
 
 ## Validation
 
 - `listFolder` on retro Drive folder matches expected file count.
-- Local `retro.json` status `archived` only after upload success.
 - `docs/reminders/latest-reminder.json` exists after export step.
 
 ## Failure handling
@@ -67,12 +70,8 @@ Follow root [`.cursor/rules/development.mdc`](../../rules/development.mdc) archi
 | MCP / upload error | Report clearly; leave local status non-archived if upload incomplete. |
 | Export reminder fails | Report; user re-runs `npm run export:reminder`. |
 
-## Completion criteria
-
-**Done when:** Drive backup verified, local archived, reminder snapshot exported, user told to `/commit-latest-report`.
-
 ## References
 
-- Drive structure and golden path: [docs/mcp-golden-path.md](../../../docs/mcp-golden-path.md)
-- MCP setup: [docs/mcp-setup.md](../../../docs/mcp-setup.md)
-- Export script: `retro-api` → `npm run export:reminder`
+- [docs/mcp-golden-path.md](../../../docs/mcp-golden-path.md)
+- [docs/mcp-setup.md](../../../docs/mcp-setup.md)
+- Export: `repos/retro-api` → `npm run export:reminder`

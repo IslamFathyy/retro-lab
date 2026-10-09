@@ -16,7 +16,7 @@ Highest wins first:
 | 1 | **User Cursor rules** | Global (outside Git) | Personal tone, org-wide security |
 | 2 | **Project rules** `alwaysApply: true` | Repo or workspace | `privacy.mdc`, `development.mdc` |
 | 3 | **Project rules** (glob-scoped) | Matching file paths | `repos/retro-api/.cursor/rules/storage.mdc` on `src/services/**` |
-| 4 | **`AGENTS.md`** | Root only — orchestration + child repo stack (see **Child repositories**) |
+| 4 | **`AGENTS.md`** | Root only — product engineering (sections 2–7 cover retro-api / retro-web) |
 | 5 | **Skills** `.cursor/skills/*/SKILL.md` | When command invokes skill | `/analyze-retro` workflow steps |
 | 6 | **Commands** `.cursor/commands/*.md` | Thin entry points | Args + “read skill X” |
 | 7 | **Hooks** `.cursor/hooks/*.js` | Deterministic enforcement | Block `.env` edits, feedback `text` |
@@ -38,7 +38,7 @@ Highest wins first:
 | File | Type | alwaysApply / globs | Purpose |
 |------|------|---------------------|---------|
 | `.cursor/rules/privacy.mdc` | Rule | always | Deanonymization, feedback text, team language |
-| `.cursor/rules/orchestration.mdc` | Rule | always | Multi-repo routing; read root AGENTS.md child sections |
+| `.cursor/rules/orchestration.mdc` | Rule | always | Multi-repo routing; read AGENTS.md §2–7 + agentic-engineering.md |
 | `.cursor/rules/development.mdc` | Rule | always | v1 stack, no secrets, no force push, Cursor-as-LLM |
 | `AGENTS.md` | Agent context | — | Product engineering: stack, structure, tests, boundaries |
 | `docs/agentic-engineering.md` | Agent catalog | — | Commands, skills, MCP, sub-agents, hooks, workflow order |
@@ -87,8 +87,8 @@ Shared privacy/stack rules: **root** `.cursor/rules/privacy.mdc` + `development.
 
 | Issue | Resolution |
 |-------|------------|
-| Per-repo agent instructions | Consolidated in root `AGENTS.md` (**Child repositories**); removed child `AGENTS.md` files |
-| `orchestration.mdc` routing | Points to root AGENTS.md child sections |
+| Per-repo agent instructions | Consolidated in root `AGENTS.md` (§2–7); removed child `AGENTS.md` files |
+| `orchestration.mdc` routing | Points to AGENTS.md §2–7 and `docs/agentic-engineering.md` |
 | PLAN §18 listed rules not in repo | Implemented subset in child repos; PLAN remains roadmap |
 | Privacy in 5+ places | Single source: `privacy.mdc`; skills reference it |
 

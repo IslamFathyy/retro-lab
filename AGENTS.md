@@ -22,7 +22,7 @@ Scope and phases: [`PLAN.md`](PLAN.md).
 
 ---
 
-## 2. Tech stack and technologies
+## 2. Tech stack used
 
 ### retro-lab (root)
 

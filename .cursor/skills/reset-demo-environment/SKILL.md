@@ -1,24 +1,18 @@
 ---
 name: reset-demo-environment
 description: >-
-  Wipe local RETRO-* demo data and trash Google Drive retro subfolders under
-  Retrospective Management after explicit user confirmation (e.g. RESET DEMO).
-  Use only for /reset-demo-retro. Never run without clear human confirmation in
-  chat.
+  Teaching demos return to a clean slate by removing local RETRO-* retrospectives,
+  optionally trashing matching Drive subfolders under Retrospective Management,
+  and clearing the reminder snapshot—only after explicit confirmation in chat.
 ---
 
 # Reset Demo Environment
 
-## Purpose
-
-Return teaching/demo environment to a clean slate: local retrospective folders removed, Drive archive children trashed, reminder snapshot cleared.
-
 ## When to use
 
-- Command `/reset-demo-retro`
-- User explicitly confirmed reset in **this chat**
+- `/reset-demo-retro` **and** explicit confirmation in **this chat** (`RESET DEMO` or equivalent)
 
-**Do not use** for production data or without confirmation text.
+**Out of scope:** production data, Drive parent deletion, or non-`RETRO-*` folders.
 
 ## Inputs
 
@@ -28,17 +22,25 @@ Return teaching/demo environment to a clean slate: local retrospective folders r
 | Local wipe | `cd repos/retro-api && npm run reset:demo` |
 | Drive | `user-google-drive` MCP (unless `--local-only`) |
 
+## Output
+
+| Deliverable | Location / effect |
+| --- | --- |
+| Local data | No `RETRO-*` under `repos/retro-api/data/retrospectives/` |
+| Reminder | `docs/reminders/latest-reminder.json` removed via reset script |
+| Drive | Retro **child** folders trashed under `Retrospective Management` (when Drive step runs) |
+| Summary | Deleted ids, Drive results, failures; next step `/seed-demo-retro` |
+
 ## Workflow
 
 1. **Stop** unless user gave explicit confirmation (not `/reset-demo-retro` alone).
-2. Run `cd repos/retro-api && npm run reset:demo`; report `deletedRetroIds` and reminder snapshot removal.
+2. Run `cd repos/retro-api && npm run reset:demo`; report `deletedRetroIds`.
 3. Unless `--local-only`:
    - Search Drive for folder `Retrospective Management`.
    - `listFolder` on parent ID; `deleteItem` each **child** retro folder (trash).
    - **Do not** delete parent `Retrospective Management` folder.
    - Verify parent empty of retro children.
-4. Summarize: local ids deleted, reminder removed, Drive folders trashed, failures.
-5. Tell user: **Next** `/seed-demo-retro` then workflow from step 1.
+4. Deliver summary from **Output** table.
 
 ## Decision rules
 
@@ -49,12 +51,12 @@ Return teaching/demo environment to a clean slate: local retrospective folders r
 | Delete non-`RETRO-*` data | **Forbidden**. |
 | Delete Drive parent folder | **Forbidden**. |
 
-Follow [`.cursor/rules/privacy.mdc`](../../rules/privacy.mdc) — do not log feedback text before deletion.
+[`.cursor/rules/privacy.mdc`](../../rules/privacy.mdc) — do not log feedback text before deletion.
 
 ## Validation
 
-- `repos/retro-api/data/retrospectives/` has no `RETRO-*` folders after step 2.
-- Drive `listFolder` shows no retro subfolders (when Drive step ran).
+- `repos/retro-api/data/retrospectives/` has no `RETRO-*` folders after local step.
+- When Drive ran: `listFolder` shows no retro subfolders under the management root.
 
 ## Failure handling
 
@@ -63,11 +65,7 @@ Follow [`.cursor/rules/privacy.mdc`](../../rules/privacy.mdc) — do not log fee
 | User did not confirm | Do not run reset script. |
 | Partial Drive trash | Report which folders failed; do not claim full reset. |
 
-## Completion criteria
-
-**Done when:** summary delivered and next steps (`/seed-demo-retro`) stated.
-
 ## References
 
-- Script: `retro-api` → `npm run reset:demo`
-- Command: [`.cursor/commands/reset-demo-retro.md`](../../commands/reset-demo-retro.md)
+- `repos/retro-api` → `npm run reset:demo`
+- [`.cursor/commands/reset-demo-retro.md`](../../commands/reset-demo-retro.md)

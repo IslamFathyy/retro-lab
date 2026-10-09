@@ -964,18 +964,21 @@ Better:
 
 # 17. `AGENTS.md`
 
-Use **one** `AGENTS.md` at the **retro-lab** root. It is the parent orchestration agent document and includes a **Child repositories** section covering `retro-api` and `retro-web` (stack, boundaries, tests, ports). Child application repos do **not** maintain separate `AGENTS.md` files.
+Use **one** [`AGENTS.md`](AGENTS.md) at the **retro-lab** root for **product engineering** (overview, stack, structure, dev commands, testing, conventions, architecture, security, git, DoD, pitfalls, pre-change checklist). **`retro-api` and `retro-web`** are covered in sections 2–7 — not separate child `AGENTS.md` files.
+
+**Agentic AI** (commands, skills, MCP, sub-agents, hooks, workflow order, automation tiers): [`docs/agentic-engineering.md`](docs/agentic-engineering.md) — linked from the top of `AGENTS.md`.
 
 ## 17.1 Parent `retro-lab/AGENTS.md`
 
 Must explain:
 
-- parent orchestration role and multi-repo routing
-- primary testing model (Cursor workflow + web UI validation)
-- MCP matrix, skills, sub-agents, hooks, command order
-- human approval gates
+- multi-repo layout and routing (which repo to edit)
+- stack, boundaries, tests, and ports for root + child apps
+- security, privacy, and git expectations
 
-## 17.2 Content for `retro-api` (section inside parent `AGENTS.md`)
+Cursor-specific catalog (MCP matrix, skills, sub-agents, command order, human approval gates) lives in **`docs/agentic-engineering.md`**, not duplicated in `AGENTS.md`.
+
+## 17.2 Content for `retro-api` (sections 2–7 of parent `AGENTS.md`)
 
 Must explain:
 
@@ -989,7 +992,7 @@ Must explain:
 - report/analysis import contracts
 - exact original feedback must never be rewritten
 
-## 17.3 Content for `retro-web` (section inside parent `AGENTS.md`)
+## 17.3 Content for `retro-web` (sections 2–7 of parent `AGENTS.md`)
 
 Must explain:
 
@@ -1003,7 +1006,7 @@ Must explain:
 
 Teaching point:
 
-> One `AGENTS.md` at the workspace root explains how the agent works across repos; **Rules** (`.cursor/rules/*.mdc`) stay scoped per repository where needed.
+> One `AGENTS.md` at the workspace root covers engineering across repos; agentic procedures are in `docs/agentic-engineering.md`. **Rules** (`.cursor/rules/*.mdc`) stay scoped per repository where needed.
 
 ---
 
@@ -1900,7 +1903,7 @@ Keep this table in the teaching guide:
 
 | Concept | Main Question |
 |---|---|
-| `AGENTS.md` | How should the agent work in this repository? |
+| `AGENTS.md` | How should the agent work across repos (root `AGENTS.md`, section 17)? |
 | Rule | What constraint or standard must be followed? |
 | Command | What workflow does the developer explicitly want to start? |
 | Skill | How should a reusable capability be performed? |
@@ -2332,7 +2335,7 @@ Follow these constraints:
 - No TypeScript.
 - No hosting.
 - Do not implement later phases yet.
-- Create or update AGENTS.md as described.
+- Create or update root `AGENTS.md` as described in section 17.
 - Add the minimum tests needed for Phase 0.
 - At the end, run verification and report the Phase 0 acceptance criteria one by one.
 ```

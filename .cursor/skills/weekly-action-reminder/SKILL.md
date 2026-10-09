@@ -1,56 +1,55 @@
 ---
 name: weekly-action-reminder
 description: >-
-  Email open approved actions from the latest archived retro using Gmail MCP and
-  docs/reminders/latest-reminder.json. Use for /weekly-action-reminder, Sunday
-  Cursor Automation, or when the user asks for a weekly action email. Do not use
-  Lokka, Outlook, or Slack for this workflow.
+  One HTML email lists open approved actions from the archived-retro snapshot on
+  GitHub main; sending uses Gmail MCP, not Lokka, Outlook, or Slack.
 ---
 
 # Weekly Action Reminder
 
-## Purpose
-
-Send one HTML email listing **open approved actions** from the committed reminder snapshot (latest archived retrospective).
-
 ## When to use
 
-- Command `/weekly-action-reminder`
-- Sunday Cursor Automation (reads `main` on GitHub)
-- User asks for weekly open-actions email
+- `/weekly-action-reminder`
+- Sunday Cursor Automation (reads committed snapshot on `main`)
+- User asks for a weekly open-actions email
 
-**Do not use** for archiving, exporting snapshots, or changing action status in `retro-api`.
+**Out of scope:** archiving, exporting snapshots, or changing action status in `retro-api`.
 
 ## Inputs
 
 | Input | Source |
 | --- | --- |
-| Snapshot | `docs/reminders/latest-reminder.json` (preferred; includes `recipients.to`, `subjectPrefix`) |
+| Snapshot | `docs/reminders/latest-reminder.json` (includes `recipients.to`, `subjectPrefix` when present) |
 | Recipients fallback | `docs/reminders/recipients.json` if snapshot has no `recipients` |
 | Send | Gmail MCP (`user-gmail` → `send_message`) |
+
+## Output
+
+| Deliverable | Location / effect |
+| --- | --- |
+| Email | Gmail `send_message` to resolved `to` addresses (or dry-run preview in chat only) |
+| Content | Subject `{subjectPrefix} Open actions — {title} ({period})`; HTML body with open `ACT-####` rows and optional `reportExcerpt.themesSummary` |
+| Empty set | Short “no open approved actions” message when `openActions` is empty |
 
 ## Workflow
 
 1. Read `docs/reminders/latest-reminder.json`.
 2. Resolve `to` from `snapshot.recipients.to` or `recipients.json` — **never** use action `teams` labels as email addresses.
-3. Build **subject:** `{subjectPrefix} Open actions — {title} ({period})`.
-4. Build **body (HTML):** sprint title, period, team, archived date; bullets for open actions (`ACT-####`, title, teams, target date, description); optional `reportExcerpt.themesSummary`; footer (Retrospective Lab; replies not monitored).
-5. If `openActions` is empty, send a short “no open approved actions” message.
-6. Call Gmail `send_message` with `to`, `subject`, `htmlBody`, plain `body` fallback.
+3. Build subject and HTML body per **Output** (sprint metadata, action bullets, footer: Retrospective Lab; replies not monitored).
+4. If dry-run or `--dry-run`: show subject and body in chat; **do not** call `send_message`.
+5. Otherwise call Gmail `send_message` with `to`, `subject`, `htmlBody`, and plain `body` fallback.
 
-**Dry-run:** If user asks dry-run or `--dry-run` — show subject and body in chat; **do not** call `send_message`.
-
-**Automation:** Read committed files from `IslamFathyy/retro-lab` on `main`; send via Gmail MCP; do not merge PRs or edit repo files.
+**Automation:** Read committed files from `IslamFathyy/retro-lab` on `main`; do not merge PRs or edit repo files.
 
 ## Decision rules
 
 | Situation | Action |
 | --- | --- |
-| `latest-reminder.json` missing or stale | **Stop** — run archive + `cd repos/retro-api && npm run export:reminder` first. |
-| Uncertain recipient | Use snapshot `recipients.to`; else `recipients.json`; never invent addresses. |
+| `latest-reminder.json` missing or stale | **Stop** — archive + `npm run export:reminder` first. |
+| Uncertain recipient | Snapshot `recipients.to`, else `recipients.json`; never invent addresses. |
 | Modify retro data | **Forbidden** — email is read-only snapshot. |
 
-Follow [`.cursor/rules/privacy.mdc`](../../rules/privacy.mdc).
+[`.cursor/rules/privacy.mdc`](../../rules/privacy.mdc) applies.
 
 ## Validation
 
@@ -65,11 +64,7 @@ Follow [`.cursor/rules/privacy.mdc`](../../rules/privacy.mdc).
 | Gmail MCP error | Report error; do not retry with alternate mail APIs. |
 | Dry-run requested | Never send. |
 
-## Completion criteria
-
-**Done when:** email sent (or dry-run output shown), user informed of recipient and action count.
-
 ## References
 
-- Automation: [docs/cursor-automation-weekly-reminder.md](../../../docs/cursor-automation-weekly-reminder.md)
-- MCP: [docs/mcp-setup.md](../../../docs/mcp-setup.md)
+- [docs/cursor-automation-weekly-reminder.md](../../../docs/cursor-automation-weekly-reminder.md)
+- [docs/mcp-setup.md](../../../docs/mcp-setup.md)
