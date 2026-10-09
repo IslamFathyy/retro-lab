@@ -1,6 +1,6 @@
 # Application repositories
 
-Child git repos for the **retro-lab** stack. Each folder has its **own** `.git` history and remote. They are **not** included when you clone the parent **retro-lab** repo (see root `.gitignore`).
+Child git repos for the Retrospective Lab stack. Each folder has its **own** `.git` history and remote. They are **not** included when you clone the parent **retro-lab** repo (see root `.gitignore`).
 
 ## First-time setup
 

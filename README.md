@@ -1,8 +1,6 @@
-# retro-lab
+# Retrospective Lab
 
-> **Retrospective Lab** — Agentic SDLC teaching stack. Parent orchestration repo (`retro-lab` on disk and GitHub) plus two application repos. Cursor runs the retrospective workflow (analysis, reports, archive); the web UI validates results. No external LLM inside the running API.
-
-**Clone path:** use folder name `retro-lab` (matches the Git remote) — `git clone …/retro-lab.git` then `cd retro-lab`. If your parent folder has another name (e.g. from an old clone), close Cursor and run `.\scripts\align-folder-name.ps1` or rename manually to `retro-lab`, then reopen **`retro-lab.code-workspace`**.
+> **Agentic SDLC teaching lab** — a parent orchestration repo plus two application repos. Cursor runs the retrospective workflow (analysis, reports, archive); the web UI validates results. No external LLM inside the running API.
 
 ## Table of contents
 

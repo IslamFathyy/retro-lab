@@ -1,7 +1,7 @@
 {
   "repositories": [
     {
-      "name": "retro-lab",
+      "name": "retro-lab-root",
       "path": ".",
       "role": "orchestration",
       "description": "Parent repo — AGENTS.md, commands, skills, sub-agents, hooks, docs"
