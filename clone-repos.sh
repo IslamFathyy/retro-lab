@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 #
-# Clone Retrospective Lab application repos into repos/
-# Run from the retro-lab root after: git clone <retro-lab-url> && cd retro-lab
+# Clone retro-lab application repos into repos/
+# Run from the retro-lab root after:
+#   git clone https://github.com/IslamFathyy/retro-lab.git
+#   cd retro-lab
 #
 # Requires: git, bash (Git Bash on Windows is fine)
 # URLs match repos.json — update both if remotes change.

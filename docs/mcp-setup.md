@@ -1,4 +1,4 @@
-# MCP setup — Retrospective Lab
+# MCP setup — retro-lab
 
 **Goal:** Connect Cursor agents safely to at least one system of record through MCP.
 

@@ -1,6 +1,6 @@
-# AGENTS.md — Retrospective Lab
+# AGENTS.md — retro-lab
 
-Instructions for coding agents working in this workspace (retro-lab + `repos/retro-api` + `repos/retro-web`).
+Instructions for coding agents working in this workspace. **Parent repo folder:** `retro-lab` (same as GitHub `IslamFathyy/retro-lab`) plus `repos/retro-api` and `repos/retro-web`.
 
 **Agentic AI (commands, skills, MCP, sub-agents, workflows):** [`docs/agentic-engineering.md`](docs/agentic-engineering.md)
 
@@ -8,7 +8,7 @@ Instructions for coding agents working in this workspace (retro-lab + `repos/ret
 
 ## 1. Project overview
 
-**Retrospective Lab** is a small retrospective management app used to teach multi-repo development. Teams collect feedback, run analysis, approve actions, generate reports, and optionally archive to Google Drive — via a local API and browser UI.
+**retro-lab** (Retrospective Lab teaching stack) is a small retrospective management app used to teach multi-repo development. Teams collect feedback, run analysis, approve actions, generate reports, and optionally archive to Google Drive — via a local API and browser UI.
 
 | Repo | Role |
 |------|------|
