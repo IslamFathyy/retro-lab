@@ -1,75 +1,61 @@
 {
-  "retroId": "RETRO-2026-001",
-  "title": "Sprint 1 Retro",
-  "period": "Sprint 1",
+  "retroId": "RETRO-2026-002",
+  "title": "Sprint 2 Retro",
+  "period": "Sprint 2",
   "team": "Chartswap",
-  "archivedAt": "2026-09-28T07:44:26.678Z",
-  "exportedAt": "2026-09-28T07:44:28.321Z",
+  "archivedAt": "2026-10-10T14:17:56.096Z",
+  "exportedAt": "2026-10-10T14:18:04.671Z",
   "openActions": [
     {
       "id": "ACT-0001",
-      "title": "Hold a QA test-scope alignment at sprint start",
-      "description": "Align scope up front; addresses late QA bugs (FB-0003, FB-0005).",
+      "title": "Adopt a 4-hour PR first-response target",
+      "description": "Define a team norm for first review comment or approval within 4 business hours; addresses idle reviews (FB-0003, FB-0005).",
       "ownerTeams": [
-        "product-team",
-        "qa-team",
         "dev-team"
       ],
-      "teams": "Product Team, QA Team, Dev Team",
+      "teams": "Dev Team",
       "status": "open",
-      "targetDate": "2026-09-28"
+      "targetDate": "2026-10-10"
     },
     {
       "id": "ACT-0002",
-      "title": "Introduce a pre-handoff dev checklist before QA intake",
-      "description": "Quality gates before QA handoff (FB-0003).",
+      "title": "Require acceptance criteria before sprint commitment",
+      "description": "Sprint-readiness checklist gate before stories enter the sprint (FB-0004, FB-0006).",
       "ownerTeams": [
-        "dev-team",
+        "product-team",
         "qa-team"
       ],
-      "teams": "Dev Team, QA Team",
+      "teams": "Product Team, QA Team",
       "status": "open",
-      "targetDate": "2026-09-28"
+      "targetDate": "2026-10-10"
     },
     {
       "id": "ACT-0003",
-      "title": "Time-box daily sync to 25 minutes with a parking lot",
-      "description": "Protect focus time (FB-0004).",
+      "title": "Run a post-deploy smoke test checklist",
+      "description": "Short post-deploy smoke tests after releases to sustain deployment reliability (FB-0001).",
       "ownerTeams": [
-        "management-team"
+        "ops-team",
+        "dev-team"
       ],
-      "teams": "Management Team",
+      "teams": "Ops Team, Dev Team",
       "status": "open",
-      "targetDate": "2026-09-28"
+      "targetDate": "2026-10-10"
     },
     {
       "id": "ACT-0004",
-      "title": "Require two approving reviewers on pull requests",
-      "description": "Two-reviewer merge bar (FB-0006).",
+      "title": "Schedule weekly pairing blocks for knowledge sharing",
+      "description": "Regular pairing slots to extend a practice the team found effective (FB-0002).",
       "ownerTeams": [
-        "dev-team",
-        "ops-team"
-      ],
-      "teams": "Dev Team, Ops Team",
-      "status": "open",
-      "targetDate": "2026-09-28"
-    },
-    {
-      "id": "ACT-0005",
-      "title": "Document release-week collaboration practices for reuse",
-      "description": "Capture delivery wins (FB-0001, FB-0002).",
-      "ownerTeams": [
-        "management-team",
         "dev-team"
       ],
-      "teams": "Management Team, Dev Team",
+      "teams": "Dev Team",
       "status": "open",
-      "targetDate": "2026-09-28"
+      "targetDate": "2026-10-10"
     }
   ],
   "reportExcerpt": {
-    "themesSummary": "Collaboration and on-time delivery: The team highlighted strong collaboration during release week and delivery of the milestone on the planned date. Late-cycle quality and QA exposure: Bugs reaching QA late in the sprint, with suggestion to align test scope with QA before formal testing. Meeting time discipline: Daily sync meetings were reported as often exceeding their scheduled duration. Merge and review standards: Feedback proposed requiring two reviewers on pull requests before merge.",
-    "approvedActionsSection": "- **Hold a QA test-scope alignment at sprint start** (ACT-0001) — Teams: Product Team, QA Team, Dev Team, Status: open\n- **Introduce a pre-handoff dev checklist before QA intake** (ACT-0002) — Teams: Dev Team, QA Team, Status: open\n- **Time-box daily sync to 25 minutes with a parking lot** (ACT-0003) — Teams: Management Team, Status: open\n- **Require two approving reviewers on pull requests** (ACT-0004) — Teams: Dev Team, Ops Team, Status: open\n- **Document release-week collaboration practices for reuse** (ACT-0005) — Teams: Management Team, Dev Team, Status: open"
+    "themesSummary": "Release and deployment reliability: The team reported that the deployment pipeline remained stable across all releases during the sprint. Collaboration and pairing: Pair programming was cited as helping the team complete the API migration more quickly. Code review responsiveness: Pull request reviews experienced multi-day idle periods; the team suggested a first-response target for reviews. Sprint readiness and acceptance criteria: Stories entered the sprint without clear acceptance criteria; the team proposed a readiness checklist before sprint entry.",
+    "approvedActionsSection": "- **Adopt a 4-hour PR first-response target** (ACT-0001) — Teams: Dev Team, Status: open\n- **Require acceptance criteria before sprint commitment** (ACT-0002) — Teams: Product Team, QA Team, Status: open\n- **Run a post-deploy smoke test checklist** (ACT-0003) — Teams: Ops Team, Dev Team, Status: open\n- **Schedule weekly pairing blocks for knowledge sharing** (ACT-0004) — Teams: Dev Team, Status: open"
   },
   "reportInsights": {
     "participationMix": {
@@ -79,60 +65,47 @@
     },
     "topicBreakdown": [
       {
-        "label": "Collaboration and milestone delivery",
-        "feedbackItems": 2,
-        "percent": 33,
-        "priority": "low",
-        "summary": "Strong collaboration and on-time milestone delivery."
+        "label": "Release and deployment reliability",
+        "feedbackItems": 1,
+        "percent": 17,
+        "priority": "medium",
+        "summary": "The team reported that the deployment pipeline remained stable across all releases during the sprint."
       },
       {
-        "label": "Late-cycle quality and QA exposure",
+        "label": "Collaboration and pairing",
+        "feedbackItems": 1,
+        "percent": 17,
+        "priority": "low",
+        "summary": "Pair programming was cited as helping the team complete the API migration more quickly."
+      },
+      {
+        "label": "Code review responsiveness",
         "feedbackItems": 2,
         "percent": 33,
         "priority": "high",
-        "summary": "Bugs reaching QA late; align test scope with QA earlier."
+        "summary": "Pull request reviews experienced multi-day idle periods; the team suggested a first-response target for reviews."
       },
       {
-        "label": "Meeting time discipline",
-        "feedbackItems": 1,
-        "percent": 17,
-        "priority": "medium",
-        "summary": "Daily syncs often exceeded scheduled duration."
-      },
-      {
-        "label": "Merge and review standards",
-        "feedbackItems": 1,
-        "percent": 17,
-        "priority": "medium",
-        "summary": "Two reviewers on pull requests before merge."
+        "label": "Sprint readiness and acceptance criteria",
+        "feedbackItems": 2,
+        "percent": 33,
+        "priority": "high",
+        "summary": "Stories entered the sprint without clear acceptance criteria; the team proposed a readiness checklist before sprint entry."
       }
     ],
     "recurringTopics": [
       {
         "label": "Code review delays",
-        "retrosSeen": 4,
-        "retrosTotal": 4,
-        "priority": "high",
-        "summary": "Review turnaround and policy across four sprints."
-      },
-      {
-        "label": "QA / testing gaps",
         "retrosSeen": 2,
         "retrosTotal": 4,
         "priority": "high",
-        "summary": "Late-cycle defects in Sprint 1 and 3."
-      },
-      {
-        "label": "Long meetings / planning",
-        "retrosSeen": 2,
-        "retrosTotal": 4,
-        "priority": "medium",
-        "summary": "Sync overruns and lengthy planning."
+        "summary": "The team raised pull-request review and merge-process concerns across both sprints—two-reviewer standards in the prior retro and idle reviews with a first-response target in this sprint."
       }
     ],
     "limitations": [
       "Counts reflect feedback items, not individuals.",
-      "Cross-retro recurrence for 002-004 inferred from feedback text only."
+      "Recurring topics are based on semantic similarity across retros, not identical feedback text.",
+      "Prior retro RETRO-2026-001 covered a different sprint; themes may reflect different root causes."
     ]
   },
   "recipients": {
