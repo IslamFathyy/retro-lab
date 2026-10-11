@@ -5,8 +5,7 @@
 ## Table of contents
 
 - [Quick start](#quick-start)
-- [5-minute setup](#5-minute-setup)
-- [Team onboarding](#team-onboarding)
+- [Onboarding / setup the project](#onboarding--setup-the-project)
 - [Prerequisites](#prerequisites)
 - [Repository structure](#repository-structure)
 - [Development ports](#development-ports)
@@ -31,44 +30,88 @@ Child repos are **separate git repositories** (not vendored in the parent clone)
 
 ---
 
-## 5-minute setup
+## Onboarding / setup the project
+
+End-to-end setup for a new machine: parent repo, child app repos, local servers, Cursor workspace, and optional MCP.
+
+### 1. Clone the orchestration repo
 
 ```bash
 git clone https://github.com/IslamFathyy/retro-lab.git
 cd retro-lab
-bash clone-repos.sh          # Windows: Git Bash, or: bash clone-repos.sh
 ```
 
+### 2. Clone application repos (`clone-repos.sh`)
+
+Child apps are **not** included in the parent clone. From the **retro-lab root**, run:
+
+```bash
+bash clone-repos.sh
+```
+
+| Platform | How to run |
+|----------|------------|
+| Windows | **Git Bash** from repo root, or `bash clone-repos.sh` from PowerShell if `bash` is on PATH |
+| macOS / Linux | `bash clone-repos.sh` |
+
+The script ([`clone-repos.sh`](clone-repos.sh)) reads the same URLs as [`repos.json`](repos.json), creates `repos/`, and clones **`retro-api`** and **`retro-web`** on branch `main`. If a folder already has a `.git` directory, it skips; otherwise it clones fresh.
+
+**Manual alternative:** clone each URL from `repos.json` into `repos/<name>/`.
+
+### 3. Install and run API + web
+
 ```powershell
-# Terminal 1 — API
+# Terminal 1 — API (port 3001)
 cd repos/retro-api
-copy .env.example .env         # if present
+copy .env.example .env    # if present
 npm install
 npm start
 
-# Terminal 2 — Web
+# Terminal 2 — Web (port 8080)
 cd repos/retro-web
 npm install
 npm start
 ```
 
-1. Open **`retro-lab.code-workspace`** in Cursor (all three repos in Source Control).
-2. **MCP (optional):** `copy env.example .env`, then `.\scripts\setup-mcp.ps1` — see [MCP Integration Setup](#mcp-integration-setup-optional). **Restart Cursor** after setup.
-3. In chat: **`/verify-project`**, then **`/run-retro-workflow`** or [`docs/cursor-test-workflow.md`](docs/cursor-test-workflow.md).
+Open http://localhost:8080 (API health: http://localhost:3001/api/health).
 
-Open http://localhost:8080
+### 4. Open the Cursor workspace
 
----
+1. Open **`retro-lab.code-workspace`** in Cursor (parent + both child repos in Source Control).
+2. Read **[`AGENTS.md`](AGENTS.md)** for repo routing, stack, and boundaries.
+3. Cursor assets (commands, skills, hooks) load from **retro-lab** `.cursor/` — prefer the workspace file over opening only `repos/retro-api` or `repos/retro-web`.
 
-## Team onboarding
+### 5. MCP setup (optional — archive, email, GitHub)
 
-1. Clone **retro-lab** and run **`clone-repos.sh`** (above).
-2. Open the **workspace file** and read **[`AGENTS.md`](AGENTS.md)** (orchestration agent + routing).
-3. Skim **[`docs/cursor-test-workflow.md`](docs/cursor-test-workflow.md)** — prompt order for testing.
-4. Optional: complete **[MCP Integration Setup](#mcp-integration-setup-optional)** for archive, email, and GitHub workflows.
-5. Per-repo stack and boundaries: [`AGENTS.md`](AGENTS.md). Cursor workflows: [`docs/agentic-engineering.md`](docs/agentic-engineering.md).
+MCP runs in **Cursor only**; the running web app never calls MCP. Team config is a **template in git**; each developer generates a **local** file Cursor reads at runtime.
 
-**What you get:** one workspace, three git repos, shared Cursor commands/skills, and a full demo retrospective path without calling OpenAI/Anthropic from `retro-api`.
+| File | In git? | Role |
+|------|---------|------|
+| [`env.example`](env.example) | Yes | Sample variable names — **copy** to `.env` |
+| [`.env`](.env) | **No** | Your machine paths and settings (gitignored) |
+| [`mcp-config.json`](mcp-config.json) | Yes | Committed MCP server template (`${env:VAR}` placeholders only) |
+| [`.cursor/mcp.json`](.cursor/mcp.json) | **No** | **Generated** — Cursor loads this (gitignored) |
+
+**Copy and generate flow:**
+
+1. From retro-lab root: `copy env.example .env` (Windows) or `cp env.example .env` (macOS/Linux). Edit `.env` (e.g. `MCP_NPX_PATH`, `GOOGLE_DRIVE_OAUTH_KEYS_DIR`).
+2. Run the setup script — it **loads `.env` into your environment** and **copies** `mcp-config.json` → `.cursor/mcp.json`:
+   - Windows: `.\scripts\setup-mcp.ps1`
+   - Git Bash / macOS / Linux: `bash scripts/setup-mcp.sh`
+3. **Restart Cursor** (required after `.env` or `mcp-config.json` changes).
+4. **Settings → MCP** — confirm project servers are enabled.
+
+When the team changes MCP servers, edit **`mcp-config.json`** in git; each developer re-runs the setup script locally. **Do not commit** `.cursor/mcp.json` or `.env`.
+
+OAuth and server details: [MCP Integration Setup (optional)](#mcp-integration-setup-optional) and [`docs/mcp-setup.md`](docs/mcp-setup.md).
+
+### 6. First run in Cursor
+
+1. **`/verify-project`** — API, web, and workspace checks.
+2. **`/run-retro-workflow`** or follow [`docs/cursor-test-workflow.md`](docs/cursor-test-workflow.md).
+3. Deeper agent catalog: [`docs/agentic-engineering.md`](docs/agentic-engineering.md).
+
+**What you get:** three git repos in one workspace, shared commands/skills/hooks, and a full retrospective demo path without external LLM calls from `retro-api`.
 
 ---
 
@@ -128,6 +171,8 @@ API env (see `repos/retro-api/.env.example`): `PORT`, `DATA_ROOT`.
 ---
 
 ## MCP Integration Setup (optional)
+
+Step-by-step copy flow (`env.example` → `.env`, `mcp-config.json` → `.cursor/mcp.json`): [Onboarding / setup the project](#onboarding--setup-the-project) §5.
 
 | File | Role |
 |------|------|
