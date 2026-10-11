@@ -6,8 +6,10 @@ Cloud Cursor Automations cannot read gitignored `repos/retro-api/data/`. At arch
 
 | File | Purpose |
 |------|---------|
-| `latest-reminder.json` | Open approved actions from the most recently archived retro |
+| `latest-reminder.json` | Open approved actions and excerpts from the most recently archived retro |
 | `latest-email-payload.json` | Pre-built Gmail `send_message` fields for Cloud Automation (copy verbatim) |
+| `latest-analysis.json` | Full `analysis.json` copy for the latest archived retro |
+| `latest-report.md` | Full `report.md` copy for the latest archived retro |
 | `recipients.example.json` | Template for recipient list |
 | `recipients.json` | Live recipient list (optional gitignore) |
 
@@ -18,7 +20,7 @@ cd repos/retro-api
 npm run export:reminder
 ```
 
-After each archive, run **`/commit-latest-report`** (workflow step 9) to push `latest-reminder.json` to GitHub `main` for the Sunday mail automation.
+After each archive, run **`/commit-latest-report`** (workflow step 9) to push all four `latest-*` snapshot files to GitHub `main` (Sunday mail reads `latest-email-payload.json`).
 
 ## Recipients
 

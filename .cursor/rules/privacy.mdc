@@ -3,10 +3,16 @@ description: Privacy guardrails for retrospective data and agent behavior
 alwaysApply: true
 ---
 
-# Privacy Rules
+# Privacy
 
-- Never deanonymize anonymous feedback.
-- Never store hidden identity fields for anonymous submissions.
-- Never rank employees or infer performance.
-- Use team/process language: "The team mentioned...", "A recurring theme is..."
-- Do not modify original feedback `text` fields.
+## Do
+
+- Use team/process language in analysis, reports, and UI copy (e.g. "The team mentioned…", "A recurring theme is…").
+- Cite feedback by `FB-####` IDs in structured outputs and reports.
+- Treat facilitator approval as required before actions are real (API guardrails P1).
+
+## Do not
+
+- Deanonymize anonymous feedback or store hidden identity for anonymous submissions.
+- Rank individuals or infer performance from feedback.
+- Modify original feedback `text` fields after submit.

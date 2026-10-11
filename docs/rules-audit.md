@@ -2,8 +2,10 @@
 
 **Goal:** Clean up agent rules so they do not overlap or contradict each other.  
 **Repos in scope:** `retro-lab` (root), `retro-api`, `retro-web`  
-**Last audit:** 2026-09-19  
+**Last audit:** 2026-10-10  
 **Sign-off:** Islam Fathy (precedence + inventory complete)
+
+**Rule body format:** Every `.cursor/rules/*.mdc` file uses only `## Do` and `## Do not` sections (business and technical bullets per repo). Procedures stay in skills/commands; hooks and API guardrails enforce at runtime.
 
 ---
 
@@ -23,7 +25,7 @@ Highest wins first:
 
 **Principles**
 
-- **Rules** = short non-negotiables (privacy, layering, stack, security).
+- **Rules** = short non-negotiables in **Do / Do not** form (privacy, layering, stack, security).
 - **Skills** = multi-step procedures; link rules, do not copy them.
 - **Commands** = pointer to skill + arguments; no duplicate workflows.
 - **Hooks** = chat-time backup when agents forget rules.
@@ -37,9 +39,9 @@ Highest wins first:
 
 | File | Type | alwaysApply / globs | Purpose |
 |------|------|---------------------|---------|
-| `.cursor/rules/privacy.mdc` | Rule | always | Deanonymization, feedback text, team language |
-| `.cursor/rules/orchestration.mdc` | Rule | always | Multi-repo routing; read AGENTS.md §2–7 + agentic-engineering.md |
-| `.cursor/rules/development.mdc` | Rule | always | v1 stack, no secrets, no force push, Cursor-as-LLM |
+| `.cursor/rules/privacy.mdc` | Rule | always | Business: team language, IDs, facilitator approval; no deanonymize / no edit `text` |
+| `.cursor/rules/orchestration.mdc` | Rule | always | Multi-repo routing, contract-first, PLAN scope, skills vs rules |
+| `.cursor/rules/development.mdc` | Rule | always | v1 stack, secrets, git safety, Cursor-as-LLM; child test rules |
 | `AGENTS.md` | Agent context | — | Product engineering: stack, structure, tests, boundaries |
 | `docs/agentic-engineering.md` | Agent catalog | — | Commands, skills, MCP, sub-agents, hooks, workflow order |
 | `.cursor/skills/*/SKILL.md` | Skills | on command | Workflows (analyze, report, archive, …) |
@@ -51,10 +53,10 @@ Highest wins first:
 
 | File | Type | alwaysApply / globs | Purpose |
 |------|------|---------------------|---------|
-| `.cursor/rules/architecture.mdc` | Rule | `src/**/*.js` | routes → controllers → services → storage |
-| `.cursor/rules/storage.mdc` | Rule | `src/services/**`, `src/config/paths.js` | data dir, atomic writes, safe IDs |
-| `.cursor/rules/testing.mdc` | Rule | `src/**`, `tests/**` | regression + API tests required |
-| `.cursor/rules/security.mdc` | Rule | always (in repo) | input validation, no eval, no path traversal |
+| `.cursor/rules/architecture.mdc` | Rule | `src/**/*.js` | Layering; validators on new endpoints |
+| `.cursor/rules/storage.mdc` | Rule | `src/services/**`, `src/config/paths.js`, `data/**` | `data/retrospectives/`; storage service only |
+| `.cursor/rules/testing.mdc` | Rule | `src/**`, `tests/**` | Regression, unit, integration; `npm test` |
+| `.cursor/rules/security.mdc` | Rule | always (in repo) | Validators; guardrails P1/P4/C1 themes; no eval / traversal |
 
 Shared privacy/stack rules: **root** `.cursor/rules/privacy.mdc` + `development.mdc` (workspace open via `retro-lab.code-workspace`).
 
@@ -62,7 +64,7 @@ Shared privacy/stack rules: **root** `.cursor/rules/privacy.mdc` + `development.
 
 | File | Type | alwaysApply / globs | Purpose |
 |------|------|---------------------|---------|
-| `.cursor/rules/frontend.mdc` | Rule | `**/*.{html,js,css}` | No framework, semantic HTML, API client only |
+| `.cursor/rules/frontend.mdc` | Rule | `**/*.{html,js,css}` | UI privacy; `js/api.js` only; vanilla HTML/CSS/JS |
 
 ---
 

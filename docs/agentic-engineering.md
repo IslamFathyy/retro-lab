@@ -78,7 +78,7 @@ Avoid a separate **Completion criteria** section when **Validation** already sta
 | generate-retro-report | `/generate-report {id}` | After actions approved — report + insights |
 | archive-retrospective | `/archive-retro {id}` | Drive backup, local `archived`, reminder export |
 | weekly-action-reminder | `/weekly-action-reminder` | Email open actions |
-| commit-latest-report | `/commit-latest-report` | Push `docs/reminders/latest-reminder.json` to GitHub `main` |
+| commit-latest-report | `/commit-latest-report` | Push `docs/reminders/latest-*` snapshot bundle to GitHub `main` |
 | reset-demo-environment | `/reset-demo-retro` | Wipe demo + Drive (requires `RESET DEMO`) |
 
 Published skill verification: [`skills/verify-analyze-retrospective.md`](skills/verify-analyze-retrospective.md).

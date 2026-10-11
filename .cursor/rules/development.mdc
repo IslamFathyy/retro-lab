@@ -3,11 +3,18 @@ description: v1 stack and development constraints for all repositories
 alwaysApply: true
 ---
 
-# Development Rules
+# Development
 
-- No database, React, or TypeScript in v1.
-- No hardcoded secrets; do not commit `.env` or credential files.
-- No `git push --force` to `main` or `master`.
-- Do not call external LLM APIs from `retro-api` — AI runs in Cursor (`/analyze-retro` → import endpoint).
-- Bug fixes require a regression test; new service behavior requires unit tests; API changes require integration tests.
-- Do not delete tests to make CI pass.
+## Do
+
+- Use `.env.example` and local `.env` for secrets; keep AI analysis in Cursor import flows (`generatedBy: cursor-agent`).
+- Use hooks and API guardrails as enforcement backstop when agents edit files.
+- Follow child-repo test rules when editing `repos/retro-api/` or `repos/retro-web/`.
+
+## Do not
+
+- Commit `.env`, OAuth keys, credential files, or generated `.cursor/mcp.json`.
+- Call external LLM APIs from `retro-api` at runtime.
+- Use a database, React, or TypeScript in v1.
+- Run `git push --force` to `main` or `master`.
+- Delete or skip tests to pass CI (see `repos/retro-api/.cursor/rules/testing.mdc` for API test matrix).

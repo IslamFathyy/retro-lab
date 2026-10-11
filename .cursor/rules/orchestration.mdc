@@ -3,11 +3,19 @@ description: Parent orchestration rules for multi-repo Agentic SDLC work
 alwaysApply: true
 ---
 
-# Orchestration Rules
+# Orchestration
 
-- Open and work from the **root repo** when changes may span `retro-api` and `retro-web`.
-- Route backend work to `repos/retro-api/`, frontend work to `repos/retro-web/`.
-- Read root [`AGENTS.md`](../../AGENTS.md) (sections 2–7 for app work) and [`docs/agentic-engineering.md`](../../docs/agentic-engineering.md) for Cursor workflows before editing child repos.
-- Rules precedence: see `docs/rules-audit.md`.
-- Follow phase scope in `PLAN.md`; do not expand v1 scope without approval.
-- Coordinate API contract before UI when adding new fields or endpoints.
+## Do
+
+- Open and work from the **retro-lab** root when changes may span `retro-api` and `retro-web`.
+- Route backend work to `repos/retro-api/` and frontend work to `repos/retro-web/`.
+- Define API contract before adding UI fields or endpoints.
+- Read root `AGENTS.md` (sections 2–7) and `docs/agentic-engineering.md` before agentic edits in child repos.
+- Follow phase scope in `PLAN.md`; use `docs/rules-audit.md` for rule precedence.
+
+## Do not
+
+- Implement cross-repo features in a single child repo without coordinating the contract.
+- Expand v1 stack (database, React, TypeScript, runtime LLM in API) without approval per `PLAN.md`.
+- Inline sub-agent work in the parent when a skill requires Task launches.
+- Duplicate long workflows in rules (procedures belong in skills and commands).
