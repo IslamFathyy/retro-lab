@@ -1,0 +1,128 @@
+{
+  "retroId": "RETRO-2026-002",
+  "version": 1,
+  "generatedAt": "2026-10-10T14:04:47.894Z",
+  "generatedBy": "cursor-agent",
+  "feedbackCount": 6,
+  "themes": [
+    {
+      "name": "Release and deployment reliability",
+      "feedbackIds": [
+        "FB-0001"
+      ],
+      "summary": "The team reported that the deployment pipeline remained stable across all releases during the sprint.",
+      "topicId": null
+    },
+    {
+      "name": "Collaboration and pairing",
+      "feedbackIds": [
+        "FB-0002"
+      ],
+      "summary": "Pair programming was cited as helping the team complete the API migration more quickly.",
+      "topicId": null
+    },
+    {
+      "name": "Code review responsiveness",
+      "feedbackIds": [
+        "FB-0003",
+        "FB-0005"
+      ],
+      "summary": "Pull request reviews experienced multi-day idle periods; the team suggested a first-response target for reviews.",
+      "topicId": null
+    },
+    {
+      "name": "Sprint readiness and acceptance criteria",
+      "feedbackIds": [
+        "FB-0004",
+        "FB-0006"
+      ],
+      "summary": "Stories entered the sprint without clear acceptance criteria; the team proposed a readiness checklist before sprint entry.",
+      "topicId": null
+    }
+  ],
+  "strengths": [
+    {
+      "feedbackId": "FB-0001",
+      "summary": "The deployment pipeline was stable across all releases."
+    },
+    {
+      "feedbackId": "FB-0002",
+      "summary": "Pair programming helped the team finish the API migration faster."
+    }
+  ],
+  "concerns": [
+    {
+      "feedbackId": "FB-0003",
+      "summary": "Code reviews sat idle for days before anyone responded."
+    },
+    {
+      "feedbackId": "FB-0004",
+      "summary": "Two stories entered the sprint without clear acceptance criteria."
+    }
+  ],
+  "opportunities": [
+    {
+      "feedbackId": "FB-0005",
+      "summary": "Define a first-response target for pull request reviews."
+    },
+    {
+      "feedbackId": "FB-0006",
+      "summary": "Add a readiness checklist before stories enter the sprint."
+    }
+  ],
+  "suggestedActions": [
+    {
+      "id": "SUG-001",
+      "title": "Adopt a 4-hour PR first-response target",
+      "reason": "Define a team norm for first review comment or approval within 4 business hours; addresses idle reviews (FB-0003, FB-0005).",
+      "sourceFeedbackIds": [
+        "FB-0003",
+        "FB-0005"
+      ],
+      "ownerTeams": [
+        "dev-team"
+      ]
+    },
+    {
+      "id": "SUG-002",
+      "title": "Require acceptance criteria before sprint commitment",
+      "reason": "Sprint-readiness checklist gate before stories enter the sprint (FB-0004, FB-0006).",
+      "sourceFeedbackIds": [
+        "FB-0004",
+        "FB-0006"
+      ],
+      "ownerTeams": [
+        "product-team",
+        "qa-team"
+      ]
+    },
+    {
+      "id": "SUG-003",
+      "title": "Run a post-deploy smoke test checklist",
+      "reason": "Short post-deploy smoke tests after releases to sustain deployment reliability (FB-0001).",
+      "sourceFeedbackIds": [
+        "FB-0001"
+      ],
+      "ownerTeams": [
+        "ops-team",
+        "dev-team"
+      ]
+    },
+    {
+      "id": "SUG-004",
+      "title": "Schedule weekly pairing blocks for knowledge sharing",
+      "reason": "Regular pairing slots to extend a practice the team found effective (FB-0002).",
+      "sourceFeedbackIds": [
+        "FB-0002"
+      ],
+      "ownerTeams": [
+        "dev-team"
+      ]
+    }
+  ],
+  "limitations": [
+    "Suggested actions require human review before approval.",
+    "Analysis identifies process patterns, not individuals.",
+    "Observations are not proof of causality."
+  ]
+}
