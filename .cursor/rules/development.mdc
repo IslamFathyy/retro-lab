@@ -7,7 +7,7 @@ alwaysApply: true
 
 ## Do
 
-- Use `.env.example` and local `.env` for secrets; keep AI analysis in Cursor import flows (`generatedBy: cursor-agent`).
+- Use `.env.example` and local `.env` for secretss; keep AI analysis in Cursor import flows (`generatedBy: cursor-agent`).
 - Use hooks and API guardrails as enforcement backstop when agents edit files.
 - Follow child-repo test rules when editing `repos/retro-api/` or `repos/retro-web/`.
 
