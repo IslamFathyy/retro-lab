@@ -1,107 +1,114 @@
 {
-  "retroId": "RETRO-2026-002",
+  "retroId": "RETRO-2026-003",
   "version": 1,
-  "generatedAt": "2026-10-10T14:04:47.894Z",
+  "generatedAt": "2026-10-14T12:21:05.067Z",
   "generatedBy": "cursor-agent",
   "feedbackCount": 6,
   "themes": [
     {
-      "name": "Release and deployment reliability",
+      "name": "Early quality involvement in planning",
       "feedbackIds": [
         "FB-0001"
       ],
-      "summary": "The team reported that the deployment pipeline remained stable across all releases during the sprint.",
+      "summary": "The team noted that QA participation in refinement helped surface missing acceptance criteria before implementation work progressed.",
       "topicId": null
     },
     {
-      "name": "Collaboration and pairing",
+      "name": "Cross-team delivery handoffs",
       "feedbackIds": [
         "FB-0002"
       ],
-      "summary": "Pair programming was cited as helping the team complete the API migration more quickly.",
+      "summary": "A recurring positive theme is smoother coordination between backend and frontend during the sprint.",
       "topicId": null
     },
     {
-      "name": "Code review responsiveness",
+      "name": "Code review throughput",
       "feedbackIds": [
-        "FB-0003",
-        "FB-0005"
+        "FB-0003"
       ],
-      "summary": "Pull request reviews experienced multi-day idle periods; the team suggested a first-response target for reviews.",
+      "summary": "The team reported that the code review queue expanded again during the middle of the sprint.",
       "topicId": null
     },
     {
-      "name": "Sprint readiness and acceptance criteria",
+      "name": "Integration testing and regression risk",
       "feedbackIds": [
         "FB-0004",
+        "FB-0005"
+      ],
+      "summary": "Process feedback links a shipped regression to gaps in integration coverage, and the team explicitly called for broader integration tests around payment flows.",
+      "topicId": null
+    },
+    {
+      "name": "Deployment pipeline safeguards",
+      "feedbackIds": [
         "FB-0006"
       ],
-      "summary": "Stories entered the sprint without clear acceptance criteria; the team proposed a readiness checklist before sprint entry.",
+      "summary": "The team suggested strengthening the deployment path by automating configuration validation.",
       "topicId": null
     }
   ],
   "strengths": [
     {
       "feedbackId": "FB-0001",
-      "summary": "The deployment pipeline was stable across all releases."
+      "summary": "QA engagement during refinement helped the team catch missing acceptance criteria earlier in the cycle."
     },
     {
       "feedbackId": "FB-0002",
-      "summary": "Pair programming helped the team finish the API migration faster."
+      "summary": "Handoffs between backend and frontend were described as smoother compared with prior sprints."
     }
   ],
   "concerns": [
     {
       "feedbackId": "FB-0003",
-      "summary": "Code reviews sat idle for days before anyone responded."
+      "summary": "Mid-sprint growth in the code review queue was called out as a process pain point."
     },
     {
       "feedbackId": "FB-0004",
-      "summary": "Two stories entered the sprint without clear acceptance criteria."
+      "summary": "A regression reached production; the team attributed this in part to integration tests not covering the affected scenario."
     }
   ],
   "opportunities": [
     {
       "feedbackId": "FB-0005",
-      "summary": "Define a first-response target for pull request reviews."
+      "summary": "The team proposed expanding integration test coverage for payment flows."
     },
     {
       "feedbackId": "FB-0006",
-      "summary": "Add a readiness checklist before stories enter the sprint."
+      "summary": "The team proposed automating configuration validation in the deployment pipeline."
     }
   ],
   "suggestedActions": [
     {
       "id": "SUG-001",
-      "title": "Adopt a 4-hour PR first-response target",
-      "reason": "Define a team norm for first review comment or approval within 4 business hours; addresses idle reviews (FB-0003, FB-0005).",
+      "title": "Cap the code review queue and agree first-response norms",
+      "reason": "The team reported reviews backing up when too many pull requests wait at once (FB-0003). A shared WIP limit per reviewer and a first-response target should keep the queue moving without blaming individuals.",
       "sourceFeedbackIds": [
-        "FB-0003",
-        "FB-0005"
+        "FB-0003"
       ],
       "ownerTeams": [
-        "dev-team"
+        "dev-team",
+        "management-team"
       ]
     },
     {
       "id": "SUG-002",
-      "title": "Require acceptance criteria before sprint commitment",
-      "reason": "Sprint-readiness checklist gate before stories enter the sprint (FB-0004, FB-0006).",
+      "title": "Expand regression and integration coverage in the delivery pipeline",
+      "reason": "Recurring feedback pointed to gaps in regression and integration testing before release (FB-0004, FB-0005). The team can prioritize high-risk flows, add automated checks where practical, and define what must pass before merge or deploy.",
       "sourceFeedbackIds": [
         "FB-0004",
-        "FB-0006"
+        "FB-0005"
       ],
       "ownerTeams": [
-        "product-team",
+        "dev-team",
         "qa-team"
       ]
     },
     {
       "id": "SUG-003",
-      "title": "Run a post-deploy smoke test checklist",
-      "reason": "Short post-deploy smoke tests after releases to sustain deployment reliability (FB-0001).",
+      "title": "Add a pre-deploy deployment configuration validation step",
+      "reason": "The team flagged environment or deployment configuration issues surfacing late (FB-0006). A short checklist or automated diff against known-good settings before promote should catch misconfigurations earlier.",
       "sourceFeedbackIds": [
-        "FB-0001"
+        "FB-0006"
       ],
       "ownerTeams": [
         "ops-team",
@@ -110,12 +117,15 @@
     },
     {
       "id": "SUG-004",
-      "title": "Schedule weekly pairing blocks for knowledge sharing",
-      "reason": "Regular pairing slots to extend a practice the team found effective (FB-0002).",
+      "title": "Standardize refinement handoffs and keep QA involved early",
+      "reason": "The team valued QA participation during refinement (FB-0001) while handoffs between roles still felt unclear (FB-0002). Agree on ready-for-dev criteria, who owns the handoff, and a lightweight refinement template so expectations stay visible.",
       "sourceFeedbackIds": [
+        "FB-0001",
         "FB-0002"
       ],
       "ownerTeams": [
+        "product-team",
+        "qa-team",
         "dev-team"
       ]
     }
@@ -123,6 +133,7 @@
   "limitations": [
     "Suggested actions require human review before approval.",
     "Analysis identifies process patterns, not individuals.",
-    "Observations are not proof of causality."
+    "Observations are not proof of causality.",
+    "Anonymous submissions are not attributed to individuals."
   ]
 }

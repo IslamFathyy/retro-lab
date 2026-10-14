@@ -1,61 +1,64 @@
 {
-  "retroId": "RETRO-2026-002",
-  "title": "Sprint 2 Retro",
-  "period": "Sprint 2",
+  "retroId": "RETRO-2026-003",
+  "title": "Sprint 3 Retro",
+  "period": "Sprint 3",
   "team": "Chartswap",
-  "archivedAt": "2026-10-10T14:17:56.096Z",
-  "exportedAt": "2026-10-11T10:56:47.103Z",
+  "archivedAt": "2026-10-14T12:37:00.188Z",
+  "exportedAt": "2026-10-14T12:37:02.887Z",
   "openActions": [
     {
       "id": "ACT-0001",
-      "title": "Adopt a 4-hour PR first-response target",
-      "description": "Define a team norm for first review comment or approval within 4 business hours; addresses idle reviews (FB-0003, FB-0005).",
+      "title": "Cap the code review queue and agree first-response norms",
+      "description": "The team reported reviews backing up when too many pull requests wait at once (FB-0003). A shared WIP limit per reviewer and a first-response target should keep the queue moving without blaming individuals.",
       "ownerTeams": [
-        "dev-team"
+        "dev-team",
+        "management-team"
       ],
-      "teams": "Dev Team",
+      "teams": "Dev Team, Management Team",
       "status": "open",
-      "targetDate": "2026-10-10"
+      "targetDate": "2026-10-14"
     },
     {
       "id": "ACT-0002",
-      "title": "Require acceptance criteria before sprint commitment",
-      "description": "Sprint-readiness checklist gate before stories enter the sprint (FB-0004, FB-0006).",
+      "title": "Expand regression and integration coverage in the delivery pipeline",
+      "description": "Recurring feedback pointed to gaps in regression and integration testing before release (FB-0004, FB-0005). The team can prioritize high-risk flows, add automated checks where practical, and define what must pass before merge or deploy.",
       "ownerTeams": [
-        "product-team",
+        "dev-team",
         "qa-team"
       ],
-      "teams": "Product Team, QA Team",
+      "teams": "Dev Team, QA Team",
       "status": "open",
-      "targetDate": "2026-10-10"
+      "targetDate": "2026-10-14"
     },
     {
       "id": "ACT-0003",
-      "title": "Run a post-deploy smoke test checklist",
-      "description": "Short post-deploy smoke tests after releases to sustain deployment reliability (FB-0001).",
+      "title": "Add a pre-deploy deployment configuration validation step",
+      "description": "The team flagged environment or deployment configuration issues surfacing late (FB-0006). A short checklist or automated diff against known-good settings before promote should catch misconfigurations earlier.",
       "ownerTeams": [
         "ops-team",
         "dev-team"
       ],
       "teams": "Ops Team, Dev Team",
       "status": "open",
-      "targetDate": "2026-10-10"
+      "targetDate": "2026-10-14"
     },
     {
       "id": "ACT-0004",
-      "title": "Schedule weekly pairing blocks for knowledge sharing",
-      "description": "Regular pairing slots to extend a practice the team found effective (FB-0002).",
+      "title": "Standardize refinement handoffs and keep QA involved early",
+      "description": "The team valued QA participation during refinement (FB-0001) while handoffs between roles still felt unclear (FB-0002). Agree on ready-for-dev criteria, who owns the handoff, and a lightweight refinement template so expectations stay visible.",
       "ownerTeams": [
+        "product-team",
+        "qa-team",
         "dev-team"
       ],
-      "teams": "Dev Team",
+      "teams": "Product Team, QA Team, Dev Team",
       "status": "open",
-      "targetDate": "2026-10-10"
+      "targetDate": "2026-10-14"
     }
   ],
   "reportExcerpt": {
-    "themesSummary": "Release and deployment reliability: The team reported that the deployment pipeline remained stable across all releases during the sprint. Collaboration and pairing: Pair programming was cited as helping the team complete the API migration more quickly. Code review responsiveness: Pull request reviews experienced multi-day idle periods; the team suggested a first-response target for reviews. Sprint readiness and acceptance criteria: Stories entered the sprint without clear acceptance criteria; the team proposed a readiness checklist before sprint entry.",
-    "approvedActionsSection": "- **Adopt a 4-hour PR first-response target** (ACT-0001) — Teams: Dev Team, Status: open\n- **Require acceptance criteria before sprint commitment** (ACT-0002) — Teams: Product Team, QA Team, Status: open\n- **Run a post-deploy smoke test checklist** (ACT-0003) — Teams: Ops Team, Dev Team, Status: open\n- **Schedule weekly pairing blocks for knowledge sharing** (ACT-0004) — Teams: Dev Team, Status: open"
+    "themesSummary": "Early quality involvement in planning: The team noted that QA participation in refinement helped surface missing acceptance criteria before implementation work progressed. Cross-team delivery handoffs: A recurring positive theme is smoother coordination between backend and frontend during the sprint. Code review throughput: The team reported that the code review queue expanded again during the middle of the sprint. Integration testing and regression risk: Process feedback links a shipped regression to gaps in integration coverage, and the team explicitly called for broader integration tests around payment flows. Deployment pipeline safeguards: The team suggested strengthening the deployment path by automating configuration validation.",
+    "approvedActionsSection": "- **Cap the code review queue and agree first-response norms** (ACT-0001) — Teams: Dev Team, Management Team, Status: open\n- **Expand regression and integration coverage in the delivery pipeline** (ACT-0002) — Teams: Dev Team, QA Team, Status: open\n- **Add a pre-deploy deployment configuration validation step** (ACT-0003) — Teams: Ops Team, Dev Team, Status: open\n- **Standardize refinement handoffs and keep QA involved early** (ACT-0004) — Teams: Product Team, QA Team, Dev Team, Status: open"
   },
   "reportInsights": {
     "participationMix": {
@@ -65,47 +68,54 @@
     },
     "topicBreakdown": [
       {
-        "label": "Release and deployment reliability",
+        "label": "Sprint readiness and cross-team handoffs",
+        "feedbackItems": 2,
+        "percent": 33,
+        "priority": "medium",
+        "summary": "The team highlighted QA involvement during refinement and smoother backend–frontend handoffs as practices that supported delivery this sprint."
+      },
+      {
+        "label": "Code review delays",
+        "feedbackItems": 1,
+        "percent": 17,
+        "priority": "high",
+        "summary": "The team reported that the code review queue grew again mid-sprint, creating merge bottlenecks in the delivery process."
+      },
+      {
+        "label": "QA / testing gaps",
+        "feedbackItems": 2,
+        "percent": 33,
+        "priority": "high",
+        "summary": "Process feedback tied a production regression to integration coverage gaps, and the team proposed expanding integration tests around payment flows."
+      },
+      {
+        "label": "Deployment reliability",
         "feedbackItems": 1,
         "percent": 17,
         "priority": "medium",
-        "summary": "The team reported that the deployment pipeline remained stable across all releases during the sprint."
-      },
-      {
-        "label": "Collaboration and pairing",
-        "feedbackItems": 1,
-        "percent": 17,
-        "priority": "low",
-        "summary": "Pair programming was cited as helping the team complete the API migration more quickly."
-      },
-      {
-        "label": "Code review responsiveness",
-        "feedbackItems": 2,
-        "percent": 33,
-        "priority": "high",
-        "summary": "Pull request reviews experienced multi-day idle periods; the team suggested a first-response target for reviews."
-      },
-      {
-        "label": "Sprint readiness and acceptance criteria",
-        "feedbackItems": 2,
-        "percent": 33,
-        "priority": "high",
-        "summary": "Stories entered the sprint without clear acceptance criteria; the team proposed a readiness checklist before sprint entry."
+        "summary": "The team suggested automating deployment configuration validation so misconfigurations are caught before promote."
       }
     ],
     "recurringTopics": [
       {
         "label": "Code review delays",
-        "retrosSeen": 2,
+        "retrosSeen": 3,
         "retrosTotal": 4,
         "priority": "high",
-        "summary": "The team raised pull-request review and merge-process concerns across both sprints—two-reviewer standards in the prior retro and idle reviews with a first-response target in this sprint."
+        "summary": "Semantically similar process concerns appeared across three sprints—from review norms and idle pull requests in earlier retros to a backed-up review queue in this sprint."
+      },
+      {
+        "label": "QA / testing gaps",
+        "retrosSeen": 3,
+        "retrosTotal": 4,
+        "priority": "high",
+        "summary": "Testing and readiness themes recurred: scope alignment and review practices in prior sprints, plus integration and regression risk called out in this retro."
       }
     ],
     "limitations": [
       "Counts reflect feedback items, not individuals.",
       "Recurring topics are based on semantic similarity across retros, not identical feedback text.",
-      "Prior retro RETRO-2026-001 covered a different sprint; themes may reflect different root causes."
+      "Archived retros RETRO-2026-001 and RETRO-2026-002 covered different sprint contexts; similar labels may reflect different root causes."
     ]
   },
   "recipients": {

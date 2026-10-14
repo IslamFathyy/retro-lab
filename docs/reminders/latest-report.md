@@ -1,10 +1,10 @@
-# Sprint 2 Retro Report
+# Sprint 3 Retro Report
 
 ## Overview
 - **Team:** Chartswap
-- **Period:** Sprint 2
+- **Period:** Sprint 3
 - **Status:** actioned
-- **Generated:** 2026-10-10T14:07:10.965Z
+- **Generated:** 2026-10-14T12:35:21.707Z
 
 ## Participation
 - Total feedback: 6
@@ -24,60 +24,66 @@
 ### Topic share (this retrospective)
 | Topic | Feedback items | Share | Priority |
 | --- | ---: | ---: | --- |
-| Release and deployment reliability | 1 | 17% | Medium |
-| Collaboration and pairing | 1 | 17% | Low |
-| Code review responsiveness | 2 | 33% | High |
-| Sprint readiness and acceptance criteria | 2 | 33% | High |
+| Sprint readiness and cross-team handoffs | 2 | 33% | Medium |
+| Code review delays | 1 | 17% | High |
+| QA / testing gaps | 2 | 33% | High |
+| Deployment reliability | 1 | 17% | Medium |
 
 ```mermaid
 xychart-beta horizontal
     title "Feedback items by topic (this retrospective)"
-    x-axis ["Release and deployment reliability", "Collaboration and pairing", "Code review responsiveness", "Sprint readiness and acceptance criteria"]
+    x-axis ["Sprint readiness and cross-team handoffs", "Code review delays", "QA / testing gaps", "Deployment reliability"]
     y-axis "Items" 0 --> 6
-    bar [1, 1, 2, 2]
+    bar [2, 1, 2, 1]
 ```
 
 ### Recurring across retrospectives
 | Topic | Retros mentioned | Priority |
 | --- | ---: | --- |
-| Code review delays | 2 / 4 | High |
+| Code review delays | 3 / 4 | High |
+| QA / testing gaps | 3 / 4 | High |
 
 ```mermaid
 xychart-beta horizontal
     title "Retrospectives mentioning each topic"
-    x-axis ["Code review delays"]
+    x-axis ["Code review delays", "QA / testing gaps"]
     y-axis "Retros" 0 --> 4
-    bar [2]
+    bar [3, 3]
 ```
 
 _Disclaimer: Percentages are based on anonymous feedback items, not individuals._
 
 ## What Went Well
-- (FB-0001) The deployment pipeline was stable across all releases.
-- (FB-0002) Pair programming helped us finish the API migration faster.
+- (FB-0001) QA joined refinement and caught missing acceptance criteria early.
+- (FB-0002) Handoffs between backend and frontend were smoother this sprint.
 
 
 ## Main Themes
-- **Release and deployment reliability** (FB-0001): The team reported that the deployment pipeline remained stable across all releases during the sprint.
-- **Collaboration and pairing** (FB-0002): Pair programming was cited as helping the team complete the API migration more quickly.
-- **Code review responsiveness** (FB-0003, FB-0005): Pull request reviews experienced multi-day idle periods; the team suggested a first-response target for reviews.
-- **Sprint readiness and acceptance criteria** (FB-0004, FB-0006): Stories entered the sprint without clear acceptance criteria; the team proposed a readiness checklist before sprint entry.
+- **Early quality involvement in planning** (FB-0001): The team noted that QA participation in refinement helped surface missing acceptance criteria before implementation work progressed.
+- **Cross-team delivery handoffs** (FB-0002): A recurring positive theme is smoother coordination between backend and frontend during the sprint.
+- **Code review throughput** (FB-0003): The team reported that the code review queue expanded again during the middle of the sprint.
+- **Integration testing and regression risk** (FB-0004, FB-0005): Process feedback links a shipped regression to gaps in integration coverage, and the team explicitly called for broader integration tests around payment flows.
+- **Deployment pipeline safeguards** (FB-0006): The team suggested strengthening the deployment path by automating configuration validation.
 
 ## Concerns
-- (FB-0003) Code reviews sat idle for days before anyone responded.
-- (FB-0004) Two stories entered the sprint without clear acceptance criteria.
+- (FB-0003) Mid-sprint growth in the code review queue was called out as a process pain point.
+- (FB-0004) A regression reached production; the team attributed this in part to integration tests not covering the affected scenario.
 
 ## Improvement Opportunities
-- (FB-0005) Define a first-response target for pull request reviews.
-- (FB-0006) Add a readiness checklist before stories enter the sprint.
+- (FB-0005) The team proposed expanding integration test coverage for payment flows.
+- (FB-0006) The team proposed automating configuration validation in the deployment pipeline.
 
 ## Approved Actions
-- **Adopt a 4-hour PR first-response target** (ACT-0001) — Teams: Dev Team, Status: open
-- **Require acceptance criteria before sprint commitment** (ACT-0002) — Teams: Product Team, QA Team, Status: open
-- **Run a post-deploy smoke test checklist** (ACT-0003) — Teams: Ops Team, Dev Team, Status: open
-- **Schedule weekly pairing blocks for knowledge sharing** (ACT-0004) — Teams: Dev Team, Status: open
+- **Cap the code review queue and agree first-response norms** (ACT-0001) — Teams: Dev Team, Management Team, Status: open
+- **Expand regression and integration coverage in the delivery pipeline** (ACT-0002) — Teams: Dev Team, QA Team, Status: open
+- **Add a pre-deploy deployment configuration validation step** (ACT-0003) — Teams: Ops Team, Dev Team, Status: open
+- **Standardize refinement handoffs and keep QA involved early** (ACT-0004) — Teams: Product Team, QA Team, Dev Team, Status: open
 
 ## Previous Actions Follow-up
+- Cap the code review queue and agree first-response norms (ACT-0001) from Sprint 3 Retro — open
+- Expand regression and integration coverage in the delivery pipeline (ACT-0002) from Sprint 3 Retro — open
+- Add a pre-deploy deployment configuration validation step (ACT-0003) from Sprint 3 Retro — open
+- Standardize refinement handoffs and keep QA involved early (ACT-0004) from Sprint 3 Retro — open
 - Adopt a 4-hour PR first-response target (ACT-0001) from Sprint 2 Retro — open
 - Require acceptance criteria before sprint commitment (ACT-0002) from Sprint 2 Retro — open
 - Run a post-deploy smoke test checklist (ACT-0003) from Sprint 2 Retro — open
@@ -98,6 +104,7 @@ _Disclaimer: Percentages are based on anonymous feedback items, not individuals.
 - Suggested actions require human review before approval.
 - Analysis identifies process patterns, not individuals.
 - Observations are not proof of causality.
+- Anonymous submissions are not attributed to individuals.
 
 ## Generated Information
 - Report generated deterministically from local files.
