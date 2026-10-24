@@ -1,89 +1,90 @@
 {
-  "retroId": "RETRO-2026-003",
+  "retroId": "RETRO-2026-004",
   "version": 1,
-  "generatedAt": "2026-10-14T12:21:05.067Z",
+  "generatedAt": "2026-10-24T20:19:37.963Z",
   "generatedBy": "cursor-agent",
   "feedbackCount": 6,
   "themes": [
     {
-      "name": "Early quality involvement in planning",
+      "name": "Release reliability and incident response",
       "feedbackIds": [
-        "FB-0001"
-      ],
-      "summary": "The team noted that QA participation in refinement helped surface missing acceptance criteria before implementation work progressed.",
-      "topicId": null
-    },
-    {
-      "name": "Cross-team delivery handoffs",
-      "feedbackIds": [
+        "FB-0001",
         "FB-0002"
       ],
-      "summary": "A recurring positive theme is smoother coordination between backend and frontend during the sprint.",
+      "summary": "The team reported dependable production releases with no rollbacks and coordinated quickly when a customer escalation arrived.",
       "topicId": null
     },
     {
-      "name": "Code review throughput",
+      "name": "Code review turnaround",
       "feedbackIds": [
-        "FB-0003"
-      ],
-      "summary": "The team reported that the code review queue expanded again during the middle of the sprint.",
-      "topicId": null
-    },
-    {
-      "name": "Integration testing and regression risk",
-      "feedbackIds": [
-        "FB-0004",
+        "FB-0003",
         "FB-0005"
       ],
-      "summary": "Process feedback links a shipped regression to gaps in integration coverage, and the team explicitly called for broader integration tests around payment flows.",
+      "summary": "Review turnaround remains a bottleneck for urgent fixes; the team wants consistent two-reviewer practice from earlier retros.",
       "topicId": null
     },
     {
-      "name": "Deployment pipeline safeguards",
+      "name": "Sprint planning efficiency",
       "feedbackIds": [
+        "FB-0004",
         "FB-0006"
       ],
-      "summary": "The team suggested strengthening the deployment path by automating configuration validation.",
+      "summary": "Planning sessions exceed ninety minutes; the team proposed time-boxing and async status notes.",
       "topicId": null
     }
   ],
   "strengths": [
     {
       "feedbackId": "FB-0001",
-      "summary": "QA engagement during refinement helped the team catch missing acceptance criteria earlier in the cycle."
+      "summary": "Production releases stayed reliable with no rollback during the sprint."
     },
     {
       "feedbackId": "FB-0002",
-      "summary": "Handoffs between backend and frontend were described as smoother compared with prior sprints."
+      "summary": "The team rallied quickly when a customer escalation landed."
     }
   ],
   "concerns": [
     {
       "feedbackId": "FB-0003",
-      "summary": "Mid-sprint growth in the code review queue was called out as a process pain point."
+      "summary": "Review turnaround is still too slow for urgent fixes."
     },
     {
       "feedbackId": "FB-0004",
-      "summary": "A regression reached production; the team attributed this in part to integration tests not covering the affected scenario."
+      "summary": "Sprint planning sessions routinely exceed ninety minutes."
     }
   ],
   "opportunities": [
     {
       "feedbackId": "FB-0005",
-      "summary": "The team proposed expanding integration test coverage for payment flows."
+      "summary": "Enforce the two-reviewer policy discussed in earlier retrospectives."
     },
     {
       "feedbackId": "FB-0006",
-      "summary": "The team proposed automating configuration validation in the deployment pipeline."
+      "summary": "Time-box planning and replace status updates with async notes."
     }
   ],
   "suggestedActions": [
     {
       "id": "SUG-001",
-      "title": "Cap the code review queue and agree first-response norms",
-      "reason": "The team reported reviews backing up when too many pull requests wait at once (FB-0003). A shared WIP limit per reviewer and a first-response target should keep the queue moving without blaming individuals.",
+      "title": "Define a release readiness checklist with automated pre-deploy gates",
+      "reason": "The team raised release reliability themes (FB-0001, FB-0002). A shared go/no-go checklist and automated pipeline gates should catch blockers before promote.",
       "sourceFeedbackIds": [
-        "FB-0003"
+        "FB-0001",
+        "FB-0002"
+      ],
+      "ownerTeams": [
+        "dev-team",
+        "qa-team",
+        "ops-team"
+      ]
+    },
+    {
+      "id": "SUG-002",
+      "title": "Agree an urgent PR first-response SLA and escalation path",
+      "reason": "Slow turnaround on urgent reviews was raised (FB-0003, FB-0005). Set a measurable first-response target and escalation when reviewers are unavailable.",
+      "sourceFeedbackIds": [
+        "FB-0003",
+        "FB-0005"
       ],
       "ownerTeams": [
         "dev-team",
@@ -91,42 +92,29 @@
       ]
     },
     {
-      "id": "SUG-002",
-      "title": "Expand regression and integration coverage in the delivery pipeline",
-      "reason": "Recurring feedback pointed to gaps in regression and integration testing before release (FB-0004, FB-0005). The team can prioritize high-risk flows, add automated checks where practical, and define what must pass before merge or deploy.",
+      "id": "SUG-003",
+      "title": "Pilot two-reviewer policy exceptions for labeled hotfix PRs",
+      "reason": "Urgent review delays and two-reviewer policy appeared together (FB-0003, FB-0005). Pilot hotfix-labeled exceptions with mandatory post-merge review.",
       "sourceFeedbackIds": [
-        "FB-0004",
+        "FB-0003",
         "FB-0005"
       ],
       "ownerTeams": [
         "dev-team",
-        "qa-team"
-      ]
-    },
-    {
-      "id": "SUG-003",
-      "title": "Add a pre-deploy deployment configuration validation step",
-      "reason": "The team flagged environment or deployment configuration issues surfacing late (FB-0006). A short checklist or automated diff against known-good settings before promote should catch misconfigurations earlier.",
-      "sourceFeedbackIds": [
-        "FB-0006"
-      ],
-      "ownerTeams": [
-        "ops-team",
-        "dev-team"
+        "management-team"
       ]
     },
     {
       "id": "SUG-004",
-      "title": "Standardize refinement handoffs and keep QA involved early",
-      "reason": "The team valued QA participation during refinement (FB-0001) while handoffs between roles still felt unclear (FB-0002). Agree on ready-for-dev criteria, who owns the handoff, and a lightweight refinement template so expectations stay visible.",
+      "title": "Timebox planning sessions and require async pre-reads plus decision logs",
+      "reason": "Long planning and async status ideas (FB-0004, FB-0006). Cap live planning and distribute pre-reads before the session.",
       "sourceFeedbackIds": [
-        "FB-0001",
-        "FB-0002"
+        "FB-0004",
+        "FB-0006"
       ],
       "ownerTeams": [
         "product-team",
-        "qa-team",
-        "dev-team"
+        "management-team"
       ]
     }
   ],

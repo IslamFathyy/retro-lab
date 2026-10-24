@@ -1,10 +1,10 @@
-# Sprint 3 Retro Report
+# Sprint 4 Retro Report
 
 ## Overview
 - **Team:** Chartswap
-- **Period:** Sprint 3
+- **Period:** Sprint 4
 - **Status:** actioned
-- **Generated:** 2026-10-14T12:35:21.707Z
+- **Generated:** 2026-10-24T20:22:30.106Z
 
 ## Participation
 - Total feedback: 6
@@ -24,62 +24,64 @@
 ### Topic share (this retrospective)
 | Topic | Feedback items | Share | Priority |
 | --- | ---: | ---: | --- |
-| Sprint readiness and cross-team handoffs | 2 | 33% | Medium |
-| Code review delays | 1 | 17% | High |
-| QA / testing gaps | 2 | 33% | High |
-| Deployment reliability | 1 | 17% | Medium |
+| Deployment reliability | 2 | 33% | Low |
+| Code review delays | 2 | 33% | High |
+| Long meetings / planning | 2 | 33% | High |
 
 ```mermaid
 xychart-beta horizontal
     title "Feedback items by topic (this retrospective)"
-    x-axis ["Sprint readiness and cross-team handoffs", "Code review delays", "QA / testing gaps", "Deployment reliability"]
+    x-axis ["Deployment reliability", "Code review delays", "Long meetings / planning"]
     y-axis "Items" 0 --> 6
-    bar [2, 1, 2, 1]
+    bar [2, 2, 2]
 ```
 
 ### Recurring across retrospectives
 | Topic | Retros mentioned | Priority |
 | --- | ---: | --- |
-| Code review delays | 3 / 4 | High |
-| QA / testing gaps | 3 / 4 | High |
+| Code review delays | 4 / 4 | High |
+| Long meetings / planning | 4 / 4 | Medium |
+| QA / testing gaps | 4 / 4 | High |
 
 ```mermaid
 xychart-beta horizontal
     title "Retrospectives mentioning each topic"
-    x-axis ["Code review delays", "QA / testing gaps"]
+    x-axis ["Code review delays", "Long meetings / planning", "QA / testing gaps"]
     y-axis "Retros" 0 --> 4
-    bar [3, 3]
+    bar [4, 4, 4]
 ```
 
 _Disclaimer: Percentages are based on anonymous feedback items, not individuals._
 
 ## What Went Well
-- (FB-0001) QA joined refinement and caught missing acceptance criteria early.
-- (FB-0002) Handoffs between backend and frontend were smoother this sprint.
+- (FB-0001) Production releases remained reliable with no rollback.
+- (FB-0002) The team rallied quickly when a customer escalation landed.
 
 
 ## Main Themes
-- **Early quality involvement in planning** (FB-0001): The team noted that QA participation in refinement helped surface missing acceptance criteria before implementation work progressed.
-- **Cross-team delivery handoffs** (FB-0002): A recurring positive theme is smoother coordination between backend and frontend during the sprint.
-- **Code review throughput** (FB-0003): The team reported that the code review queue expanded again during the middle of the sprint.
-- **Integration testing and regression risk** (FB-0004, FB-0005): Process feedback links a shipped regression to gaps in integration coverage, and the team explicitly called for broader integration tests around payment flows.
-- **Deployment pipeline safeguards** (FB-0006): The team suggested strengthening the deployment path by automating configuration validation.
+- **Release reliability and incident response** (FB-0001, FB-0002): The team reported dependable production releases with no rollbacks and coordinated quickly when a customer escalation arrived.
+- **Code review turnaround** (FB-0003, FB-0005): Review turnaround remains a bottleneck for urgent fixes; the team wants consistent two-reviewer practice from earlier retros.
+- **Sprint planning efficiency** (FB-0004, FB-0006): Planning sessions exceed ninety minutes; the team proposed time-boxing and async status notes.
 
 ## Concerns
-- (FB-0003) Mid-sprint growth in the code review queue was called out as a process pain point.
-- (FB-0004) A regression reached production; the team attributed this in part to integration tests not covering the affected scenario.
+- (FB-0003) Review turnaround is still too slow for urgent fixes.
+- (FB-0004) Sprint planning sessions routinely exceed ninety minutes.
 
 ## Improvement Opportunities
-- (FB-0005) The team proposed expanding integration test coverage for payment flows.
-- (FB-0006) The team proposed automating configuration validation in the deployment pipeline.
+- (FB-0005) Enforce the two-reviewer policy discussed in earlier retrospectives.
+- (FB-0006) Time-box planning and replace status updates with async notes.
 
 ## Approved Actions
-- **Cap the code review queue and agree first-response norms** (ACT-0001) — Teams: Dev Team, Management Team, Status: open
-- **Expand regression and integration coverage in the delivery pipeline** (ACT-0002) — Teams: Dev Team, QA Team, Status: open
-- **Add a pre-deploy deployment configuration validation step** (ACT-0003) — Teams: Ops Team, Dev Team, Status: open
-- **Standardize refinement handoffs and keep QA involved early** (ACT-0004) — Teams: Product Team, QA Team, Dev Team, Status: open
+- **Define a release readiness checklist with automated pre-deploy gates** (ACT-0001) — Teams: Dev Team, QA Team, Ops Team, Status: open
+- **Agree an urgent PR first-response SLA and escalation path** (ACT-0002) — Teams: Dev Team, Management Team, Status: open
+- **Pilot two-reviewer policy exceptions for labeled hotfix PRs** (ACT-0003) — Teams: Dev Team, Management Team, Status: open
+- **Timebox planning sessions and require async pre-reads plus decision logs** (ACT-0004) — Teams: Product Team, Management Team, Status: open
 
 ## Previous Actions Follow-up
+- Define a release readiness checklist with automated pre-deploy gates (ACT-0001) from Sprint 4 Retro — open
+- Agree an urgent PR first-response SLA and escalation path (ACT-0002) from Sprint 4 Retro — open
+- Pilot two-reviewer policy exceptions for labeled hotfix PRs (ACT-0003) from Sprint 4 Retro — open
+- Timebox planning sessions and require async pre-reads plus decision logs (ACT-0004) from Sprint 4 Retro — open
 - Cap the code review queue and agree first-response norms (ACT-0001) from Sprint 3 Retro — open
 - Expand regression and integration coverage in the delivery pipeline (ACT-0002) from Sprint 3 Retro — open
 - Add a pre-deploy deployment configuration validation step (ACT-0003) from Sprint 3 Retro — open

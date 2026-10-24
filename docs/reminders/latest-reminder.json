@@ -1,64 +1,64 @@
 {
-  "retroId": "RETRO-2026-003",
-  "title": "Sprint 3 Retro",
-  "period": "Sprint 3",
+  "retroId": "RETRO-2026-004",
+  "title": "Sprint 4 Retro",
+  "period": "Sprint 4",
   "team": "Chartswap",
-  "archivedAt": "2026-10-14T12:37:00.188Z",
-  "exportedAt": "2026-10-14T12:37:02.887Z",
+  "archivedAt": "2026-10-24T20:32:33.708Z",
+  "exportedAt": "2026-10-24T20:32:35.429Z",
   "openActions": [
     {
       "id": "ACT-0001",
-      "title": "Cap the code review queue and agree first-response norms",
-      "description": "The team reported reviews backing up when too many pull requests wait at once (FB-0003). A shared WIP limit per reviewer and a first-response target should keep the queue moving without blaming individuals.",
+      "title": "Define a release readiness checklist with automated pre-deploy gates",
+      "description": "The team raised release reliability themes (FB-0001, FB-0002). A shared go/no-go checklist and automated pipeline gates should catch blockers before promote.",
+      "ownerTeams": [
+        "dev-team",
+        "qa-team",
+        "ops-team"
+      ],
+      "teams": "Dev Team, QA Team, Ops Team",
+      "status": "open",
+      "targetDate": "2026-10-24"
+    },
+    {
+      "id": "ACT-0002",
+      "title": "Agree an urgent PR first-response SLA and escalation path",
+      "description": "Slow turnaround on urgent reviews was raised (FB-0003, FB-0005). Set a measurable first-response target and escalation when reviewers are unavailable.",
       "ownerTeams": [
         "dev-team",
         "management-team"
       ],
       "teams": "Dev Team, Management Team",
       "status": "open",
-      "targetDate": "2026-10-14"
-    },
-    {
-      "id": "ACT-0002",
-      "title": "Expand regression and integration coverage in the delivery pipeline",
-      "description": "Recurring feedback pointed to gaps in regression and integration testing before release (FB-0004, FB-0005). The team can prioritize high-risk flows, add automated checks where practical, and define what must pass before merge or deploy.",
-      "ownerTeams": [
-        "dev-team",
-        "qa-team"
-      ],
-      "teams": "Dev Team, QA Team",
-      "status": "open",
-      "targetDate": "2026-10-14"
+      "targetDate": "2026-10-24"
     },
     {
       "id": "ACT-0003",
-      "title": "Add a pre-deploy deployment configuration validation step",
-      "description": "The team flagged environment or deployment configuration issues surfacing late (FB-0006). A short checklist or automated diff against known-good settings before promote should catch misconfigurations earlier.",
+      "title": "Pilot two-reviewer policy exceptions for labeled hotfix PRs",
+      "description": "Urgent review delays and two-reviewer policy appeared together (FB-0003, FB-0005). Pilot hotfix-labeled exceptions with mandatory post-merge review.",
       "ownerTeams": [
-        "ops-team",
-        "dev-team"
+        "dev-team",
+        "management-team"
       ],
-      "teams": "Ops Team, Dev Team",
+      "teams": "Dev Team, Management Team",
       "status": "open",
-      "targetDate": "2026-10-14"
+      "targetDate": "2026-10-24"
     },
     {
       "id": "ACT-0004",
-      "title": "Standardize refinement handoffs and keep QA involved early",
-      "description": "The team valued QA participation during refinement (FB-0001) while handoffs between roles still felt unclear (FB-0002). Agree on ready-for-dev criteria, who owns the handoff, and a lightweight refinement template so expectations stay visible.",
+      "title": "Timebox planning sessions and require async pre-reads plus decision logs",
+      "description": "Long planning and async status ideas (FB-0004, FB-0006). Cap live planning and distribute pre-reads before the session.",
       "ownerTeams": [
         "product-team",
-        "qa-team",
-        "dev-team"
+        "management-team"
       ],
-      "teams": "Product Team, QA Team, Dev Team",
+      "teams": "Product Team, Management Team",
       "status": "open",
-      "targetDate": "2026-10-14"
+      "targetDate": "2026-10-24"
     }
   ],
   "reportExcerpt": {
-    "themesSummary": "Early quality involvement in planning: The team noted that QA participation in refinement helped surface missing acceptance criteria before implementation work progressed. Cross-team delivery handoffs: A recurring positive theme is smoother coordination between backend and frontend during the sprint. Code review throughput: The team reported that the code review queue expanded again during the middle of the sprint. Integration testing and regression risk: Process feedback links a shipped regression to gaps in integration coverage, and the team explicitly called for broader integration tests around payment flows. Deployment pipeline safeguards: The team suggested strengthening the deployment path by automating configuration validation.",
-    "approvedActionsSection": "- **Cap the code review queue and agree first-response norms** (ACT-0001) — Teams: Dev Team, Management Team, Status: open\n- **Expand regression and integration coverage in the delivery pipeline** (ACT-0002) — Teams: Dev Team, QA Team, Status: open\n- **Add a pre-deploy deployment configuration validation step** (ACT-0003) — Teams: Ops Team, Dev Team, Status: open\n- **Standardize refinement handoffs and keep QA involved early** (ACT-0004) — Teams: Product Team, QA Team, Dev Team, Status: open"
+    "themesSummary": "Release reliability and incident response: The team reported dependable production releases with no rollbacks and coordinated quickly when a customer escalation arrived. Code review turnaround: Review turnaround remains a bottleneck for urgent fixes; the team wants consistent two-reviewer practice from earlier retros. Sprint planning efficiency: Planning sessions exceed ninety minutes; the team proposed time-boxing and async status notes.",
+    "approvedActionsSection": "- **Define a release readiness checklist with automated pre-deploy gates** (ACT-0001) — Teams: Dev Team, QA Team, Ops Team, Status: open\n- **Agree an urgent PR first-response SLA and escalation path** (ACT-0002) — Teams: Dev Team, Management Team, Status: open\n- **Pilot two-reviewer policy exceptions for labeled hotfix PRs** (ACT-0003) — Teams: Dev Team, Management Team, Status: open\n- **Timebox planning sessions and require async pre-reads plus decision logs** (ACT-0004) — Teams: Product Team, Management Team, Status: open"
   },
   "reportInsights": {
     "participationMix": {
@@ -68,54 +68,55 @@
     },
     "topicBreakdown": [
       {
-        "label": "Sprint readiness and cross-team handoffs",
+        "label": "Deployment reliability",
         "feedbackItems": 2,
         "percent": 33,
-        "priority": "medium",
-        "summary": "The team highlighted QA involvement during refinement and smoother backend–frontend handoffs as practices that supported delivery this sprint."
+        "priority": "low",
+        "summary": "The team reported dependable production releases with no rollbacks and coordinated quickly when a customer escalation arrived."
       },
       {
         "label": "Code review delays",
-        "feedbackItems": 1,
-        "percent": 17,
-        "priority": "high",
-        "summary": "The team reported that the code review queue grew again mid-sprint, creating merge bottlenecks in the delivery process."
-      },
-      {
-        "label": "QA / testing gaps",
         "feedbackItems": 2,
         "percent": 33,
         "priority": "high",
-        "summary": "Process feedback tied a production regression to integration coverage gaps, and the team proposed expanding integration tests around payment flows."
+        "summary": "Review turnaround remains a bottleneck for urgent fixes; the team wants consistent two-reviewer practice carried forward from earlier retrospectives."
       },
       {
-        "label": "Deployment reliability",
-        "feedbackItems": 1,
-        "percent": 17,
-        "priority": "medium",
-        "summary": "The team suggested automating deployment configuration validation so misconfigurations are caught before promote."
+        "label": "Long meetings / planning",
+        "feedbackItems": 2,
+        "percent": 33,
+        "priority": "high",
+        "summary": "Sprint planning sessions routinely exceed ninety minutes; the team proposed time-boxing live planning and replacing status updates with async notes."
       }
     ],
     "recurringTopics": [
       {
         "label": "Code review delays",
-        "retrosSeen": 3,
+        "retrosSeen": 4,
         "retrosTotal": 4,
         "priority": "high",
-        "summary": "Semantically similar process concerns appeared across three sprints—from review norms and idle pull requests in earlier retros to a backed-up review queue in this sprint."
+        "summary": "Semantically similar review-process concerns appeared in all four sprints."
+      },
+      {
+        "label": "Long meetings / planning",
+        "retrosSeen": 4,
+        "retrosTotal": 4,
+        "priority": "medium",
+        "summary": "Meeting and planning-efficiency themes recurred across sprints."
       },
       {
         "label": "QA / testing gaps",
-        "retrosSeen": 3,
+        "retrosSeen": 4,
         "retrosTotal": 4,
         "priority": "high",
-        "summary": "Testing and readiness themes recurred: scope alignment and review practices in prior sprints, plus integration and regression risk called out in this retro."
+        "summary": "Quality and testing themes persisted across early and later sprints."
       }
     ],
     "limitations": [
       "Counts reflect feedback items, not individuals.",
       "Recurring topics are based on semantic similarity across retros, not identical feedback text.",
-      "Archived retros RETRO-2026-001 and RETRO-2026-002 covered different sprint contexts; similar labels may reflect different root causes."
+      "Six feedback items limit granularity; clusters summarize process patterns, not verified root causes.",
+      "Anonymous submissions are not attributed to individuals."
     ]
   },
   "recipients": {
