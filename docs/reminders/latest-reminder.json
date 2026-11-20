@@ -1,64 +1,88 @@
 {
-  "retroId": "RETRO-2026-004",
-  "title": "Sprint 4 Retro",
-  "period": "Sprint 4",
+  "retroId": "RETRO-2026-001",
+  "title": "Sprint 1 Retro",
+  "period": "Sprint 1",
   "team": "Chartswap",
-  "archivedAt": "2026-10-24T20:32:33.708Z",
-  "exportedAt": "2026-10-24T20:32:35.429Z",
+  "closedAt": "2026-11-20T20:25:24.557Z",
+  "archivedAt": "2026-11-20T20:25:24.557Z",
+  "exportedAt": "2026-11-20T20:25:29.000Z",
   "openActions": [
     {
       "id": "ACT-0001",
-      "title": "Define a release readiness checklist with automated pre-deploy gates",
-      "description": "The team raised release reliability themes (FB-0001, FB-0002). A shared go/no-go checklist and automated pipeline gates should catch blockers before promote.",
+      "title": "Add mid-sprint dev–QA test-scope sync",
+      "description": "FB-0005 shows QA scope misalignment late in the cycle; FB-0003 shows bugs reaching QA too late. A fixed mid-sprint checkpoint lets QA confirm coverage and dev flag at-risk stories before the final handoff.",
       "ownerTeams": [
         "dev-team",
         "qa-team",
-        "ops-team"
+        "product-team"
       ],
-      "teams": "Dev Team, QA Team, Ops Team",
+      "teams": "Dev Team, QA Team, Product Team",
       "status": "open",
-      "targetDate": "2026-10-24"
+      "targetDate": "2026-11-20"
     },
     {
       "id": "ACT-0002",
-      "title": "Agree an urgent PR first-response SLA and escalation path",
-      "description": "Slow turnaround on urgent reviews was raised (FB-0003, FB-0005). Set a measurable first-response target and escalation when reviewers are unavailable.",
+      "title": "Require two reviewers on every release-path PR",
+      "description": "FB-0006 calls for two reviewers on PRs. Making dual review mandatory on main and release branches spreads review load and catches issues before late-cycle QA churn.",
       "ownerTeams": [
-        "dev-team",
-        "management-team"
+        "dev-team"
       ],
-      "teams": "Dev Team, Management Team",
+      "teams": "Dev Team",
       "status": "open",
-      "targetDate": "2026-10-24"
+      "targetDate": "2026-11-20"
     },
     {
       "id": "ACT-0003",
-      "title": "Pilot two-reviewer policy exceptions for labeled hotfix PRs",
-      "description": "Urgent review delays and two-reviewer policy appeared together (FB-0003, FB-0005). Pilot hotfix-labeled exceptions with mandatory post-merge review.",
+      "title": "Timebox daily standups to 15 minutes",
+      "description": "FB-0004 reports dailies running too long. A 15-minute cap with a parking-lot channel for deep dives keeps ceremony discipline without losing blocker visibility.",
       "ownerTeams": [
         "dev-team",
         "management-team"
       ],
       "teams": "Dev Team, Management Team",
       "status": "open",
-      "targetDate": "2026-10-24"
+      "targetDate": "2026-11-20"
     },
     {
       "id": "ACT-0004",
-      "title": "Timebox planning sessions and require async pre-reads plus decision logs",
-      "description": "Long planning and async status ideas (FB-0004, FB-0006). Cap live planning and distribute pre-reads before the session.",
+      "title": "Introduce a pre-QA merge checklist",
+      "description": "FB-0003 highlights late bugs handed to QA. A short checklist before the QA queue reduces rework at the end of the sprint.",
       "ownerTeams": [
-        "product-team",
-        "management-team"
+        "dev-team",
+        "qa-team"
       ],
-      "teams": "Product Team, Management Team",
+      "teams": "Dev Team, QA Team",
       "status": "open",
-      "targetDate": "2026-10-24"
+      "targetDate": "2026-11-20"
+    },
+    {
+      "id": "ACT-0005",
+      "title": "Align acceptance criteria with QA during sprint planning",
+      "description": "FB-0005 flags test-scope gaps. Reviewing acceptance criteria with QA when stories are committed keeps expected coverage explicit from day one.",
+      "ownerTeams": [
+        "qa-team",
+        "product-team"
+      ],
+      "teams": "QA Team, Product Team",
+      "status": "open",
+      "targetDate": "2026-11-20"
+    },
+    {
+      "id": "ACT-0006",
+      "title": "Document what worked in the recent release",
+      "description": "FB-0001 and FB-0002 credit successful release delivery. Capturing the practices that worked gives the team a repeatable playbook for the next cycle.",
+      "ownerTeams": [
+        "dev-team",
+        "ops-team"
+      ],
+      "teams": "Dev Team, Ops Team",
+      "status": "open",
+      "targetDate": "2026-11-20"
     }
   ],
   "reportExcerpt": {
-    "themesSummary": "Release reliability and incident response: The team reported dependable production releases with no rollbacks and coordinated quickly when a customer escalation arrived. Code review turnaround: Review turnaround remains a bottleneck for urgent fixes; the team wants consistent two-reviewer practice from earlier retros. Sprint planning efficiency: Planning sessions exceed ninety minutes; the team proposed time-boxing and async status notes.",
-    "approvedActionsSection": "- **Define a release readiness checklist with automated pre-deploy gates** (ACT-0001) — Teams: Dev Team, QA Team, Ops Team, Status: open\n- **Agree an urgent PR first-response SLA and escalation path** (ACT-0002) — Teams: Dev Team, Management Team, Status: open\n- **Pilot two-reviewer policy exceptions for labeled hotfix PRs** (ACT-0003) — Teams: Dev Team, Management Team, Status: open\n- **Timebox planning sessions and require async pre-reads plus decision logs** (ACT-0004) — Teams: Product Team, Management Team, Status: open"
+    "themesSummary": "Successful release delivery: The team reported strong collaboration during release week and delivered the milestone on the planned date. Late-cycle quality gaps: A recurring concern is that many bugs reached QA late in the sprint; feedback also points toward earlier QA alignment on test scope before formal testing. Process discipline (ceremonies and reviews): Daily syncs frequently ran over schedule, and the team raised ideas to tighten pull-request review before merge.",
+    "approvedActionsSection": "- **Add mid-sprint dev–QA test-scope sync** (ACT-0001) — Teams: Dev Team, QA Team, Product Team, Status: open, Lineage: SUG-001 · from FB-0003, FB-0005\n- **Require two reviewers on every release-path PR** (ACT-0002) — Teams: Dev Team, Status: open, Lineage: SUG-002 · from FB-0006\n- **Timebox daily standups to 15 minutes** (ACT-0003) — Teams: Dev Team, Management Team, Status: open, Lineage: SUG-003 · from FB-0004\n- **Introduce a pre-QA merge checklist** (ACT-0004) — Teams: Dev Team, QA Team, Status: open, Lineage: SUG-004 · from FB-0003\n- **Align acceptance criteria with QA during sprint planning** (ACT-0005) — Teams: QA Team, Product Team, Status: open, Lineage: SUG-005 · from FB-0005\n- **Document what worked in the recent release** (ACT-0006) — Teams: Dev Team, Ops Team, Status: open, Lineage: SUG-006 · from FB-0001, FB-0002"
   },
   "reportInsights": {
     "participationMix": {
@@ -68,25 +92,25 @@
     },
     "topicBreakdown": [
       {
-        "label": "Deployment reliability",
+        "label": "Successful release delivery",
         "feedbackItems": 2,
         "percent": 33,
         "priority": "low",
-        "summary": "The team reported dependable production releases with no rollbacks and coordinated quickly when a customer escalation arrived."
+        "summary": "The team reported strong collaboration during release week and delivered the milestone on the planned date."
       },
       {
-        "label": "Code review delays",
+        "label": "Late-cycle quality gaps",
         "feedbackItems": 2,
         "percent": 33,
         "priority": "high",
-        "summary": "Review turnaround remains a bottleneck for urgent fixes; the team wants consistent two-reviewer practice carried forward from earlier retrospectives."
+        "summary": "Feedback items highlighted bugs reaching QA late in the sprint and a need to align with QA on test scope before formal testing."
       },
       {
-        "label": "Long meetings / planning",
+        "label": "Process discipline (ceremonies and reviews)",
         "feedbackItems": 2,
         "percent": 33,
-        "priority": "high",
-        "summary": "Sprint planning sessions routinely exceed ninety minutes; the team proposed time-boxing live planning and replacing status updates with async notes."
+        "priority": "medium",
+        "summary": "Daily syncs frequently ran over schedule, and the team raised expectations for pull-request review discipline before merge."
       }
     ],
     "recurringTopics": [
@@ -95,28 +119,42 @@
         "retrosSeen": 4,
         "retrosTotal": 4,
         "priority": "high",
-        "summary": "Semantically similar review-process concerns appeared in all four sprints."
+        "summary": "Across four sprints, feedback items repeatedly cited idle review queues, slow turnaround on urgent fixes, and calls for stricter reviewer policies."
       },
       {
         "label": "Long meetings / planning",
-        "retrosSeen": 4,
+        "retrosSeen": 2,
         "retrosTotal": 4,
         "priority": "medium",
-        "summary": "Meeting and planning-efficiency themes recurred across sprints."
+        "summary": "Feedback from Sprint 1 and Sprint 4 noted daily syncs and planning sessions routinely exceeding their allotted time."
       },
       {
         "label": "QA / testing gaps",
-        "retrosSeen": 4,
+        "retrosSeen": 2,
         "retrosTotal": 4,
         "priority": "high",
-        "summary": "Quality and testing themes persisted across early and later sprints."
+        "summary": "Sprint 1 and Sprint 3 feedback items reported late-cycle bugs and a regression where integration tests missed a critical scenario."
+      },
+      {
+        "label": "Sprint readiness",
+        "retrosSeen": 2,
+        "retrosTotal": 4,
+        "priority": "medium",
+        "summary": "Sprint 2 and Sprint 3 feedback items pointed to stories entering the sprint without clear acceptance criteria and suggested readiness checklists."
+      },
+      {
+        "label": "Deployment reliability",
+        "retrosSeen": 2,
+        "retrosTotal": 4,
+        "priority": "low",
+        "summary": "Positive feedback items in Sprint 2 and Sprint 4 credited stable deployment pipelines and reliable production releases."
       }
     ],
     "limitations": [
       "Counts reflect feedback items, not individuals.",
-      "Recurring topics are based on semantic similarity across retros, not identical feedback text.",
-      "Six feedback items limit granularity; clusters summarize process patterns, not verified root causes.",
-      "Anonymous submissions are not attributed to individuals."
+      "Recurring themes for RETRO-2026-002, RETRO-2026-003, and RETRO-2026-004 were inferred from seed feedback text only; no analysis was imported for those retrospectives.",
+      "Six anonymous feedback items may not represent the full team experience for Sprint 1.",
+      "Semantic matching across sprints identifies patterns, not proof of causality."
     ]
   },
   "recipients": {

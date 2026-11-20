@@ -1,10 +1,10 @@
-# Sprint 4 Retro Report
+# Sprint 1 Retro Report
 
 ## Overview
 - **Team:** Chartswap
-- **Period:** Sprint 4
-- **Status:** actioned
-- **Generated:** 2026-10-24T20:22:30.106Z
+- **Period:** Sprint 1
+- **Status:** actions-sent
+- **Generated:** 2026-11-20T17:28:52.510Z
 
 ## Participation
 - Total feedback: 6
@@ -24,14 +24,14 @@
 ### Topic share (this retrospective)
 | Topic | Feedback items | Share | Priority |
 | --- | ---: | ---: | --- |
-| Deployment reliability | 2 | 33% | Low |
-| Code review delays | 2 | 33% | High |
-| Long meetings / planning | 2 | 33% | High |
+| Successful release delivery | 2 | 33% | Low |
+| Late-cycle quality gaps | 2 | 33% | High |
+| Process discipline (ceremonies and reviews) | 2 | 33% | Medium |
 
 ```mermaid
 xychart-beta horizontal
     title "Feedback items by topic (this retrospective)"
-    x-axis ["Deployment reliability", "Code review delays", "Long meetings / planning"]
+    x-axis ["Successful release delivery", "Late-cycle quality gaps", "Process discipline (ceremonies and reviews)"]
     y-axis "Items" 0 --> 6
     bar [2, 2, 2]
 ```
@@ -40,73 +40,69 @@ xychart-beta horizontal
 | Topic | Retros mentioned | Priority |
 | --- | ---: | --- |
 | Code review delays | 4 / 4 | High |
-| Long meetings / planning | 4 / 4 | Medium |
-| QA / testing gaps | 4 / 4 | High |
+| Long meetings / planning | 2 / 4 | Medium |
+| QA / testing gaps | 2 / 4 | High |
+| Sprint readiness | 2 / 4 | Medium |
+| Deployment reliability | 2 / 4 | Low |
 
 ```mermaid
 xychart-beta horizontal
     title "Retrospectives mentioning each topic"
-    x-axis ["Code review delays", "Long meetings / planning", "QA / testing gaps"]
+    x-axis ["Code review delays", "Long meetings / planning", "QA / testing gaps", "Sprint readiness", "Deployment reliability"]
     y-axis "Retros" 0 --> 4
-    bar [4, 4, 4]
+    bar [4, 2, 2, 2, 2]
 ```
 
 _Disclaimer: Percentages are based on anonymous feedback items, not individuals._
 
 ## What Went Well
-- (FB-0001) Production releases remained reliable with no rollback.
-- (FB-0002) The team rallied quickly when a customer escalation landed.
+- (FB-0001) Strong team collaboration during release week.
+- (FB-0002) We delivered the milestone on the planned date.
 
 
 ## Main Themes
-- **Release reliability and incident response** (FB-0001, FB-0002): The team reported dependable production releases with no rollbacks and coordinated quickly when a customer escalation arrived.
-- **Code review turnaround** (FB-0003, FB-0005): Review turnaround remains a bottleneck for urgent fixes; the team wants consistent two-reviewer practice from earlier retros.
-- **Sprint planning efficiency** (FB-0004, FB-0006): Planning sessions exceed ninety minutes; the team proposed time-boxing and async status notes.
+- **Successful release delivery** (FB-0001, FB-0002): The team reported strong collaboration during release week and delivered the milestone on the planned date.
+- **Late-cycle quality gaps** (FB-0003, FB-0005): A recurring concern is that many bugs reached QA late in the sprint; feedback also points toward earlier QA alignment on test scope before formal testing.
+- **Process discipline (ceremonies and reviews)** (FB-0004, FB-0006): Daily syncs frequently ran over schedule, and the team raised ideas to tighten pull-request review before merge.
 
 ## Concerns
-- (FB-0003) Review turnaround is still too slow for urgent fixes.
-- (FB-0004) Sprint planning sessions routinely exceed ninety minutes.
+- (FB-0003) A large number of bugs escaped to QA late in the sprint.
+- (FB-0004) Daily sync meetings often ran over the scheduled time.
 
 ## Improvement Opportunities
-- (FB-0005) Enforce the two-reviewer policy discussed in earlier retrospectives.
-- (FB-0006) Time-box planning and replace status updates with async notes.
+- (FB-0005) The team sees value in aligning with QA on test scope before formal testing starts.
+- (FB-0006) The team suggested that pull requests require two reviewers before merge.
 
 ## Approved Actions
-- **Define a release readiness checklist with automated pre-deploy gates** (ACT-0001) — Teams: Dev Team, QA Team, Ops Team, Status: open
-- **Agree an urgent PR first-response SLA and escalation path** (ACT-0002) — Teams: Dev Team, Management Team, Status: open
-- **Pilot two-reviewer policy exceptions for labeled hotfix PRs** (ACT-0003) — Teams: Dev Team, Management Team, Status: open
-- **Timebox planning sessions and require async pre-reads plus decision logs** (ACT-0004) — Teams: Product Team, Management Team, Status: open
+- **Add mid-sprint dev–QA test-scope sync** (ACT-0001) — Teams: Dev Team, QA Team, Product Team, Status: open, Lineage: SUG-001 · from FB-0003, FB-0005
+- **Require two reviewers on every release-path PR** (ACT-0002) — Teams: Dev Team, Status: open, Lineage: SUG-002 · from FB-0006
+- **Timebox daily standups to 15 minutes** (ACT-0003) — Teams: Dev Team, Management Team, Status: open, Lineage: SUG-003 · from FB-0004
+- **Introduce a pre-QA merge checklist** (ACT-0004) — Teams: Dev Team, QA Team, Status: open, Lineage: SUG-004 · from FB-0003
+- **Align acceptance criteria with QA during sprint planning** (ACT-0005) — Teams: QA Team, Product Team, Status: open, Lineage: SUG-005 · from FB-0005
+- **Document what worked in the recent release** (ACT-0006) — Teams: Dev Team, Ops Team, Status: open, Lineage: SUG-006 · from FB-0001, FB-0002
+
+## Stale Open Actions
+_No open actions older than 14 days._
 
 ## Previous Actions Follow-up
-- Define a release readiness checklist with automated pre-deploy gates (ACT-0001) from Sprint 4 Retro — open
-- Agree an urgent PR first-response SLA and escalation path (ACT-0002) from Sprint 4 Retro — open
-- Pilot two-reviewer policy exceptions for labeled hotfix PRs (ACT-0003) from Sprint 4 Retro — open
-- Timebox planning sessions and require async pre-reads plus decision logs (ACT-0004) from Sprint 4 Retro — open
-- Cap the code review queue and agree first-response norms (ACT-0001) from Sprint 3 Retro — open
-- Expand regression and integration coverage in the delivery pipeline (ACT-0002) from Sprint 3 Retro — open
-- Add a pre-deploy deployment configuration validation step (ACT-0003) from Sprint 3 Retro — open
-- Standardize refinement handoffs and keep QA involved early (ACT-0004) from Sprint 3 Retro — open
-- Adopt a 4-hour PR first-response target (ACT-0001) from Sprint 2 Retro — open
-- Require acceptance criteria before sprint commitment (ACT-0002) from Sprint 2 Retro — open
-- Run a post-deploy smoke test checklist (ACT-0003) from Sprint 2 Retro — open
-- Schedule weekly pairing blocks for knowledge sharing (ACT-0004) from Sprint 2 Retro — open
-- Hold a QA test-scope alignment at sprint start (ACT-0001) from Sprint 1 Retro — open
-- Introduce a pre-handoff dev checklist before QA intake (ACT-0002) from Sprint 1 Retro — open
-- Time-box daily sync to 25 minutes with a parking lot (ACT-0003) from Sprint 1 Retro — open
-- Require two approving reviewers on pull requests (ACT-0004) from Sprint 1 Retro — open
-- Document release-week collaboration practices for reuse (ACT-0005) from Sprint 1 Retro — open
+- Add mid-sprint dev–QA test-scope sync (ACT-0001) from Sprint 1 Retro — open
+- Require two reviewers on every release-path PR (ACT-0002) from Sprint 1 Retro — open
+- Timebox daily standups to 15 minutes (ACT-0003) from Sprint 1 Retro — open
+- Introduce a pre-QA merge checklist (ACT-0004) from Sprint 1 Retro — open
+- Align acceptance criteria with QA during sprint planning (ACT-0005) from Sprint 1 Retro — open
+- Document what worked in the recent release (ACT-0006) from Sprint 1 Retro — open
 
 ## Observations Across Retrospectives
 - Comparisons are descriptive observations, not proof of causality.
-- Themes appearing in multiple retrospectives: Code review delays, QA / testing gaps, Long meetings / planning
+- Themes appearing in multiple retrospectives: Code review delays, Long meetings / planning, QA / testing gaps, Sprint readiness, Deployment reliability
 
 ## Limitations
 - Anonymous feedback authors are never named in this report.
 - Summaries are generated from stored feedback; they are not performance evaluations.
-- Suggested actions require human review before approval.
+- Human review is required before any suggested action is approved.
 - Analysis identifies process patterns, not individuals.
 - Observations are not proof of causality.
-- Anonymous submissions are not attributed to individuals.
+- Six anonymous items may not represent the full team experience for Sprint 1.
 
 ## Generated Information
 - Report generated deterministically from local files.
